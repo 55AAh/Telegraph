@@ -32,7 +32,7 @@ public class Client
     private boolean _Started = false;
     private boolean _Stop = false;
     protected void Stop() { _Stop = true; }
-    private List<String> Messaqes;
+    private List<String> Messages;
     //protected void Send()
     public void Send(String Msg)
     {

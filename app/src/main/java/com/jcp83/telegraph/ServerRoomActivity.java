@@ -22,7 +22,8 @@ public class ServerRoomActivity extends AppCompatActivity
     }
     private void Exit()
     {
-        startActivity(new Intent(ServerRoomActivity.this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        _Server.Exit();
+        //startActivity(new Intent(ServerRoomActivity.this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
     private void StartConnector()
     {
