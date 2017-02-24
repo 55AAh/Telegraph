@@ -5,13 +5,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-public class ServerConnector extends Thread
+class ServerConnector extends Thread
 {
-    public static final int CLIENT_ACCEPT_TIMEOUT = 500;
-    protected Server _Server;
-    protected Socket _Socket;
-    private int PORT;
-    private ServerRoomActivity _ServerRoomActivity;
+    private static final int CLIENT_ACCEPT_TIMEOUT = 500;
+    private final Server _Server;
+    private Socket _Socket;
+    private final int PORT;
+    private final ServerRoomActivity _ServerRoomActivity;
     public ServerConnector(ServerRoomActivity _ServerRoomActivity, Server _Server, int PORT)
     {
         this._ServerRoomActivity = _ServerRoomActivity;
@@ -19,15 +19,15 @@ public class ServerConnector extends Thread
         this.PORT = PORT;
     }
     private boolean _Started = false;
-    protected boolean Started() { return _Started; }
+    boolean Started() { return _Started; }
     private boolean _Stopped = false;
-    protected boolean Stopped() { return _Stopped; }
+    boolean Stopped() { return _Stopped; }
     private void Log(String Msg)
     {
         _ServerRoomActivity.ShowMessage(Msg);
     }
     private boolean StopF = false;
-    protected void Stop()
+    void Stop()
     {
         StopF = true;
     }
@@ -39,7 +39,6 @@ public class ServerConnector extends Thread
         {
             _Started = true;
             ServerSocket _ServerSocket = new ServerSocket(PORT);
-            int ConnectionID=0;
             while(true)
             {
                 boolean Connected = false;

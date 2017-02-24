@@ -13,11 +13,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-    protected void CreateButtonClick(View view)
+    public void CreateButtonClick(View view)
     {
         startActivity(new Intent(MainActivity.this,ServerRoomActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
-    protected void JoinButtonClick(View view)
+    public void JoinButtonClick(View view)
     {
         startActivity(new Intent(MainActivity.this,ClientRoomActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }

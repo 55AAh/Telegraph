@@ -2,24 +2,24 @@ package com.jcp83.telegraph;
 
 import java.util.ArrayList;
 
-public class Server implements Runnable
+class Server implements Runnable
 {
-    protected ServerConnector _ServerConnector = null;
-    protected Thread _ServerConnectorThread = null;
-    private int PORT;
-    protected int _ClientsCount = 0;
-    protected ArrayList<ServerListener> _ServerListeners = new ArrayList<>();
-    protected ArrayList<ServerSender> _ServerSenders = new ArrayList<>();
-    protected ArrayList<Thread> _ServerListenerThreads = new ArrayList<>();
-    protected ArrayList<Thread> _ServerSenderThreads = new ArrayList<>();
-    private ServerRoomActivity _ServerRoomActivity;
-    public Server(ServerRoomActivity _ServerRoomActivity, int PORT)
+    private ServerConnector _ServerConnector = null;
+    private Thread _ServerConnectorThread = null;
+    private final int PORT;
+    private int _ClientsCount = 0;
+    private final ArrayList<ServerListener> _ServerListeners = new ArrayList<>();
+    private final ArrayList<ServerSender> _ServerSenders = new ArrayList<>();
+    private final ArrayList<Thread> _ServerListenerThreads = new ArrayList<>();
+    private final ArrayList<Thread> _ServerSenderThreads = new ArrayList<>();
+    private final ServerRoomActivity _ServerRoomActivity;
+    Server(ServerRoomActivity _ServerRoomActivity, int PORT)
     {
         this._ServerRoomActivity = _ServerRoomActivity;
-        this._ServerRoomActivity.GetMessagesBox().setText(this._ServerRoomActivity.GetMessagesBox().getText()+"\nSERVER");
+        this._ServerRoomActivity.GetMessagesBox().append("\nSERVER");
         this.PORT = PORT;
     }
-    protected void Log(String Msg)
+    void Log(String Msg)
     {
         _ServerRoomActivity.ShowMessage(Msg);
     }
@@ -40,7 +40,7 @@ public class Server implements Runnable
     {
         ServerListener _Listener = _ServerListeners.get(ID);
         ServerSender _Sender = _ServerSenders.get(ID);
-        if(!_Listener.HasPackages()) return;
+        if(_Listener._Stack.isEmpty()) return;
         Package MESSAGE = _Listener.Get();
         if(MESSAGE._Command==Command.MESSAGE)
         {
@@ -53,13 +53,14 @@ public class Server implements Runnable
     }
     private void Start()
     {
+        _Started = true;
         Log("SERVER STARTED.");
         while(!_Stop)
             for(int c=0;c<_ClientsCount&&!_Stop;c++)
                 Handle(c);
     }
     public void run() { Start(); }
-    protected void Add(ServerSender _ServerSender, ServerListener _ServerListener, Thread _ServerSenderThread, Thread _ServerListenerThread)
+    void Add(ServerSender _ServerSender, ServerListener _ServerListener, Thread _ServerSenderThread, Thread _ServerListenerThread)
     {
         _ServerListeners.add(_ServerListener);
         _ServerSenders.add(_ServerSender);
@@ -67,7 +68,7 @@ public class Server implements Runnable
         _ServerSenderThreads.add(_ServerSenderThread);
         _ClientsCount++;
     }
-    protected void StartConnector()
+    void StartConnector()
     {
         if(_ServerConnector!=null) return;
         _ServerConnector = new ServerConnector(_ServerRoomActivity, this, PORT);
@@ -76,7 +77,7 @@ public class Server implements Runnable
         while(!_ServerConnector.Started());
         _ServerRoomActivity.ShowMessage("SERVER CONNECTOR STARTED");
     }
-    protected void StopConnector()
+    void StopConnector()
     {
         if(_ServerConnector==null) return;
         _ServerConnector.Stop();
@@ -85,7 +86,7 @@ public class Server implements Runnable
         _ServerConnectorThread = null;
         _ServerRoomActivity.ShowMessage("SERVER CONNECTOR STOPPED");
     }
-    protected void Exit()
+    void Exit()
     {
         if(_ServerConnector!=null) StopConnector();
         for (ServerListener _Listener:_ServerListeners) _Listener.Stop();

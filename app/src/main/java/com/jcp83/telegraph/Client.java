@@ -3,25 +3,23 @@ package com.jcp83.telegraph;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Client implements Runnable
+class Client implements Runnable
 {
-    protected ClientConnector _ClientConnector = null;
-    protected Thread _ClientConnectorThread = null;
-    private int PORT;
+    private ClientConnector _ClientConnector = null;
+    private final int PORT;
     private String _Login;
-    private String _Password = "1234";
-    protected ClientListener _ClientListener;
-    protected ClientSender _ClientSender;
-    protected Thread _ClientListenerThread;
-    protected Thread _ClientSenderThread;
-    private ClientRoomActivity _ClientRoomActivity;
+    ClientListener _ClientListener;
+    ClientSender _ClientSender;
+    Thread _ClientListenerThread;
+    Thread _ClientSenderThread;
+    private final ClientRoomActivity _ClientRoomActivity;
     public Client(ClientRoomActivity _ClientRoomActivity, int PORT)
     {
         this._ClientRoomActivity = _ClientRoomActivity;
-        this._ClientRoomActivity.GetMessagesBox().setText(this._ClientRoomActivity.GetMessagesBox().getText()+"\nCLIENT - PASCAL");
+        this._ClientRoomActivity.GetMessagesBox().append("\nCLIENT - PASCAL");
         this.PORT = PORT;
     }
-    protected void Log(String Msg)
+    void Log(String Msg)
     {
         _ClientRoomActivity.ShowMessage(Msg);
     }
@@ -32,7 +30,7 @@ public class Client implements Runnable
     private boolean _Started = false;
     private boolean _Stop = false;
     protected void Stop() { _Stop = true; }
-    private ArrayList<String> Messages = new ArrayList<>();
+    private final ArrayList<String> Messages = new ArrayList<>();
     //protected void Send()
     private boolean HasMessages() { return !Messages.isEmpty(); }
     private String GetMessage()
@@ -54,7 +52,8 @@ public class Client implements Runnable
         StartConnector();
         while(_ClientListener==null||_ClientSender==null);
         Log("Login : "+_Login);
-        Log("Password : "+_Password);
+        final String _Password = "1234";
+        Log("Password : "+ _Password);
         Log("Connecting ...");
         Package P_LOGIN = new Package(Command.LOGIN, _Login);
         Package P_LOGIN_PASSWORD = new Package(Command.LOGIN_PASSWORD, _Password);
@@ -96,7 +95,7 @@ public class Client implements Runnable
         _Login = "USER" + new Random().nextInt(100);
         if(_ClientConnector!=null) return;
         _ClientConnector = new ClientConnector(_ClientRoomActivity, this, PORT);
-        _ClientConnectorThread = new Thread(_ClientConnector);
+        Thread _ClientConnectorThread = new Thread(_ClientConnector);
         _ClientConnectorThread.start();
         while(!_ClientConnector.Started());
         Log("CLIENT CONNECTOR STARTED.");

@@ -3,13 +3,12 @@ package com.jcp83.telegraph;
 import java.net.InetAddress;
 import java.net.Socket;
 
-public class ClientConnector extends Thread
+class ClientConnector extends Thread
 {
-    private Socket _Socket;
-    protected Client _Client;
+    private final Client _Client;
     private int PORT = 0;
-    private ClientRoomActivity _ClientRoomActivity;
-    private String ServerIP;
+    private final ClientRoomActivity _ClientRoomActivity;
+
     public ClientConnector(ClientRoomActivity _ClientRoomActivity, Client _Client, int PORT)
     {
         this._ClientRoomActivity = _ClientRoomActivity;
@@ -17,7 +16,7 @@ public class ClientConnector extends Thread
         this.PORT = PORT;
     }
     private boolean _Started = false;
-    protected boolean Started() { return _Started; }
+    boolean Started() { return _Started; }
     private void Log(String Msg)
     {
         _ClientRoomActivity.ShowMessage(Msg);
@@ -27,10 +26,10 @@ public class ClientConnector extends Thread
     {
         try
         {
-            ServerIP = _ClientRoomActivity.GetServerIP();
-            Log("Connecting to server at PORT "+PORT+" and address "+ServerIP+" ...");
-            InetAddress IPAddress=InetAddress.getByName(ServerIP);
-            _Socket = new Socket(IPAddress,PORT);
+            String serverIP = _ClientRoomActivity.GetServerIP();
+            Log("Connecting to server at PORT "+PORT+" and address "+ serverIP +" ...");
+            InetAddress IPAddress=InetAddress.getByName(serverIP);
+            Socket _Socket = new Socket(IPAddress, PORT);
             Log("Connected.");
             ClientListener _ClientListener = new ClientListener(_Client, _Socket);
             //_ClientListener._ClientRoomActivity = _ClientRoomActivity;

@@ -6,23 +6,23 @@ import java.net.Socket;
 
 class ServerSender implements Runnable
 {
-    private Server _Server;
-    private Socket _Socket;
+    private final Server _Server;
+    private final Socket _Socket;
     private OutputStream _Stream;
     private DataOutputStream _DStream;
     private boolean _Started = false;
-    protected boolean Started() { return _Started; }
+    boolean Started() { return _Started; }
     public ServerSender(Server _Server, Socket _Socket)
     {
         this._Server = _Server;
         this._Socket = _Socket;
     }
-    private void Log(String Msg) { _Server.Log(Msg); }
+    //private void Log(String Msg) { _Server.Log(Msg); }
     private void Fail()
     {
-        Log("\tServerSender failed.");
+        _Server.Log("\tServerSender failed.");
     }
-    protected boolean Send(Package P)
+    void Send(Package P)
     {
         try
         {
@@ -32,8 +32,9 @@ class ServerSender implements Runnable
             _Stream.write(B);
             _Stream.flush();
         }
-        catch (Exception e) { Fail(); return false; }
-        return true;
+        catch (Exception e) { Fail();
+            return;
+        }
     }
     private void Init()
     {

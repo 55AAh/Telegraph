@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -11,26 +11,22 @@
     tools:context="com.jcp83.telegraph.MainActivity">
 
     <Button
-        android:text="Подключиться"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/JoinButton"
-        android:onClick="JoinButtonClick"
-        android:layout_below="@+id/CreateButton"
-        android:layout_alignLeft="@+id/CreateButton"
-        android:layout_alignStart="@+id/CreateButton" />
-
-    <Button
-        android:text="Создать"
+        android:text="@string/CreateButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/CreateButton"
         android:onClick="CreateButtonClick"
         android:layout_marginLeft="14dp"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="15dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_marginTop="15dp" />
 
-</RelativeLayout>
+    <Button
+        android:text="@string/JoinButtonText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/JoinButton"
+        android:onClick="JoinButtonClick"
+        android:layout_x="-1dp"
+        android:layout_y="45dp" />
+
+</AbsoluteLayout>

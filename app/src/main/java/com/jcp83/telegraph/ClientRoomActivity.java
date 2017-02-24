@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 public class ClientRoomActivity extends AppCompatActivity
 {
-    final int PORT = 7000;
+    private final int PORT = 7000;
     private Client _Client = null;
     private Thread _ClientThread = null;
     private TextView _MessagesBox = null;
@@ -30,7 +30,7 @@ public class ClientRoomActivity extends AppCompatActivity
     {
         startActivity(new Intent(ClientRoomActivity.this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
-    protected String GetServerIP() { return _ServerIPAddress.getText().toString(); }
+    String GetServerIP() { return _ServerIPAddress.getText().toString(); }
     private void Start()
     {
         _ClientThread.start();
@@ -39,12 +39,12 @@ public class ClientRoomActivity extends AppCompatActivity
     {
         _Client.Send(Msg);
     }
-    protected void ExitFromClientRoomButtonClick(View view)
+    public void ExitFromClientRoomButtonClick(View view)
     {
         Exit();
     }
-    protected void StartButtonClick(View view) { Start(); }
-    protected void ClientSendMessageButtonClick(View view) { SendMessage(_MessageBox.getText().toString()); }
+    public void StartButtonClick(View view) { Start(); }
+    public void ClientSendMessageButtonClick(View view) { SendMessage(_MessageBox.getText().toString()); }
     public TextView GetMessagesBox() { return _MessagesBox; }
     public void ShowMessage(String Msg)
     {
@@ -52,7 +52,7 @@ public class ClientRoomActivity extends AppCompatActivity
     }
     class ShowMessage implements Runnable
     {
-        String Msg;
+        final String Msg;
         @Override
         public void run()
         {

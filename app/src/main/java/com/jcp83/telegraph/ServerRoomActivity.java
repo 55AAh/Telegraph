@@ -1,16 +1,13 @@
 package com.jcp83.telegraph;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ServerRoomActivity extends AppCompatActivity
 {
-    final int PORT = 7000;
+    private final int PORT = 7000;
     private Server _Server = null;
     private Thread _ServerThread = null;
     private TextView _MessagesBox = null;
@@ -40,10 +37,10 @@ public class ServerRoomActivity extends AppCompatActivity
     {
         _ServerThread.start();
     }
-    protected void ExitFromServerRoomButtonClick(View view) { Exit(); }
-    protected void StartServerConnectorButtonClick(View view) { StartConnector(); }
-    protected void StopServerConnectorButtonClick(View view) { StopConnector(); }
-    protected void StartServerButtonClick(View view) { StartServer(); }
+    public void ExitFromServerRoomButtonClick(View view) { Exit(); }
+    public void StartServerConnectorButtonClick(View view) { StartConnector(); }
+    public void StopServerConnectorButtonClick(View view) { StopConnector(); }
+    public void StartServerButtonClick(View view) { StartServer(); }
     public TextView GetMessagesBox() { return _MessagesBox; }
     public void ShowMessage(String Msg)
     {
@@ -51,7 +48,7 @@ public class ServerRoomActivity extends AppCompatActivity
     }
     class ShowMessage implements Runnable
     {
-        String Msg;
+        final String Msg;
         @Override
         public void run()
         {

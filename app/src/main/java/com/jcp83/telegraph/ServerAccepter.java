@@ -3,15 +3,15 @@ package com.jcp83.telegraph;
 import java.io.IOException;
 import java.net.Socket;
 
-public class ServerAccepter implements Runnable
+class ServerAccepter implements Runnable
 {
-    final int Timeout=30000;
-    private Server _Server;
-    private Socket _Socket;
-    private ServerRoomActivity _ServerRoomActivity;
+    private final int Timeout=30000;
+    private final Server _Server;
+    private final Socket _Socket;
+    private final ServerRoomActivity _ServerRoomActivity;
     private ServerListener _ServerListener;
     private ServerSender _ServerSender;
-    private String Login;
+
     public ServerAccepter(Server _Server, Socket _Socket, ServerRoomActivity _ServerRoomActivity)
     {
         this._Server = _Server;
@@ -19,8 +19,8 @@ public class ServerAccepter implements Runnable
         this._ServerRoomActivity = _ServerRoomActivity;
     }
     private boolean _Started = false;
-    protected boolean Started() { return _Started; }
-    protected void Log(String Msg)
+    boolean Started() { return _Started; }
+    private void Log(String Msg)
     {
         _ServerRoomActivity.ShowMessage(Msg);
     }
@@ -37,10 +37,10 @@ public class ServerAccepter implements Runnable
         {
             _Socket.setSoTimeout(0);
             String Buf;
-            Package LOGIN_P=(Package)_ServerListener.Get();
-            Login = LOGIN_P._Data;
-            Log("Client login : "+Login);
-            Package LOGIN_PASSWORD_P=(Package)_ServerListener.Get();
+            Package LOGIN_P= _ServerListener.Get();
+            String login = LOGIN_P._Data;
+            Log("Client login : "+ login);
+            Package LOGIN_PASSWORD_P= _ServerListener.Get();
             Buf=LOGIN_PASSWORD_P._Data;
             if(LOGIN_P._Command!= Command.LOGIN||LOGIN_PASSWORD_P._Command!=Command.LOGIN_PASSWORD) {Log("Incorrect login signature."); Fail(); return; }
             if(Buf.compareTo("1234")!=0)
@@ -73,7 +73,7 @@ public class ServerAccepter implements Runnable
         }
         catch (Exception e) { e.printStackTrace();Disconnect(); }
     }
-    public void Disconnect()
+    private void Disconnect()
     {
         Log("Client disconnected.");
         try

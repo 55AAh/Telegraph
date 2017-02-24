@@ -6,23 +6,23 @@ import java.net.Socket;
 
 class ClientSender implements Runnable
 {
-    private Client _Client;
-    private Socket _Socket;
+    private final Client _Client;
+    private final Socket _Socket;
     private OutputStream _Stream;
     private DataOutputStream _DStream;
     private boolean _Started = false;
-    protected boolean Started() { return _Started; }
+    boolean Started() { return _Started; }
     ClientSender(Client _Client, Socket _Socket)
     {
         this._Client = _Client;
         this._Socket = _Socket;
     }
-    private void Log(String Msg) { _Client.Log(Msg); }
+    //private void Log(String Msg) { _Client.Log(Msg); }
     private void Fail()
     {
-        Log("\tClientSender failed.");
+        _Client.Log("\tClientSender failed.");
     }
-    protected boolean Send(Package P)
+    void Send(Package P)
     {
         try
         {
@@ -32,8 +32,7 @@ class ClientSender implements Runnable
             _Stream.write(B);
             _Stream.flush();
         }
-        catch (Exception e) { Fail(); return false; }
-        return true;
+        catch (Exception e) { Fail(); return; }
     }
     private void Init()
     {

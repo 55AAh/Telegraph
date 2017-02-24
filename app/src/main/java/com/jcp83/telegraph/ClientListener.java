@@ -7,22 +7,22 @@ import java.util.ArrayList;
 
 class ClientListener implements Runnable
 {
-    private Client _Client;
-    private Socket _Socket;
+    private final Client _Client;
+    private final Socket _Socket;
     private InputStream _Stream;
     private DataInputStream _DStream;
-    private ArrayList<Package> _Stack = new ArrayList<>();
+    private final ArrayList<Package> _Stack = new ArrayList<>();
     private boolean _Started = false;
-    protected boolean Started() { return _Started; }
+    boolean Started() { return _Started; }
     public ClientListener(Client _Client, Socket _Socket)
     {
         this._Client = _Client;
         this._Socket = _Socket;
     }
-    private void Log(String Msg) { _Client.Log(Msg); }
+    //private void Log(String Msg) { _Client.Log(Msg); }
     private void Fail()
     {
-        Log("\tClientListener failed.");
+        _Client.Log("\tClientListener failed.");
     }
     public boolean HasPackages() { return !_Stack.isEmpty(); }
     private boolean _Stop = false;
@@ -61,7 +61,7 @@ class ClientListener implements Runnable
         Package P = _Getter.Get();
         return P;
     }*/
-    protected Package Get()
+    Package Get()
     {
         while(!HasPackages());
         Package P = _Stack.get(0);

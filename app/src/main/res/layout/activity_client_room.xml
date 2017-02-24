@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_client_room"
     android:layout_width="match_parent"
@@ -11,36 +11,34 @@
     tools:context="com.jcp83.telegraph.ClientRoomActivity">
 
     <TextView
-        android:text="Клиент"
+        android:text="@string/ClientTextViewText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_marginLeft="29dp"
         android:layout_marginStart="29dp"
         android:layout_marginTop="27dp"
         android:id="@+id/ClientTextView" />
 
     <Button
-        android:text="Запуск"
+        android:text="@string/ExitFromClientRoomButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:id="@+id/StartButton"
-        android:onClick="StartButtonClick"
-        android:layout_below="@+id/ExitFromClientRoomButton"
-        android:layout_alignRight="@+id/ExitFromClientRoomButton"
-        android:layout_alignEnd="@+id/ExitFromClientRoomButton" />
+        android:layout_marginRight="18dp"
+        android:layout_marginEnd="18dp"
+        android:id="@+id/ExitFromClientRoomButton"
+        android:onClick="ExitFromClientRoomButtonClick"
+        android:layout_marginTop="56dp"
+        android:layout_x="260dp"
+        android:layout_y="-5dp" />
 
-    <TextView
-        android:text="Сообщения :"
+    <Button
+        android:text="@string/ClientSendMessageButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ClientMessagesBox"
-        android:layout_below="@+id/StartClientConnectorButton"
-        android:layout_alignLeft="@+id/ClientTextView"
-        android:layout_alignStart="@+id/ClientTextView" />
+        android:id="@+id/ClientSendMessageButton"
+        android:onClick="ClientSendMessageButtonClick"
+        android:layout_x="250dp"
+        android:layout_y="434dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -49,53 +47,45 @@
         android:ems="10"
         android:layout_marginBottom="15dp"
         android:id="@+id/ClientMessageBox"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp" />
-
-    <Button
-        android:text="Отправить"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ClientSendMessageBox"
-        android:onClick="ClientSendMessageButtonClick"
-        android:layout_alignTop="@+id/ClientMessageBox"
-        android:layout_alignLeft="@+id/ExitFromClientRoomButton"
-        android:layout_alignStart="@+id/ExitFromClientRoomButton" />
-
-    <Button
-        android:text="Выйти"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="18dp"
-        android:layout_marginEnd="18dp"
-        android:id="@+id/ExitFromClientRoomButton"
-        android:onClick="ExitFromClientRoomButtonClick"
-        android:layout_marginTop="56dp"
-        android:layout_below="@+id/ClientTextView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:text="IP сервера :"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ServerAddressTextView"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/ExitFromClientRoomButton"
-        android:layout_alignEnd="@+id/ExitFromClientRoomButton" />
+        android:layout_marginStart="12dp"
+        android:layout_x="23dp"
+        android:layout_y="434dp" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="145dp"
         android:layout_height="wrap_content"
         android:inputType="text"
         android:ems="10"
         android:id="@+id/ServerAddressTextBox"
-        android:text="192.168.43.182"
-        android:layout_alignTop="@+id/ClientTextView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:text="@string/ServerAddressTextBoxText"
+        android:layout_x="217dp"
+        android:layout_y="150dp" />
 
-</RelativeLayout>
+    <Button
+        android:text="@string/StartButtonClickText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/StartButton"
+        android:onClick="StartButtonClick"
+        android:layout_x="254dp"
+        android:layout_y="242dp" />
+
+    <TextView
+        android:text="@string/ServerAddressTextViewText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ServerAddressTextView"
+        android:layout_x="251dp"
+        android:layout_y="141dp" />
+
+    <TextView
+        android:text="@string/ClientMessagesBoxText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ClientMessagesBox"
+        android:layout_x="62dp"
+        android:layout_y="150dp" />
+
+</AbsoluteLayout>

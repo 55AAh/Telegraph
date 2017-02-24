@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ClientRoomActivity" />
-        <activity android:name=".ServerRoomActivity"></activity>
+        <activity android:name=".ServerRoomActivity" />
     </application>
 
 </manifest>

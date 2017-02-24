@@ -7,31 +7,30 @@ import java.util.ArrayList;
 
 class ServerListener implements Runnable
 {
-    private Server _Server;
-    private Socket _Socket;
+    private final Server _Server;
+    private final Socket _Socket;
     private InputStream _Stream;
     private DataInputStream _DStream;
-    private ArrayList<Package> _Stack = new ArrayList<>();
+    final ArrayList<Package> _Stack = new ArrayList<>();
     public ServerListener(Server _Server, Socket _Socket)
     {
         this._Server = _Server;
         this._Socket = _Socket;
     }
     private boolean _Started = false;
-    protected boolean Started() { return _Started; }
-    private void Log(String Msg) { _Server.Log(Msg); }
+    boolean Started() { return _Started; }
+    //private void Log(String Msg) { _Server.Log(Msg); }
     private void Fail()
     {
-        Log("\tServerListener failed.");
+        _Server.Log("\tServerListener failed.");
     }
-    public boolean HasPackages() { return !_Stack.isEmpty(); }
     private boolean _Stop = false;
     private boolean _Stopped = false;
-    protected void Stop() { _Stop = true; }
-    protected boolean IsStopped() { return _Stopped; }
-    protected Package Get()
+    void Stop() { _Stop = true; }
+    boolean IsStopped() { return _Stopped; }
+    Package Get()
     {
-        while(!HasPackages());
+        while(_Stack.isEmpty());
         Package P = _Stack.get(0);
         _Stack.remove(0);
         return P;
