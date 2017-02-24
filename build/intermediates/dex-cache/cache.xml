@@ -2,112 +2,94 @@
 <items version="2" >
 
     <item
-        is-multidex="true"
-        jar="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.1.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="f02263e35e52668dd17b73bf961437e3d562b35f">
-        <dex dex="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-media-compat-25.1.0_b3c4dd58a63a67f138b127ebd4efb062f7619615\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.1.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="ca3c7aa31e2726a400a6e552b93cb9f63c9a1e6d">
-        <dex dex="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-compat-25.1.0_66bf5f0790b753e58ad0e2b0120759143d0629ad\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\A10\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.1.0\support-annotations-25.1.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="64cb6b229a8bdfd907bc8dd46839a0053e4c018d">
-        <dex dex="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-25.1.0_055b9618d11a5ff4e8e6c9288d07b21c323ed7ea\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.1.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e79aa3d9a16f8c9f16377c0608de70a8f31e5d80">
-        <dex dex="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-25.1.0_7ecc338cef7c1892a90ddbdf07143b030f694c09\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.1.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="aee64634871d88a419d59eb743c1258a60f19700">
-        <dex dex="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-ui-25.1.0_ecc4fd6ce0cee4eb025959a7710b3e4fca42a153\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.1.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="2a53c4f3518116b8c6aee0e477233f0f7da8616f">
-        <dex dex="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-fragment-25.1.0_9c2d04479bde275f219da34b0a76362fbd3befc5\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="75f850953bcb299bd627072f00e0628bcf51b26a">
-        <dex dex="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_9ce4265d8b7e826303d708bb1238deda4fea2208\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.1.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-25.1.0_d902bd99f19a3b8cc3b634e4bbb766a659f13bc2\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.1.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="0a0ef86b7fa568a52bf6214a0326ca1f1d618da7">
-        <dex dex="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-utils-25.1.0_466f61c98e869d24fa21ee7287cad92897d3400a\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.1.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="1630658fbc2d222b988603c27b4a4249586fbfe7">
-        <dex dex="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-25.1.0_8471ccfc15e58c8441e87d90ad7bf74fe8a78bdd\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="073153863ad73f18c1e5edf91e209369585e5a08">
-        <dex dex="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_a5737c4a81803eea84f8b9c8abb7b7e62e7b261a\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.1.0\jars\classes.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.1.0\jars\classes.jar"
+        jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="6fb6ac3e8d3b9013819920d9ea11f3803c4c0033">
-        <dex dex="C:\Users\A10\AndroidStudioProjects\Prog63\Telegraph\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-25.1.0_6bb2af2fe0b9cbb6bb5098f1dc136dbf7c80f12b\classes.dex" />
+        <dex dex="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-25.1.0_efde392a4e95938aaf4d5ece72ed621c1d728fcf.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.1.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-25.1.0_52b45406f3cc96a98ff118a218659c205e3d9b15.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.1.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0a0ef86b7fa568a52bf6214a0326ca1f1d618da7">
+        <dex dex="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-utils-25.1.0_6b032062c4bde4b12b3d23271a6387fd76510fb9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\WORK\Android\SDK\extras\android\m2repository\com\android\support\support-annotations\25.1.0\support-annotations-25.1.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="64cb6b229a8bdfd907bc8dd46839a0053e4c018d">
+        <dex dex="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\pre-dexed\debug\support-annotations-25.1.0_f59ac2ee5f069c9c1341fedc53d4d09b66f98fe0.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.1.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="f02263e35e52668dd17b73bf961437e3d562b35f">
+        <dex dex="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\pre-dexed\debug\com.android.support-support-media-compat-25.1.0_e1c39392e49d0f72f117370edc05cd091e08b33a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.1.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e79aa3d9a16f8c9f16377c0608de70a8f31e5d80">
+        <dex dex="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-25.1.0_cae0e55f9e06ecfb4ccc1fd8a28c23b735431066.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.1.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="1630658fbc2d222b988603c27b4a4249586fbfe7">
+        <dex dex="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-25.1.0_b09023a416b2dbda08cb191b6e2267e8afb2b98e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.1.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="aee64634871d88a419d59eb743c1258a60f19700">
+        <dex dex="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-ui-25.1.0_758fd4e5951651aba82aa262cf9b7b807d75d8d8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.1.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ca3c7aa31e2726a400a6e552b93cb9f63c9a1e6d">
+        <dex dex="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\pre-dexed\debug\com.android.support-support-compat-25.1.0_b4599c6065ed90be8a248b1e0fa3a29fbf3b30cc.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.1.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="2a53c4f3518116b8c6aee0e477233f0f7da8616f">
+        <dex dex="D:\WORK\Android\Projects\Telegraph\app\build\intermediates\pre-dexed\debug\com.android.support-support-fragment-25.1.0_300397538cc8ef14bf2d4cfb7f0f4739aedec16d.jar" />
     </item>
 
 </items>

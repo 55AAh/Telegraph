@@ -1,13 +1,15 @@
 package com.jcp83.telegraph;
 
-import java.io.ObjectOutputStream;
+import java.io.DataOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
 class ServerSender implements Runnable
 {
     private Server _Server;
     private Socket _Socket;
-    private ObjectOutputStream _Stream;
+    private OutputStream _Stream;
+    private DataOutputStream _DStream;
     private boolean _Started = false;
     protected boolean Started() { return _Started; }
     public ServerSender(Server _Server, Socket _Socket)
@@ -22,19 +24,22 @@ class ServerSender implements Runnable
     }
     protected boolean Send(Package P)
     {
-        try { _Stream.writeObject(P); }
+        try
+        {
+            byte[] B = Package.GetBytes(P);
+            _DStream.writeInt(B.length);
+            _DStream.flush();
+            _Stream.write(B);
+            _Stream.flush();
+        }
         catch (Exception e) { Fail(); return false; }
         return true;
     }
-    protected void Flush()
-    {
-        try { _Stream.flush(); }
-        catch (Exception e) { Fail(); }
-    }
     private void Init()
     {
-        try { _Stream = new ObjectOutputStream(_Socket.getOutputStream()); }
+        try { _Stream = _Socket.getOutputStream(); }
         catch (Exception e) { Fail(); return; }
+        _DStream = new DataOutputStream(_Stream);
         _Started = true;
     }
     public void run() { Init(); }

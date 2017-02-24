@@ -1,13 +1,17 @@
 package com.jcp83.telegraph;
 
-import java.io.ObjectInputStream;
+import java.io.DataInputStream;
+import java.io.InputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 class ClientListener implements Runnable
 {
     private Client _Client;
     private Socket _Socket;
-    private ObjectInputStream _Stream;
+    private InputStream _Stream;
+    private DataInputStream _DStream;
+    private ArrayList<Package> _Stack = new ArrayList<>();
     private boolean _Started = false;
     protected boolean Started() { return _Started; }
     public ClientListener(Client _Client, Socket _Socket)
@@ -20,9 +24,15 @@ class ClientListener implements Runnable
     {
         Log("\tClientListener failed.");
     }
-    private class Getter implements Runnable
+    public boolean HasPackages() { return !_Stack.isEmpty(); }
+    private boolean _Stop = false;
+    private boolean _Stopped = false;
+    protected void Stop() { _Stop = true; }
+    protected boolean IsStopped() { return _Stopped; }
+    /*private class Getter implements Runnable
     {
-        private ObjectInputStream _Stream;
+        private InputStream _Stream;
+        //private DataInputStream
         private boolean _Ready = false;
         public boolean Ready() { return _Ready; }
         private Package P;
@@ -50,11 +60,49 @@ class ClientListener implements Runnable
         while(!_Getter.Ready());
         Package P = _Getter.Get();
         return P;
+    }*/
+    protected Package Get()
+    {
+        while(!HasPackages());
+        Package P = _Stack.get(0);
+        _Stack.remove(0);
+        return P;
+    }
+    private void Start()
+    {
+        while(true)
+        {
+            try
+            {
+                if(_DStream.available()>0)
+                {
+                    int S = _DStream.readInt();
+                    while(_Stream.available()<S&&!_Stop);
+                    if(!_Stop)
+                    {
+                        byte[] B = new byte[S];
+                        _Stream.read(B);
+                        Package P = Package.GetPackage(B);
+                        if(P==null) { Fail(); return; }
+                        _Stack.add(P);
+                    }
+                }
+                if(_Stop) { _Stopped = true; return; }
+            }
+            catch (Exception e)
+            {
+                Fail();
+                return;
+            }
+        }
     }
     private void Init()
     {
-        try { _Stream = new ObjectInputStream(_Socket.getInputStream()); }
+        try { _Stream = _Socket.getInputStream(); }
         catch (Exception e) { Fail(); return; }
+        _DStream = new DataInputStream(_Stream);
+        _Started = true;
+        Start();
         _Started = true;
     }
     public void run() { Init(); }

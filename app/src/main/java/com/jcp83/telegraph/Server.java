@@ -1,10 +1,8 @@
 package com.jcp83.telegraph;
 
-import android.widget.Toast;
-
 import java.util.ArrayList;
 
-public class Server
+public class Server implements Runnable
 {
     protected ServerConnector _ServerConnector = null;
     protected Thread _ServerConnectorThread = null;
@@ -37,7 +35,6 @@ public class Server
         while(!_Started);
         Log("SENDING : " + Msg);
         _ServerSenders.get(ID).Send(new Package(Command.MESSAGE, Msg));
-        _ServerSenders.get(ID).Flush();
     }
     private void Handle(int ID)
     {
@@ -52,16 +49,16 @@ public class Server
             Msg="Thanks for message \""+Msg+"\" !";
             Package ANSWER = new Package(Command.MESSAGE, Msg);
             _Sender.Send(ANSWER);
-            _Sender.Flush();
-
         }
     }
-    public void Start()
+    private void Start()
     {
+        Log("SERVER STARTED.");
         while(!_Stop)
             for(int c=0;c<_ClientsCount&&!_Stop;c++)
                 Handle(c);
     }
+    public void run() { Start(); }
     protected void Add(ServerSender _ServerSender, ServerListener _ServerListener, Thread _ServerSenderThread, Thread _ServerListenerThread)
     {
         _ServerListeners.add(_ServerListener);

@@ -48,15 +48,13 @@ public class ServerAccepter implements Runnable
                 Log("Incorrect password !");
                 Package LOGIN_FAILED_P = new Package(Command.LOGIN_FAILED, "");
                 _ServerSender.Send(LOGIN_FAILED_P);
-                _ServerSender.Flush();
                 return;
             }
             Log("Client successfully connected.");
             Package LOGIN_SUCCESS_P = new Package(Command.LOGIN_SUCCESS, "");
             _ServerSender.Send(LOGIN_SUCCESS_P);
-            _ServerSender.Flush();
             _Socket.setSoTimeout(Timeout);
-            while (true)
+            /*while (true)
             {
                 Package MESSAGE = (Package)_ServerListener.Get();
                 switch(MESSAGE._Command)
@@ -66,13 +64,12 @@ public class ServerAccepter implements Runnable
                         MESSAGE._Data = "#" + MESSAGE._Data;
                         Log("Sending message to client : " + MESSAGE._Data);
                         _ServerSender.Send(MESSAGE);
-                        _ServerSender.Flush();
                         break;
                     default:
                         break;
                 }
 
-            }
+            }*/
         }
         catch (Exception e) { e.printStackTrace();Disconnect(); }
     }

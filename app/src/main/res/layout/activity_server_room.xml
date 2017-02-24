@@ -35,11 +35,20 @@
         android:id="@+id/ExitFromServerRoomButton"
         android:onClick="ExitFromServerRoomButtonClick"/>
 
+    <TextView
+        android:text="Сообщения :"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/StartServerConnectorButton"
+        android:layout_alignLeft="@+id/ServerTextView"
+        android:layout_alignStart="@+id/ServerTextView"
+        android:id="@+id/ServerMessagesBox" />
+
     <Button
         android:text="Запуск\nКоннектора"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="83dp"
         android:id="@+id/StartServerConnectorButton"
         android:onClick="StartServerConnectorButtonClick"
         android:layout_below="@+id/ExitFromServerRoomButton"
@@ -50,19 +59,23 @@
         android:text="Остановка\nКоннектора"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/StartServerConnectorButton"
-        android:layout_alignLeft="@+id/StartServerConnectorButton"
-        android:layout_alignStart="@+id/StartServerConnectorButton"
-        android:layout_marginTop="21dp"
         android:id="@+id/StopServerConnectorButton"
-        android:onClick="StopServerConnectorButtonClick" />
+        android:onClick="StopServerConnectorButtonClick"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/StartServerConnectorButton"
+        android:layout_alignStart="@+id/StartServerConnectorButton" />
 
-    <TextView
-        android:text="Сообщения :"
+    <Button
+        android:text="Запуск"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/StartServerConnectorButton"
-        android:layout_alignLeft="@+id/ServerTextView"
-        android:layout_alignStart="@+id/ServerTextView"
-        android:id="@+id/ServerMessagesBox" />
+        android:id="@+id/StartServerButton"
+        android:onClick="StartServerButtonClick"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/StopServerConnectorButton"
+        android:layout_alignEnd="@+id/StopServerConnectorButton"
+        android:layout_marginRight="13dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="24dp" />
+
 </RelativeLayout>

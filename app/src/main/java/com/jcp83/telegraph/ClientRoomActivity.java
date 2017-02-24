@@ -11,6 +11,7 @@ public class ClientRoomActivity extends AppCompatActivity
 {
     final int PORT = 7000;
     private Client _Client = null;
+    private Thread _ClientThread = null;
     private TextView _MessagesBox = null;
     private EditText _MessageBox = null;
     private EditText _ServerIPAddress = null;
@@ -23,6 +24,7 @@ public class ClientRoomActivity extends AppCompatActivity
         _MessageBox = (EditText)findViewById(R.id.ClientMessageBox);
         _ServerIPAddress = (EditText)findViewById(R.id.ServerAddressTextBox);
         _Client = new Client(this, PORT);
+        _ClientThread = new Thread(_Client);
     }
     private void Exit()
     {
@@ -31,7 +33,7 @@ public class ClientRoomActivity extends AppCompatActivity
     protected String GetServerIP() { return _ServerIPAddress.getText().toString(); }
     private void Start()
     {
-        _Client.Start();
+        _ClientThread.start();
     }
     private void SendMessage(String Msg)
     {
