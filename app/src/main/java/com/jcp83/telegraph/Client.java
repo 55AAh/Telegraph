@@ -95,7 +95,7 @@ class Client implements Runnable
     public void run() { Start(); }
     private void StartConnector()
     {
-        _ClientRoomActivity.PushStatus(Status.SERVER_CONNECTOR_STARTING);
+        _ClientRoomActivity.PushStatus(Status.CLIENT_CONNECTOR_STARTING);
         _Login = "USER" + new Random().nextInt(100);
         if(_ClientConnector!=null) return;
         _ClientConnector = new ClientConnector(_ClientRoomActivity, this, PORT);

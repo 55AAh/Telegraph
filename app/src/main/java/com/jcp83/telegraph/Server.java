@@ -30,6 +30,8 @@ class Server implements Runnable
     private boolean _Started = false;
     public boolean Started() { return _Started; }
     private boolean _Stop = false;
+    private boolean _Stopped = false;
+    public boolean Stopped() { return _Stopped; }
     public void Send(String Msg, int ID)
     {
         while(!_Started);
@@ -102,5 +104,6 @@ class Server implements Runnable
         for (ServerListener _Listener:_ServerListeners) while(!_Listener.IsStopped());
         Log("SERVER STOPPED.");
         _ServerRoomActivity.PopStatus();
+        _Stopped = true;
     }
 }

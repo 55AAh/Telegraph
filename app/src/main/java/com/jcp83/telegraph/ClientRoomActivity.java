@@ -44,6 +44,7 @@ public class ClientRoomActivity extends AppCompatActivity
     private void SendMessage(String Msg)
     {
         _Client.Send(Msg);
+        _MessageBox.setText("");
     }
     public void ExitFromClientRoomButtonClick(View view)
     {

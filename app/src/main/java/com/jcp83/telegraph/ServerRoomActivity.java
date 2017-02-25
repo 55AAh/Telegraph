@@ -1,5 +1,6 @@
 package com.jcp83.telegraph;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -29,7 +30,8 @@ public class ServerRoomActivity extends AppCompatActivity
     private void Exit()
     {
         _Server.Stop();
-        //startActivity(new Intent(ServerRoomActivity.this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        while(!_Server.Stopped());
+        startActivity(new Intent(ServerRoomActivity.this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
     private void StartConnector()
     {

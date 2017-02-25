@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_client_room"
     android:layout_width="match_parent"
@@ -10,26 +10,41 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.jcp83.telegraph.ClientRoomActivity">
 
-    <TextView
-        android:text=""
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="29dp"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="27dp"
-        android:id="@+id/ClientStatusTextView" />
-
     <Button
         android:text="@string/ExitFromClientRoomButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="18dp"
-        android:layout_marginEnd="18dp"
         android:id="@+id/ExitFromClientRoomButton"
         android:onClick="ExitFromClientRoomButtonClick"
-        android:layout_marginTop="56dp"
         android:layout_x="260dp"
-        android:layout_y="-5dp" />
+        android:layout_y="-5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <Button
+        android:text="@string/StartButtonClickText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/StartButton"
+        android:onClick="StartButtonClick"
+        android:layout_x="281dp"
+        android:layout_y="60dp"
+        android:layout_below="@+id/ExitFromClientRoomButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/ClientMessageBox"
+        android:layout_x="23dp"
+        android:layout_y="434dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
     <Button
         android:text="@string/ClientSendMessageButtonText"
@@ -38,19 +53,10 @@
         android:id="@+id/ClientSendMessageButton"
         android:onClick="ClientSendMessageButtonClick"
         android:layout_x="250dp"
-        android:layout_y="434dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_marginBottom="15dp"
-        android:id="@+id/ClientMessageBox"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp"
-        android:layout_x="23dp"
-        android:layout_y="434dp" />
+        android:layout_y="434dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
     <EditText
         android:layout_width="145dp"
@@ -60,25 +66,21 @@
         android:id="@+id/ServerAddressTextBox"
         android:text="@string/ServerAddressTextBoxText"
         android:layout_x="217dp"
-        android:layout_y="150dp" />
-
-    <Button
-        android:text="@string/StartButtonClickText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:id="@+id/StartButton"
-        android:onClick="StartButtonClick"
-        android:layout_x="254dp"
-        android:layout_y="242dp" />
+        android:layout_y="150dp"
+        android:layout_above="@+id/ClientSendMessageButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
     <TextView
         android:text="@string/ServerAddressTextViewText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ServerAddressTextView"
-        android:layout_x="251dp"
-        android:layout_y="141dp" />
+        android:layout_x="128dp"
+        android:layout_y="306dp"
+        android:layout_above="@+id/ServerAddressTextBox"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
     <TextView
         android:text="@string/ClientMessagesBoxText"
@@ -86,6 +88,17 @@
         android:layout_height="wrap_content"
         android:id="@+id/ClientMessagesBox"
         android:layout_x="62dp"
-        android:layout_y="150dp" />
+        android:layout_y="150dp"
+        android:layout_below="@+id/ClientStatusTextView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
-</AbsoluteLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ClientStatusTextView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+</RelativeLayout>
