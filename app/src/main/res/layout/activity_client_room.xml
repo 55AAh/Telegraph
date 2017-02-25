@@ -11,13 +11,13 @@
     tools:context="com.jcp83.telegraph.ClientRoomActivity">
 
     <TextView
-        android:text="@string/ClientTextViewText"
+        android:text=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="29dp"
         android:layout_marginStart="29dp"
         android:layout_marginTop="27dp"
-        android:id="@+id/ClientTextView" />
+        android:id="@+id/ClientStatusTextView" />
 
     <Button
         android:text="@string/ExitFromClientRoomButtonText"

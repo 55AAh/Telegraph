@@ -11,13 +11,12 @@
     tools:context="com.jcp83.telegraph.ServerRoomActivity">
 
     <TextView
-        android:text="@string/ServerTextViewText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="38dp"
         android:layout_marginStart="38dp"
         android:layout_marginTop="33dp"
-        android:id="@+id/ServerTextView" />
+        android:id="@+id/ServerStatusTextView" />
 
     <Button
         android:text="@string/StartServerButtonText"

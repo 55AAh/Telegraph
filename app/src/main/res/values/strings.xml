@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Telegraph</string>
-    <string name="ClientTextViewText">Клиент</string>
     <string name="JoinButtonText">Подключиться</string>
     <string name="CreateButtonText">Создать</string>
     <string name="ServerTextViewText">Сервер</string>
@@ -15,4 +14,13 @@
     <string name="StartServerButtonText">Запуск</string>
     <string name="ServerAddressTextViewText">IP сервера :</string>
     <string name="ServerAddressTextBoxText">192.168.43.182</string>
+    <string name="Status_SERVER_IDLE_Text">СЕРВЕР</string>
+    <string name="Status_SERVER_STARTING_Text">ЗАПУСК СЕРВЕРА …</string>
+    <string name="Status_SERVER_STOPPING_Text">ОСТАНОВКА СЕРВЕРА …</string>
+    <string name="Status_SERVER_CONNECTOR_STARTING_Text">ВКЛЮЧЕНИЕ ВИДИМОСТИ …</string>
+    <string name="Status_SERVER_CONNECTOR_STOPPING_Text">ОТКЛЮЧЕНИЕ ВИДИМОСТИ …</string>
+    <string name="Status_CLIENT_IDLE_Text">КЛИЕНТ</string>
+    <string name="Status_CLIENT_STARTING_Text">ЗАПУСК КЛИЕНТА …</string>
+    <string name="Status_CLIENT_STOPPING_Text">ОСТАНОВКА КЛИЕНТА …</string>
+    <string name="Status_CLIENT_CONNECTOR_STARTING_Text">СОЕДИНЕНИЕ</string>
 </resources>

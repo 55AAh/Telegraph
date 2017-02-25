@@ -28,8 +28,8 @@ class Server implements Runnable
         Log("Server failed.");
     }
     private boolean _Started = false;
+    public boolean Started() { return _Started; }
     private boolean _Stop = false;
-    protected void Stop() { _Stop = true; }
     public void Send(String Msg, int ID)
     {
         while(!_Started);
@@ -53,8 +53,11 @@ class Server implements Runnable
     }
     private void Start()
     {
+        if(_Started) return;
+        _ServerRoomActivity.PushStatus(Status.SERVER_STARTING);
         _Started = true;
         Log("SERVER STARTED.");
+        _ServerRoomActivity.PopStatus();
         while(!_Stop)
             for(int c=0;c<_ClientsCount&&!_Stop;c++)
                 Handle(c);
@@ -71,26 +74,33 @@ class Server implements Runnable
     void StartConnector()
     {
         if(_ServerConnector!=null) return;
+        _ServerRoomActivity.PushStatus(Status.SERVER_CONNECTOR_STARTING);
         _ServerConnector = new ServerConnector(_ServerRoomActivity, this, PORT);
         _ServerConnectorThread = new Thread(_ServerConnector);
         _ServerConnectorThread.start();
         while(!_ServerConnector.Started());
         _ServerRoomActivity.ShowMessage("SERVER CONNECTOR STARTED");
+        _ServerRoomActivity.PopStatus();
     }
     void StopConnector()
     {
         if(_ServerConnector==null) return;
+        _ServerRoomActivity.PushStatus(Status.SERVER_CONNECTOR_STOPPING);
         _ServerConnector.Stop();
         while(!_ServerConnector.Stopped());
         _ServerConnector = null;
         _ServerConnectorThread = null;
         _ServerRoomActivity.ShowMessage("SERVER CONNECTOR STOPPED");
+        _ServerRoomActivity.PopStatus();
     }
-    void Exit()
+    void Stop()
     {
+        _ServerRoomActivity.PushStatus(Status.SERVER_STOPPING);
+        _Stop = true;
         if(_ServerConnector!=null) StopConnector();
         for (ServerListener _Listener:_ServerListeners) _Listener.Stop();
         for (ServerListener _Listener:_ServerListeners) while(!_Listener.IsStopped());
-        Log("Server stopped.");
+        Log("SERVER STOPPED.");
+        _ServerRoomActivity.PopStatus();
     }
 }

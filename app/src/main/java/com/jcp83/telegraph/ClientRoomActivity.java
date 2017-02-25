@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class ClientRoomActivity extends AppCompatActivity
 {
     private final int PORT = 7000;
@@ -15,6 +17,7 @@ public class ClientRoomActivity extends AppCompatActivity
     private TextView _MessagesBox = null;
     private EditText _MessageBox = null;
     private EditText _ServerIPAddress = null;
+    private TextView _StatusTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -23,8 +26,11 @@ public class ClientRoomActivity extends AppCompatActivity
         _MessagesBox = (TextView)findViewById(R.id.ClientMessagesBox);
         _MessageBox = (EditText)findViewById(R.id.ClientMessageBox);
         _ServerIPAddress = (EditText)findViewById(R.id.ServerAddressTextBox);
+        _StatusTextView = (TextView)findViewById(R.id.ClientStatusTextView);
         _Client = new Client(this, PORT);
         _ClientThread = new Thread(_Client);
+        _StatusesStack.add(Status.CLIENT_IDLE);
+        _StatusTextView.setText(GetStringStatus(Status.CLIENT_IDLE));
     }
     private void Exit()
     {
@@ -66,5 +72,46 @@ public class ClientRoomActivity extends AppCompatActivity
             });
         }
         public ShowMessage(String Msg) { this.Msg = Msg; }
+    }
+    private String GetStringStatus(Status _Status)
+    {
+        switch(_Status)
+        {
+            case CLIENT_IDLE:return getString(R.string.Status_CLIENT_IDLE_Text);
+            case CLIENT_STARTING:return getString(R.string.Status_CLIENT_STARTING_Text);
+            case CLIENT_STOPPING:return getString(R.string.Status_CLIENT_STOPPING_Text);
+            case CLIENT_CONNECTOR_STARTING:return getString(R.string.Status_CLIENT_CONNECTOR_STARTING_Text);
+            default: return "";
+        }
+    }
+    private ArrayList<Status> _StatusesStack = new ArrayList<>();
+    protected void PushStatus(Status _Status)
+    {
+        _StatusesStack.add(0,_Status);
+        _SetStatus(_Status);
+    }
+    protected void PopStatus()
+    {
+        if(_StatusesStack.size()>1) _StatusesStack.remove(0);
+        _SetStatus(_StatusesStack.get(0));
+    }
+    private void _SetStatus(Status _Status)
+    {
+        new Thread(new SetStatus(GetStringStatus(_Status))).start();
+    }
+    class SetStatus implements Runnable
+    {
+        final String _Status;
+        public void run()
+        {
+            _MessagesBox.post(new Runnable()
+            {
+                public void run()
+                {
+                    _StatusTextView.setText(_Status);
+                }
+            });
+        }
+        public SetStatus(String _Status) { this._Status = _Status; }
     }
 }

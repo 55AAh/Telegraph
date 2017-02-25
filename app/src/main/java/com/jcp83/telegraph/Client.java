@@ -49,6 +49,7 @@ class Client implements Runnable
     }
     private void Start()
     {
+        _ClientRoomActivity.PushStatus(Status.CLIENT_STARTING);
         StartConnector();
         while(_ClientListener==null||_ClientSender==null);
         Log("Login : "+_Login);
@@ -61,9 +62,11 @@ class Client implements Runnable
         _ClientSender.Send(P_LOGIN_PASSWORD);
         Package P_LOGIN_RESULT = _ClientListener.Get();
         if(P_LOGIN_RESULT == null) { Fail(); return; }
+        _ClientRoomActivity.PopStatus();
         if(P_LOGIN_RESULT._Command==Command.LOGIN_SUCCESS)
         {
             Log("Login success.");
+
             _Started = true;
             while(!_Stop)
             {
@@ -92,6 +95,7 @@ class Client implements Runnable
     public void run() { Start(); }
     private void StartConnector()
     {
+        _ClientRoomActivity.PushStatus(Status.SERVER_CONNECTOR_STARTING);
         _Login = "USER" + new Random().nextInt(100);
         if(_ClientConnector!=null) return;
         _ClientConnector = new ClientConnector(_ClientRoomActivity, this, PORT);
@@ -99,5 +103,6 @@ class Client implements Runnable
         _ClientConnectorThread.start();
         while(!_ClientConnector.Started());
         Log("CLIENT CONNECTOR STARTED.");
+        _ClientRoomActivity.PopStatus();
     }
 }
