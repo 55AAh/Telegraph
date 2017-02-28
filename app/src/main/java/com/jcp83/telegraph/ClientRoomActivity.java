@@ -5,16 +5,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class ClientRoomActivity extends AppCompatActivity
 {
-    private final int PORT = 7000;
     private Client _Client = null;
-    private Thread _ClientThread = null;
     private TextView _MessagesBox = null;
+    private ScrollView _ClientMessagesBoxScrollView = null;
     private EditText _MessageBox = null;
     private EditText _ServerIPAddress = null;
     private TextView _StatusTextView;
@@ -24,11 +24,21 @@ public class ClientRoomActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_room);
         _MessagesBox = (TextView)findViewById(R.id.ClientMessagesBox);
+        _ClientMessagesBoxScrollView = (ScrollView)findViewById(R.id.ClientMessagesBoxScrollView);
         _MessageBox = (EditText)findViewById(R.id.ClientMessageBox);
         _ServerIPAddress = (EditText)findViewById(R.id.ServerAddressTextBox);
         _StatusTextView = (TextView)findViewById(R.id.ClientStatusTextView);
         _StatusesStack.add(Status.CLIENT_IDLE);
         _StatusTextView.setText(GetStringStatus(Status.CLIENT_IDLE));
+    }
+    private void ScrollMessagesBoxScrollView()
+    {
+        _ClientMessagesBoxScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                _ClientMessagesBoxScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        });
     }
     private void Exit()
     {
@@ -37,8 +47,9 @@ public class ClientRoomActivity extends AppCompatActivity
     String GetServerIP() { return _ServerIPAddress.getText().toString(); }
     private void Start()
     {
+        int PORT = 7000;
         _Client = new Client(this, PORT);
-        _ClientThread = new Thread(_Client);
+        Thread _ClientThread = new Thread(_Client);
         _ClientThread.start();
     }
     private void SendMessage(String Msg)
@@ -113,6 +124,8 @@ public class ClientRoomActivity extends AppCompatActivity
                     _StatusTextView.setText(_Status);
                 }
             });
+            try { Thread.sleep(100); } catch (InterruptedException e) { }
+            ScrollMessagesBoxScrollView();
         }
         public SetStatus(String _Status) { this._Status = _Status; }
     }

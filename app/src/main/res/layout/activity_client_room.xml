@@ -16,8 +16,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/ExitFromClientRoomButton"
         android:onClick="ExitFromClientRoomButtonClick"
-        android:layout_x="260dp"
-        android:layout_y="-5dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
@@ -28,8 +26,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/StartButton"
         android:onClick="StartButtonClick"
-        android:layout_x="281dp"
-        android:layout_y="60dp"
         android:layout_below="@+id/ExitFromClientRoomButton"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
@@ -40,8 +36,6 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/ClientMessageBox"
-        android:layout_x="23dp"
-        android:layout_y="434dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
@@ -52,8 +46,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/ClientSendMessageButton"
         android:onClick="ClientSendMessageButtonClick"
-        android:layout_x="250dp"
-        android:layout_y="434dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
@@ -65,33 +57,21 @@
         android:ems="10"
         android:id="@+id/ServerAddressTextBox"
         android:text="@string/ServerAddressTextBoxText"
-        android:layout_x="217dp"
-        android:layout_y="150dp"
         android:layout_above="@+id/ClientSendMessageButton"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:layout_alignLeft="@+id/StartButton"
+        android:layout_alignStart="@+id/StartButton" />
 
     <TextView
         android:text="@string/ServerAddressTextViewText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ServerAddressTextView"
-        android:layout_x="128dp"
-        android:layout_y="306dp"
         android:layout_above="@+id/ServerAddressTextBox"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
-
-    <TextView
-        android:text="@string/ClientMessagesBoxText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ClientMessagesBox"
-        android:layout_x="62dp"
-        android:layout_y="150dp"
-        android:layout_below="@+id/ClientStatusTextView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -100,5 +80,25 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ClientStatusTextView"
+        android:id="@+id/ClientMessagesBoxScrollView"
+        android:layout_above="@+id/ClientSendMessageButton"
+        android:layout_toLeftOf="@+id/ServerAddressTextBox"
+        android:layout_toStartOf="@+id/ServerAddressTextBox">
+
+        <TextView
+            android:text="@string/ClientMessagesBoxText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ClientMessagesBox"/>
+    </ScrollView>
+
 
 </RelativeLayout>
