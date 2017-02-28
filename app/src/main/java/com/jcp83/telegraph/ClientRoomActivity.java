@@ -27,8 +27,6 @@ public class ClientRoomActivity extends AppCompatActivity
         _MessageBox = (EditText)findViewById(R.id.ClientMessageBox);
         _ServerIPAddress = (EditText)findViewById(R.id.ServerAddressTextBox);
         _StatusTextView = (TextView)findViewById(R.id.ClientStatusTextView);
-        _Client = new Client(this, PORT);
-        _ClientThread = new Thread(_Client);
         _StatusesStack.add(Status.CLIENT_IDLE);
         _StatusTextView.setText(GetStringStatus(Status.CLIENT_IDLE));
     }
@@ -39,10 +37,13 @@ public class ClientRoomActivity extends AppCompatActivity
     String GetServerIP() { return _ServerIPAddress.getText().toString(); }
     private void Start()
     {
+        _Client = new Client(this, PORT);
+        _ClientThread = new Thread(_Client);
         _ClientThread.start();
     }
     private void SendMessage(String Msg)
     {
+        if(_Client==null||!_Client.Started()) return;
         _Client.Send(Msg);
         _MessageBox.setText("");
     }

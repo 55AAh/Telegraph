@@ -28,6 +28,7 @@ class Client implements Runnable
         Log("Client failed.");
     }
     private boolean _Started = false;
+    protected boolean Started() { return _Started; }
     private boolean _Stop = false;
     protected void Stop() { _Stop = true; }
     private final ArrayList<String> Messages = new ArrayList<>();
@@ -51,7 +52,7 @@ class Client implements Runnable
     {
         _ClientRoomActivity.PushStatus(Status.CLIENT_STARTING);
         StartConnector();
-        while(_ClientListener==null||_ClientSender==null);
+        if(!_ClientConnector.Success()) return;
         Log("Login : "+_Login);
         final String _Password = "1234";
         Log("Password : "+ _Password);
@@ -66,7 +67,6 @@ class Client implements Runnable
         if(P_LOGIN_RESULT._Command==Command.LOGIN_SUCCESS)
         {
             Log("Login success.");
-
             _Started = true;
             while(!_Stop)
             {
@@ -101,7 +101,8 @@ class Client implements Runnable
         _ClientConnector = new ClientConnector(_ClientRoomActivity, this, PORT);
         Thread _ClientConnectorThread = new Thread(_ClientConnector);
         _ClientConnectorThread.start();
-        while(!_ClientConnector.Started());
+        while(!_ClientConnector.Started()&&_ClientConnector.Success());
+        if(!_ClientConnector.Success()) { Fail(); return; }
         Log("CLIENT CONNECTOR STARTED.");
         _ClientRoomActivity.PopStatus();
     }

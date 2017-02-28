@@ -2,14 +2,14 @@ package com.jcp83.telegraph;
 
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
 class ClientConnector extends Thread
 {
     private final Client _Client;
     private int PORT = 0;
     private final ClientRoomActivity _ClientRoomActivity;
-
-    public ClientConnector(ClientRoomActivity _ClientRoomActivity, Client _Client, int PORT)
+    ClientConnector(ClientRoomActivity _ClientRoomActivity, Client _Client, int PORT)
     {
         this._ClientRoomActivity = _ClientRoomActivity;
         this._Client = _Client;
@@ -17,11 +17,13 @@ class ClientConnector extends Thread
     }
     private boolean _Started = false;
     boolean Started() { return _Started; }
+    private boolean _Success = true;
+    boolean Success() { return _Success; }
     private void Log(String Msg)
     {
         _ClientRoomActivity.ShowMessage(Msg);
     }
-    private void Fail() { Log("ClientConnector failed."); }
+    private void Fail() { Log("ClientConnector failed."); _Success = false; }
     private void Connect()
     {
         try
