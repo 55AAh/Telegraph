@@ -122,10 +122,10 @@ public class ClientRoomActivity extends AppCompatActivity
                 public void run()
                 {
                     _StatusTextView.setText(_Status);
+                    try { Thread.sleep(100); } catch (InterruptedException e) {}
+                    ScrollMessagesBoxScrollView();
                 }
             });
-            try { Thread.sleep(100); } catch (InterruptedException e) { }
-            ScrollMessagesBoxScrollView();
         }
         public SetStatus(String _Status) { this._Status = _Status; }
     }

@@ -6,9 +6,10 @@
     <string name="StartButtonClickText">Запуск</string>
     <string name="ExitFromServerRoomButtonText">Выйти</string>
     <string name="ClientMessagesBoxText">Сообщения :</string>
-    <string name="ServerMessagesBoxText">Сообщения :</string>
+    <string name="ServerMessagesBoxText">Сообщения :\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#</string>
     <string name="StartServerConnectorButtonText">Запуск\nКоннектора</string>
     <string name="ClientSendMessageButtonText">Отправить</string>
+    <string name="ServerSendMessageButtonText">Отправить</string>
     <string name="ExitFromClientRoomButtonText">Выйти</string>
     <string name="StopServerConnectorButtonText">Остановка\nКоннектора</string>
     <string name="StartServerButtonText">Запуск</string>

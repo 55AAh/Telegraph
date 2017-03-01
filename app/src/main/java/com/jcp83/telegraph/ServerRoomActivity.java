@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -14,6 +16,7 @@ public class ServerRoomActivity extends AppCompatActivity
     private Server _Server = null;
     private Thread _ServerThread = null;
     private TextView _MessagesBox = null;
+    private ScrollView _ServerMessagesBoxScrollView = null;
     private TextView _StatusTextView = null;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -21,11 +24,21 @@ public class ServerRoomActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server_room);
         _MessagesBox = (TextView)findViewById(R.id.ServerMessagesBox);
+        _ServerMessagesBoxScrollView = (ScrollView)findViewById(R.id.ServerMessagesBoxScrollView);
         _StatusTextView = (TextView)findViewById(R.id.ServerStatusTextView);
         _Server = new Server(this, PORT);
         _ServerThread = new Thread(_Server);
         _StatusesStack.add(Status.SERVER_IDLE);
         _StatusTextView.setText(GetStringStatus(Status.SERVER_IDLE));
+    }
+    private void ScrollMessagesBoxScrollView()
+    {
+        _ServerMessagesBoxScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                _ServerMessagesBoxScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        });
     }
     private void Exit()
     {
@@ -55,6 +68,10 @@ public class ServerRoomActivity extends AppCompatActivity
     {
         new Thread(new ShowMessage(Msg)).start();
     }
+    public void ServerSendMessageButtonClick(View view)
+    {
+        Toast.makeText(getApplicationContext(),"SEND",Toast.LENGTH_SHORT).show();
+    }
     class ShowMessage implements Runnable
     {
         final String Msg;
@@ -65,6 +82,8 @@ public class ServerRoomActivity extends AppCompatActivity
                 public void run()
                 {
                     _MessagesBox.append("\n"+Msg);
+                    try { Thread.sleep(100); } catch (InterruptedException e) {}
+                    ScrollMessagesBoxScrollView();
                 }
             });
         }
