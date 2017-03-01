@@ -1,9 +1,8 @@
+#All compiled files
 *.class
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
-
-/build/*
 
 # Package Files #
 *.jar
@@ -12,3 +11,11 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Ignore properties to disable SDK fail window
+local.properties
+
+#GITIGNORE
+
+/build/*
+/.gradle/*
