@@ -16,7 +16,6 @@ class Server implements Runnable
     Server(ServerRoomActivity _ServerRoomActivity, int PORT)
     {
         this._ServerRoomActivity = _ServerRoomActivity;
-        this._ServerRoomActivity.GetMessagesBox().append("\nSERVER");
         this.PORT = PORT;
     }
     void Log(String Msg)

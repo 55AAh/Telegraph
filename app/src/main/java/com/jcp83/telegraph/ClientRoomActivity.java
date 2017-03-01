@@ -97,13 +97,13 @@ public class ClientRoomActivity extends AppCompatActivity
             default: return "";
         }
     }
-    private ArrayList<Status> _StatusesStack = new ArrayList<>();
-    protected void PushStatus(Status _Status)
+    private final ArrayList<Status> _StatusesStack = new ArrayList<>();
+    void PushStatus(Status _Status)
     {
         _StatusesStack.add(0,_Status);
         _SetStatus(_Status);
     }
-    protected void PopStatus()
+    void PopStatus()
     {
         if(_StatusesStack.size()>1) _StatusesStack.remove(0);
         _SetStatus(_StatusesStack.get(0));

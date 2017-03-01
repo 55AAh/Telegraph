@@ -64,7 +64,7 @@ public class ServerRoomActivity extends AppCompatActivity
     public void StopServerConnectorButtonClick(View view) { StopConnector(); }
     public void StartServerButtonClick(View view) { StartServer(); }
     public TextView GetMessagesBox() { return _MessagesBox; }
-    protected void ShowMessage(String Msg)
+    void ShowMessage(String Msg)
     {
         new Thread(new ShowMessage(Msg)).start();
     }
@@ -84,6 +84,7 @@ public class ServerRoomActivity extends AppCompatActivity
                     _MessagesBox.append("\n"+Msg);
                     try { Thread.sleep(100); } catch (InterruptedException e) {}
                     ScrollMessagesBoxScrollView();
+                    ScrollMessagesBoxScrollView();
                 }
             });
         }
@@ -101,13 +102,13 @@ public class ServerRoomActivity extends AppCompatActivity
             default: return "";
         }
     }
-    private ArrayList<Status> _StatusesStack = new ArrayList<>();
-    protected void PushStatus(Status _Status)
+    private final ArrayList<Status> _StatusesStack = new ArrayList<>();
+    void PushStatus(Status _Status)
     {
         _StatusesStack.add(0,_Status);
         _SetStatus(_Status);
     }
-    protected void PopStatus()
+    void PopStatus()
     {
         if(_StatusesStack.size()>1) _StatusesStack.remove(0);
         _SetStatus(_StatusesStack.get(0));

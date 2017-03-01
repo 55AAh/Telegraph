@@ -16,7 +16,6 @@ class Client implements Runnable
     public Client(ClientRoomActivity _ClientRoomActivity, int PORT)
     {
         this._ClientRoomActivity = _ClientRoomActivity;
-        this._ClientRoomActivity.GetMessagesBox().append("\nCLIENT - PASCAL");
         this.PORT = PORT;
     }
     void Log(String Msg)
@@ -28,9 +27,9 @@ class Client implements Runnable
         Log("Client failed.");
     }
     private boolean _Started = false;
-    protected boolean Started() { return _Started; }
+    boolean Started() { return _Started; }
     private boolean _Stop = false;
-    protected void Stop() { _Stop = true; }
+    //protected void Stop() { _Stop = true; }
     private final ArrayList<String> Messages = new ArrayList<>();
     //protected void Send()
     private boolean HasMessages() { return !Messages.isEmpty(); }

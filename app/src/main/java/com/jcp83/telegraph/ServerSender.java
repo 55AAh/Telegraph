@@ -32,9 +32,7 @@ class ServerSender implements Runnable
             _Stream.write(B);
             _Stream.flush();
         }
-        catch (Exception e) { Fail();
-            return;
-        }
+        catch (Exception e) { Fail(); }
     }
     private void Init()
     {
