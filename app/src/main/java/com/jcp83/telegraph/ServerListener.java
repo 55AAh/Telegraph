@@ -19,7 +19,6 @@ class ServerListener implements Runnable
     }
     private boolean _Started = false;
     boolean Started() { return _Started; }
-    //private void Log(String Msg) { _Server.Log(Msg); }
     private void Fail()
     {
         _Server.Log("\tServerListener failed.");

@@ -29,6 +29,15 @@ class Client implements Runnable
     private boolean _Started = false;
     boolean Started() { return _Started; }
     private boolean _Stop = false;
+    private boolean _Stopped = false;
+    public boolean Stopped() { return _Stopped; }
+    public void Stop()
+    {
+        _ClientRoomActivity.PushStatus(Status.CLIENT_STOPPING);
+        _Stop = true;
+        _ClientRoomActivity.PopStatus();
+        _Stopped = true;
+    }
     //protected void Stop() { _Stop = true; }
     private final ArrayList<String> Messages = new ArrayList<>();
     //protected void Send()
@@ -65,9 +74,10 @@ class Client implements Runnable
         _ClientRoomActivity.PopStatus();
         if(P_LOGIN_RESULT.GetCommand()==Command.LOGIN_SUCCESS)
         {
+            boolean _ServerStopped = false;
             Log("Login success.");
             _Started = true;
-            while(!_Stop)
+            while(!_Stop&&!_ServerStopped)
             {
                 if(HasMessages())
                 {
@@ -77,14 +87,16 @@ class Client implements Runnable
                 if(_ClientListener.HasPackages())
                 {
                     Package P = _ClientListener.Get();
-                    if(P.GetCommand()==Command.MESSAGE)
-                        Log("SERVER : "+P.GetData());
+                    Command _Command = P.GetCommand();
+                    switch (_Command)
+                    {
+                        case MESSAGE: Log("SERVER : "+P.GetData()); break;
+                        case EXIT: Log("Room closed."); _ServerStopped = true; break;
+                        default: break;
+                    }
                 }
-                /*Package P = _ClientListener.Get();
-                if(P==null) { Fail(); return; }
-                if(P._Command == Command.MESSAGE)
-                    Log("ANSWER : " + P._Data);*/
             }
+            if(!_ServerStopped) _ClientSender.Send(new Package(Command.EXIT));
         }
         else
         {

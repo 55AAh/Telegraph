@@ -6,5 +6,6 @@ public enum Command
     LOGIN_PASSWORD,
     LOGIN_FAILED,
     LOGIN_SUCCESS,
+    EXIT,
     MESSAGE
 }

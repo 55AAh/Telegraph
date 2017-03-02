@@ -43,6 +43,8 @@ public class ClientRoomActivity extends AppCompatActivity
     }
     private void Exit()
     {
+        _Client.Stop();
+        while(!_Client.Stopped());
         startActivity(new Intent(ClientRoomActivity.this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
     String GetServerIP() { return _ServerIPAddress.getText().toString(); }

@@ -37,19 +37,33 @@ class Server implements Runnable
         Log("SENDING : " + Msg);
         _ServerSenders.get(ID).Send(new Package(Command.MESSAGE, Msg));
     }
-    private void Handle(int ID)
+    private boolean Handle(int ID)
     {
         ServerListener _Listener = _ServerListeners.get(ID);
         ServerSender _Sender = _ServerSenders.get(ID);
-        if(_Listener._Stack.isEmpty()) return;
+        if(_Listener._Stack.isEmpty()) return true;
         Package MESSAGE = _Listener.Get();
-        if(MESSAGE.GetCommand()==Command.MESSAGE)
+        Command _Command = MESSAGE.GetCommand();
+        switch(_Command)
         {
-            String Msg = (String)MESSAGE.GetData();
-            Log("Client ["+ID+"] : "+Msg);
-            Package ANSWER = new Package(Command.MESSAGE, "Thanks for message \""+Msg+"\" !");
-            _Sender.Send(ANSWER);
+            case MESSAGE:
+                String Msg = (String)MESSAGE.GetData();
+                Log("Client ["+ID+"] : "+Msg);
+                Package ANSWER = new Package(Command.MESSAGE, "Thanks for message \""+Msg+"\" !");
+                _Sender.Send(ANSWER);
+                break;
+            case EXIT:
+                _ServerListeners.get(ID).Stop();
+                _ServerListeners.remove(ID);
+                _ServerSenders.remove(ID);
+                _ServerListenerThreads.remove(ID);
+                _ServerSenderThreads.remove(ID);
+                _ClientsCount--;
+                Log("Client ["+ID+"] leaved room.");
+                break;
+            default: break;
         }
+        return true;
     }
     private void Start()
     {
@@ -60,7 +74,7 @@ class Server implements Runnable
         _ServerRoomActivity.PopStatus();
         while(!_Stop)
             for(int c=0;c<_ClientsCount&&!_Stop;c++)
-                Handle(c);
+                if(!Handle(c)) c--;
     }
     public void run() { Start(); }
     void Add(ServerSender _ServerSender, ServerListener _ServerListener, Thread _ServerSenderThread, Thread _ServerListenerThread)
@@ -98,6 +112,7 @@ class Server implements Runnable
         _ServerRoomActivity.PushStatus(Status.SERVER_STOPPING);
         _Stop = true;
         if(_ServerConnector!=null) StopConnector();
+        for (ServerSender _Sender:_ServerSenders) _Sender.Send(new Package(Command.EXIT));
         for (ServerListener _Listener:_ServerListeners) _Listener.Stop();
         for (ServerListener _Listener:_ServerListeners) while(!_Listener.IsStopped());
         Log("SERVER STOPPED.");
