@@ -43,12 +43,11 @@ class Server implements Runnable
         ServerSender _Sender = _ServerSenders.get(ID);
         if(_Listener._Stack.isEmpty()) return;
         Package MESSAGE = _Listener.Get();
-        if(MESSAGE._Command==Command.MESSAGE)
+        if(MESSAGE.GetCommand()==Command.MESSAGE)
         {
-            String Msg = MESSAGE._Data;
+            String Msg = (String)MESSAGE.GetData();
             Log("Client ["+ID+"] : "+Msg);
-            Msg="Thanks for message \""+Msg+"\" !";
-            Package ANSWER = new Package(Command.MESSAGE, Msg);
+            Package ANSWER = new Package(Command.MESSAGE, "Thanks for message \""+Msg+"\" !");
             _Sender.Send(ANSWER);
         }
     }

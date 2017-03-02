@@ -26,7 +26,7 @@ class ClientSender implements Runnable
     {
         try
         {
-            byte[] B = Package.GetBytes(P);
+            byte[] B = Package._GetBytes(P);
             _DStream.writeInt(B.length);
             _DStream.flush();
             _Stream.write(B);

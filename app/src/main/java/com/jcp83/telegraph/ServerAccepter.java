@@ -38,11 +38,11 @@ class ServerAccepter implements Runnable
             _Socket.setSoTimeout(0);
             String Buf;
             Package LOGIN_P= _ServerListener.Get();
-            String login = LOGIN_P._Data;
+            String login = (String)LOGIN_P.GetData();
             Log("Client login : "+ login);
             Package LOGIN_PASSWORD_P= _ServerListener.Get();
-            Buf=LOGIN_PASSWORD_P._Data;
-            if(LOGIN_P._Command!= Command.LOGIN||LOGIN_PASSWORD_P._Command!=Command.LOGIN_PASSWORD) {Log("Incorrect login signature."); Fail(); return; }
+            Buf=(String)LOGIN_PASSWORD_P.GetData();
+            if(LOGIN_P.GetCommand()!= Command.LOGIN||LOGIN_PASSWORD_P.GetCommand()!=Command.LOGIN_PASSWORD) {Log("Incorrect login signature."); Fail(); return; }
             if(Buf.compareTo("1234")!=0)
             {
                 Log("Incorrect password !");

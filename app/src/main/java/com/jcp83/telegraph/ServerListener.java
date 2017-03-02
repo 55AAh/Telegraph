@@ -49,7 +49,7 @@ class ServerListener implements Runnable
                     {
                         byte[] B = new byte[S];
                         _Stream.read(B);
-                        Package P = Package.GetPackage(B);
+                        Package P = (Package)Package._GetObject(B);
                         if(P==null) { Fail(); return; }
                         _Stack.add(P);
                     }

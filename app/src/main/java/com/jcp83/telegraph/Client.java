@@ -63,7 +63,7 @@ class Client implements Runnable
         Package P_LOGIN_RESULT = _ClientListener.Get();
         if(P_LOGIN_RESULT == null) { Fail(); return; }
         _ClientRoomActivity.PopStatus();
-        if(P_LOGIN_RESULT._Command==Command.LOGIN_SUCCESS)
+        if(P_LOGIN_RESULT.GetCommand()==Command.LOGIN_SUCCESS)
         {
             Log("Login success.");
             _Started = true;
@@ -77,8 +77,8 @@ class Client implements Runnable
                 if(_ClientListener.HasPackages())
                 {
                     Package P = _ClientListener.Get();
-                    if(P._Command==Command.MESSAGE)
-                        Log("SERVER : "+P._Data);
+                    if(P.GetCommand()==Command.MESSAGE)
+                        Log("SERVER : "+P.GetData());
                 }
                 /*Package P = _ClientListener.Get();
                 if(P==null) { Fail(); return; }
