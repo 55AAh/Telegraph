@@ -35,7 +35,8 @@ public class ClientRoomActivity extends AppCompatActivity
     {
         _ClientMessagesBoxScrollView.post(new Runnable() {
             @Override
-            public void run() {
+            public void run()
+            {
                 _ClientMessagesBoxScrollView.fullScroll(ScrollView.FOCUS_DOWN);
             }
         });
@@ -80,7 +81,9 @@ public class ClientRoomActivity extends AppCompatActivity
                 @Override
                 public void run()
                 {
-                    _MessagesBox.setText(_MessagesBox.getText()+"\n"+Msg);
+                    _MessagesBox.append("\n"+Msg);
+                    try { Thread.sleep(100); } catch (InterruptedException e) {}
+                    ScrollMessagesBoxScrollView();
                 }
             });
         }

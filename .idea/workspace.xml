@@ -9,19 +9,10 @@
     </shared>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bb9f9fe4-343a-4304-8de1-2d04ecf21132" name="Default" comment="Restructurized Packages">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
+    <list default="true" id="bb9f9fe4-343a-4304-8de1-2d04ecf21132" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Client.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Client.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientListener.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientSender.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientSender.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Package.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Package.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Server.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Server.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerAccepter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerAccepter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerListener.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerSender.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerSender.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerRoomActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerRoomActivity.java" />
     </list>
     <ignored path="Telegraph.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -57,15 +48,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Client.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Client.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="61" column="45" selection-start-line="61" selection-start-column="45" selection-end-line="61" selection-end-column="45" />
+            <state relative-caret-position="496">
+              <caret line="50" column="4" selection-start-line="50" selection-start-column="4" selection-end-line="50" selection-end-column="4" />
               <folding>
                 <element signature="method#Client#0;class#Client#0" expanded="false" />
                 <element signature="method#GetMessage#0;class#Client#0" expanded="false" />
                 <element signature="method#Send#0;class#Client#0" expanded="false" />
+                <element signature="method#Start#0;class#Client#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -74,8 +66,8 @@
       <file leaf-file-name="Server.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="191">
-              <caret line="45" column="31" selection-start-line="45" selection-start-column="31" selection-end-line="45" selection-end-column="31" />
+            <state relative-caret-position="615">
+              <caret line="74" column="5" selection-start-line="74" selection-start-column="5" selection-end-line="74" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -87,6 +79,38 @@
             <state relative-caret-position="140">
               <caret line="41" column="42" selection-start-line="41" selection-start-column="42" selection-end-line="41" selection-end-column="42" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClientRoomActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="258">
+              <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+              <folding>
+                <element signature="e#1399#1585#0" expanded="true" />
+                <element signature="e#1584#1585#0" expanded="true" />
+                <element signature="method#Exit#0;class#ClientRoomActivity#0" expanded="false" />
+                <element signature="method#Start#0;class#ClientRoomActivity#0" expanded="false" />
+                <element signature="method#SendMessage#0;class#ClientRoomActivity#0" expanded="false" />
+                <element signature="e#2750#3071#0" expanded="true" />
+                <element signature="e#3070#3071#0" expanded="true" />
+                <element signature="method#GetStringStatus#0;class#ClientRoomActivity#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServerRoomActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerRoomActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="547">
+              <caret line="70" column="53" selection-start-line="70" selection-start-column="53" selection-end-line="70" selection-end-column="53" />
+              <folding>
+                <element signature="e#1332#1506#0" expanded="true" />
+                <element signature="e#1505#1506#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -1780,18 +1804,18 @@
       <list>
         <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientConnector.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_client_room.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerRoomActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_server_room.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientListener.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientSender.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerSender.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerListener.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Package.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Server.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerAccepter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Client.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerRoomActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Server.java" />
       </list>
     </option>
   </component>
@@ -2183,6 +2207,14 @@
       <option name="presentableId" value="Default" />
       <updated>1488291382395</updated>
     </task>
+    <task id="LOCAL-00001" summary="Restructurized Packages">
+      <created>1488465413175</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1488465413175</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -2240,7 +2272,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="24" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java</url>
+          <line>69</line>
+          <properties />
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="26" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2370,13 +2410,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerRoomActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="86" column="50" selection-start-line="86" selection-start-column="50" selection-end-line="86" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_server_room.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1428">
@@ -2401,20 +2434,6 @@
         <state relative-caret-position="578">
           <caret line="39" column="20" selection-start-line="39" selection-start-column="20" selection-end-line="39" selection-end-column="20" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="816">
-          <caret line="99" column="36" selection-start-line="99" selection-start-column="36" selection-end-line="99" selection-end-column="36" />
-          <folding>
-            <element signature="method#Exit#0;class#ClientRoomActivity#0" expanded="false" />
-            <element signature="method#Start#0;class#ClientRoomActivity#0" expanded="false" />
-            <element signature="method#SendMessage#0;class#ClientRoomActivity#0" expanded="false" />
-            <element signature="class#ShowMessage#0;class#ClientRoomActivity#0" expanded="false" />
-            <element signature="method#GetStringStatus#0;class#ClientRoomActivity#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2477,14 +2496,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Server.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="45" column="31" selection-start-line="45" selection-start-column="31" selection-end-line="45" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Package.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -2508,12 +2519,49 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="61" column="45" selection-start-line="61" selection-start-column="45" selection-end-line="61" selection-end-column="45" />
+        <state relative-caret-position="496">
+          <caret line="50" column="4" selection-start-line="50" selection-start-column="4" selection-end-line="50" selection-end-column="4" />
           <folding>
             <element signature="method#Client#0;class#Client#0" expanded="false" />
             <element signature="method#GetMessage#0;class#Client#0" expanded="false" />
             <element signature="method#Send#0;class#Client#0" expanded="false" />
+            <element signature="method#Start#0;class#Client#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="74" column="5" selection-start-line="74" selection-start-column="5" selection-end-line="74" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+          <folding>
+            <element signature="e#1399#1585#0" expanded="true" />
+            <element signature="e#1584#1585#0" expanded="true" />
+            <element signature="method#Exit#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#Start#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#SendMessage#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="e#2750#3071#0" expanded="true" />
+            <element signature="e#3070#3071#0" expanded="true" />
+            <element signature="method#GetStringStatus#0;class#ClientRoomActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerRoomActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="547">
+          <caret line="70" column="53" selection-start-line="70" selection-start-column="53" selection-end-line="70" selection-end-column="53" />
+          <folding>
+            <element signature="e#1332#1506#0" expanded="true" />
+            <element signature="e#1505#1506#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -84,7 +84,6 @@ public class ServerRoomActivity extends AppCompatActivity
                     _MessagesBox.append("\n"+Msg);
                     try { Thread.sleep(100); } catch (InterruptedException e) {}
                     ScrollMessagesBoxScrollView();
-                    ScrollMessagesBoxScrollView();
                 }
             });
         }
