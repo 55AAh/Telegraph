@@ -19,6 +19,6 @@ public class MainActivity extends AppCompatActivity
     }
     public void JoinButtonClick(View view)
     {
-        startActivity(new Intent(MainActivity.this,ClientRoomActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        startActivity(new Intent(MainActivity.this,FindRoomActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 }

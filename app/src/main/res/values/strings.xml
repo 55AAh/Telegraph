@@ -23,4 +23,6 @@
     <string name="Status_CLIENT_STARTING_Text">ЗАПУСК КЛИЕНТА …</string>
     <string name="Status_CLIENT_STOPPING_Text">ОСТАНОВКА КЛИЕНТА …</string>
     <string name="Status_CLIENT_CONNECTOR_STARTING_Text">СОЕДИНЕНИЕ</string>
+    <string name="FindRoomButtonText">Найти комнаты</string>
+    <string name="FindRoomMessagesBoxText">Сообщения :</string>
 </resources>

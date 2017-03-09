@@ -22,7 +22,7 @@ class ServerConnector extends Thread
     boolean Started() { return _Started; }
     private boolean _Stopped = false;
     boolean Stopped() { return _Stopped; }
-    private void Log(String Msg)
+    protected void Log(String Msg)
     {
         _ServerRoomActivity.ShowMessage(Msg);
     }
@@ -50,9 +50,9 @@ class ServerConnector extends Thread
                     {
                         _Socket = _ServerSocket.accept();
                     }
-                    catch (SocketTimeoutException e){Connected = false;}
+                    catch (SocketTimeoutException e) { Connected = false; }
                 }
-                if(StopF) { _ServerSocket.close(); _Stopped = true; return; }
+                if(StopF) { _ServerSocket.close(); return; }
                 ServerAccepter _ServerAccepter = new ServerAccepter(_Server, _Socket, _ServerRoomActivity);
                 Thread _ServerAccepterThread = new Thread(_ServerAccepter);
                 _ServerAccepterThread.start();
@@ -69,8 +69,25 @@ class ServerConnector extends Thread
             }
         }
     }
+    BroadcastReceiver _Receiver;
+    Thread _ReceiverThread;
+    private void StartBroadcastReceiver()
+    {
+        _Receiver = new BroadcastReceiver(this);
+        _ReceiverThread = new Thread(_Receiver);
+        _ReceiverThread.start();
+        while(!_Receiver.Started());
+    }
+    private void StopBroadcastReceiver()
+    {
+        _Receiver.Stop();
+        while(!_Receiver.Stopped());
+        _Stopped = true;
+    }
     public void run()
     {
+        StartBroadcastReceiver();
         while(!StopF) Connect();
+        StopBroadcastReceiver();
     }
 }
