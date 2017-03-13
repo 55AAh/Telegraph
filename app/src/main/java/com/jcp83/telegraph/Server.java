@@ -24,7 +24,7 @@ class Server implements Runnable
     }
     private void Fail()
     {
-        Log("Server failed.");
+        Log("\nServer failed.");
     }
     private boolean _Started = false;
     public boolean Started() { return _Started; }
@@ -34,7 +34,7 @@ class Server implements Runnable
     public void Send(String Msg, int ID)
     {
         while(!_Started);
-        Log("SENDING : " + Msg);
+        Log("\nSENDING : " + Msg);
         _ServerSenders.get(ID).Send(new Package(Command.MESSAGE, Msg));
     }
     private boolean Handle(int ID)
@@ -48,7 +48,7 @@ class Server implements Runnable
         {
             case MESSAGE:
                 String Msg = (String)MESSAGE.GetData();
-                Log("Client ["+ID+"] : "+Msg);
+                Log("\nClient ["+ID+"] : "+Msg);
                 Package ANSWER = new Package(Command.MESSAGE, "Thanks for message \""+Msg+"\" !");
                 _Sender.Send(ANSWER);
                 break;
@@ -59,7 +59,7 @@ class Server implements Runnable
                 _ServerListenerThreads.remove(ID);
                 _ServerSenderThreads.remove(ID);
                 _ClientsCount--;
-                Log("Client ["+ID+"] leaved room.");
+                Log("\nClient ["+ID+"] leaved room.");
                 break;
             default: break;
         }
@@ -70,7 +70,7 @@ class Server implements Runnable
         if(_Started) return;
         _ServerRoomActivity.PushStatus(Status.SERVER_STARTING);
         _Started = true;
-        Log("SERVER STARTED.");
+        Log("\nSERVER STARTED.");
         _ServerRoomActivity.PopStatus();
         while(!_Stop)
             for(int c=0;c<_ClientsCount&&!_Stop;c++)
@@ -93,7 +93,7 @@ class Server implements Runnable
         _ServerConnectorThread = new Thread(_ServerConnector);
         _ServerConnectorThread.start();
         while(!_ServerConnector.Started());
-        _ServerRoomActivity.ShowMessage("SERVER CONNECTOR STARTED");
+        _ServerRoomActivity.ShowMessage("\nSERVER CONNECTOR STARTED");
         _ServerRoomActivity.PopStatus();
     }
     void StopConnector()
@@ -104,7 +104,7 @@ class Server implements Runnable
         while(!_ServerConnector.Stopped());
         _ServerConnector = null;
         _ServerConnectorThread = null;
-        _ServerRoomActivity.ShowMessage("SERVER CONNECTOR STOPPED");
+        _ServerRoomActivity.ShowMessage("\nSERVER CONNECTOR STOPPED");
         _ServerRoomActivity.PopStatus();
     }
     void Stop()
@@ -115,7 +115,7 @@ class Server implements Runnable
         for (ServerSender _Sender:_ServerSenders) _Sender.Send(new Package(Command.EXIT));
         for (ServerListener _Listener:_ServerListeners) _Listener.Stop();
         for (ServerListener _Listener:_ServerListeners) while(!_Listener.IsStopped());
-        Log("SERVER STOPPED.");
+        Log("\nSERVER STOPPED.");
         _ServerRoomActivity.PopStatus();
         _Stopped = true;
     }

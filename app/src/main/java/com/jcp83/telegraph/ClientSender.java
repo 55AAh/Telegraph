@@ -20,7 +20,7 @@ class ClientSender implements Runnable
     //private void Log(String Msg) { _Client.Log(Msg); }
     private void Fail()
     {
-        _Client.Log("\tClientSender failed.");
+        _Client.Log("\n\tClientSender failed.");
     }
     void Send(Package P)
     {

@@ -25,4 +25,6 @@
     <string name="Status_CLIENT_CONNECTOR_STARTING_Text">СОЕДИНЕНИЕ</string>
     <string name="FindRoomButtonText">Найти комнаты</string>
     <string name="FindRoomMessagesBoxText">Сообщения :</string>
+    <string name="StartBroadcastSenderAccepterButtonText">Запуск</string>
+    <string name="StopBroadcastSenderAccepterButtonText">Остановка</string>
 </resources>

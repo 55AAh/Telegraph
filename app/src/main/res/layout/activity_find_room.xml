@@ -13,7 +13,10 @@
         android:onClick="FindRoomButtonClick"
         android:text="@string/FindRoomButtonText"
         tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="6dp" />
+        tools:layout_editor_absoluteY="6dp"
+        android:layout_below="@+id/StartAccepterButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <ListView
         android:id="@+id/FoundedRoomsListView"
@@ -22,7 +25,8 @@
         tools:layout_editor_absoluteX="9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_below="@+id/FindRoomButton"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -30,16 +34,33 @@
         android:fillViewport="true"
         android:id="@+id/FindRoomMessagesBoxScrollView"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/FindRoomButton"
-        android:layout_toEndOf="@+id/FindRoomButton"
-        android:layout_marginLeft="22dp"
-        android:layout_marginStart="22dp">
+        android:layout_toRightOf="@+id/StopAccepterButton"
+        android:layout_toEndOf="@+id/StopAccepterButton"
+        android:layout_marginLeft="21dp"
+        android:layout_marginStart="21dp">
 
         <TextView
-            android:text="@string/FindRoomMessagesBoxText"
-            android:layout_width="wrap_content"
+            android:id="@+id/FindRoomMessagesBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/FindRoomMessagesBox"/>
+            android:text="@string/FindRoomMessagesBoxText" />
     </ScrollView>
+
+    <Button
+        android:id="@+id/StartAccepterButton"
+        android:onClick="StartBroadcastSenderAccepterButtonClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/StartBroadcastSenderAccepterButtonText"/>
+
+    <Button
+        android:id="@+id/StopAccepterButton"
+        android:onClick="StopBroadcastSenderAccepterButtonClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/StopBroadcastSenderAccepterButtonText"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/StartAccepterButton"
+        android:layout_toEndOf="@+id/StartAccepterButton" />
 
 </RelativeLayout>

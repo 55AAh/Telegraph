@@ -1,55 +1,72 @@
 package com.jcp83.telegraph;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 public class BroadcastSender extends Thread
 {
-    public static final int BUFSIZE = 255;
     public static final int PORT = 7001;
-    private byte[] _Buf = new byte[BUFSIZE];
-    private DatagramSocket _Socket;
-    private DatagramPacket _Packet;
     private boolean _Started = false;
     boolean Started() { return _Started; }
     private boolean _Stopped = false;
     public boolean Stopped() { return _Stopped; }
     private boolean _Stop = false;
-    public void Stop() { Log("BROADCAST SENDER STOPPED."); _Stopped = true; }
-    private void Init()
+    public void Stop()
     {
-        try
-        {
-            _Socket = new DatagramSocket();
-            _Socket.setBroadcast(true);
-            _Packet = new DatagramPacket(_Buf, _Buf.length, InetAddress.getByName("255.255.255.255"), PORT);
-        }
-        catch (Exception e) { }
-        _Started = true;
+        _Stop = true;
     }
-    FindRoomActivity _FindRoomActivity;
+    BroadcastSenderAccepter _BroadcastSenderAccepter;
     protected void Log(String Msg)
     {
-        _FindRoomActivity.ShowMessage(Msg);
+        _BroadcastSenderAccepter.Log(Msg);
     }
-    public BroadcastSender(FindRoomActivity _FindRoomActivity)
+    private int _StartDevice = 0;
+    public BroadcastSender(BroadcastSenderAccepter _BroadcastSenderAccepter, int _StartDevice)
     {
-        this._FindRoomActivity = _FindRoomActivity;
+        this._BroadcastSenderAccepter = _BroadcastSenderAccepter;
+        this._StartDevice = _StartDevice;
+    }
+    private InetAddress _IP;
+    protected void SetIP(InetAddress _IP)
+    {
+        this._IP = _IP;
+    }
+    private boolean _Send = false;
+    private void Start()
+    {
+        _Started = true;
+        while (!_Stop)
+        {
+            if (!_Send) continue;
+            //Log("\nIP=" + _StartDevice + "-" + (_StartDevice + 15));
+            byte[] BAddress = _IP.getAddress();
+            for (int D = _StartDevice; D < _StartDevice + 16; D++)
+            {
+                try
+                {
+                    BAddress[3] = (byte) D;
+                    InetSocketAddress ISA = new InetSocketAddress(InetAddress.getByAddress(BAddress), PORT);
+                    Socket _Socket = new Socket();
+                    _Socket.connect(ISA, 100);
+                    if (_Socket.isConnected())
+                    {
+                        Log("\nCONNECTED TO " + D + " !");
+                        _BroadcastSenderAccepter.AddSocket(_Socket, InetAddress.getByAddress(BAddress));
+                    }
+                }
+                catch (Exception e) { }
+            }
+            _Send = false;
+        }
+        _Stopped = true;
     }
     public void Send()
     {
-        Log("Searching rooms ...");
-        try
-        {
-            _Socket.send(_Packet);
-        }
-        catch (Exception e) { }
+        _Send = true;
     }
     public void run()
     {
-        Init();
+        Start();
     }
 }

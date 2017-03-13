@@ -27,30 +27,30 @@ class ServerAccepter implements Runnable
     private boolean _Failed = false;
     private void Fail()
     {
-        Log("\tClientSender failed.");
+        Log("\n\tClientSender failed.");
         _Failed = true;
     }
     private void Accept()
     {
-        Log("Accepting new client ...");
+        Log("\nAccepting new client ...");
         try
         {
             _Socket.setSoTimeout(0);
             String Buf;
             Package LOGIN_P= _ServerListener.Get();
             String login = (String)LOGIN_P.GetData();
-            Log("Client login : "+ login);
+            Log("\nClient login : "+ login);
             Package LOGIN_PASSWORD_P= _ServerListener.Get();
             Buf=(String)LOGIN_PASSWORD_P.GetData();
-            if(LOGIN_P.GetCommand()!= Command.LOGIN||LOGIN_PASSWORD_P.GetCommand()!=Command.LOGIN_PASSWORD) {Log("Incorrect login signature."); Fail(); return; }
+            if(LOGIN_P.GetCommand()!= Command.LOGIN||LOGIN_PASSWORD_P.GetCommand()!=Command.LOGIN_PASSWORD) {Log("\nIncorrect login signature."); Fail(); return; }
             if(Buf.compareTo("1234")!=0)
             {
-                Log("Incorrect password !");
+                Log("\nIncorrect password !");
                 Package LOGIN_FAILED_P = new Package(Command.LOGIN_FAILED, "");
                 _ServerSender.Send(LOGIN_FAILED_P);
                 return;
             }
-            Log("Client successfully connected.");
+            Log("\nClient successfully connected.");
             Package LOGIN_SUCCESS_P = new Package(Command.LOGIN_SUCCESS, "");
             _ServerSender.Send(LOGIN_SUCCESS_P);
             _Socket.setSoTimeout(Timeout);
@@ -75,7 +75,7 @@ class ServerAccepter implements Runnable
     }
     private void Disconnect()
     {
-        Log("Client disconnected.");
+        Log("\nClient disconnected.");
         try
         {
             _Socket.close();

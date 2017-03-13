@@ -83,7 +83,7 @@ public class ClientRoomActivity extends AppCompatActivity
                 @Override
                 public void run()
                 {
-                    _MessagesBox.append("\n"+Msg);
+                    _MessagesBox.append(Msg);
                     try { Thread.sleep(100); } catch (InterruptedException e) {}
                     ScrollMessagesBoxScrollView();
                 }

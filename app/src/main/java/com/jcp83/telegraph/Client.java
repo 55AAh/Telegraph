@@ -24,7 +24,7 @@ class Client implements Runnable
     }
     private void Fail()
     {
-        Log("Client failed.");
+        Log("\nClient failed.");
     }
     private boolean _Started = false;
     boolean Started() { return _Started; }
@@ -61,10 +61,10 @@ class Client implements Runnable
         _ClientRoomActivity.PushStatus(Status.CLIENT_STARTING);
         StartConnector();
         if(!_ClientConnector.Success()) return;
-        Log("Login : "+_Login);
+        Log("\nLogin : "+_Login);
         final String _Password = "1234";
-        Log("Password : "+ _Password);
-        Log("Connecting ...");
+        Log("\nPassword : "+ _Password);
+        Log("\nConnecting ...");
         Package P_LOGIN = new Package(Command.LOGIN, _Login);
         Package P_LOGIN_PASSWORD = new Package(Command.LOGIN_PASSWORD, _Password);
         _ClientSender.Send(P_LOGIN);
@@ -75,7 +75,7 @@ class Client implements Runnable
         if(P_LOGIN_RESULT.GetCommand()==Command.LOGIN_SUCCESS)
         {
             boolean _ServerStopped = false;
-            Log("Login success.");
+            Log("\nLogin success.");
             _Started = true;
             while(!_Stop&&!_ServerStopped)
             {
@@ -90,8 +90,8 @@ class Client implements Runnable
                     Command _Command = P.GetCommand();
                     switch (_Command)
                     {
-                        case MESSAGE: Log("SERVER : "+P.GetData()); break;
-                        case EXIT: Log("Room closed."); _ServerStopped = true; break;
+                        case MESSAGE: Log("\nSERVER : "+P.GetData()); break;
+                        case EXIT: Log("\nRoom closed."); _ServerStopped = true; break;
                         default: break;
                     }
                 }
@@ -100,7 +100,7 @@ class Client implements Runnable
         }
         else
         {
-            Log("Login failed !");
+            Log("\nLogin failed !");
         }
     }
     public void run() { Start(); }
@@ -114,7 +114,7 @@ class Client implements Runnable
         _ClientConnectorThread.start();
         while(!_ClientConnector.Started()&&_ClientConnector.Success());
         if(!_ClientConnector.Success()) { Fail(); return; }
-        Log("CLIENT CONNECTOR STARTED.");
+        Log("\nCLIENT CONNECTOR STARTED.");
         _ClientRoomActivity.PopStatus();
     }
 }

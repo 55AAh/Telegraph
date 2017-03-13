@@ -33,19 +33,19 @@ class ServerConnector extends Thread
     }
     private void Connect()
     {
-        Log("PORT : "+PORT);
-        Log("Waiting client connections ...");
+        Log("\nPORT : "+PORT);
+        Log("\nWaiting client connections ...");
         try
         {
             _Started = true;
             ServerSocket _ServerSocket = new ServerSocket(PORT);
+            _ServerSocket.setSoTimeout(CLIENT_ACCEPT_TIMEOUT);
             while(true)
             {
                 boolean Connected = false;
                 while(!Connected&&!StopF)
                 {
                     Connected = true;
-                    _ServerSocket.setSoTimeout(CLIENT_ACCEPT_TIMEOUT);
                     try
                     {
                         _Socket = _ServerSocket.accept();
@@ -56,7 +56,6 @@ class ServerConnector extends Thread
                 ServerAccepter _ServerAccepter = new ServerAccepter(_Server, _Socket, _ServerRoomActivity);
                 Thread _ServerAccepterThread = new Thread(_ServerAccepter);
                 _ServerAccepterThread.start();
-                while(!_ServerAccepter.Started());
             }
         }
         catch (Exception e)
@@ -69,19 +68,19 @@ class ServerConnector extends Thread
             }
         }
     }
-    BroadcastReceiver _Receiver;
-    Thread _ReceiverThread;
+    BroadcastListener _Listener;
+    Thread _ListenerThread;
     private void StartBroadcastReceiver()
     {
-        _Receiver = new BroadcastReceiver(this);
-        _ReceiverThread = new Thread(_Receiver);
-        _ReceiverThread.start();
-        while(!_Receiver.Started());
+        _Listener = new BroadcastListener(this);
+        _ListenerThread = new Thread(_Listener);
+        _ListenerThread.start();
+        while(!_Listener.Started());
     }
     private void StopBroadcastReceiver()
     {
-        _Receiver.Stop();
-        while(!_Receiver.Stopped());
+        _Listener.Stop();
+        while(!_Listener.Stopped());
         _Stopped = true;
     }
     public void run()

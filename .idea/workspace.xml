@@ -8,8 +8,33 @@
       <config />
     </shared>
   </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="bb9f9fe4-343a-4304-8de1-2d04ecf21132" name="Default" comment="" />
+    <list default="true" id="bb9f9fe4-343a-4304-8de1-2d04ecf21132" name="Default" comment="Added room finding">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastListener.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastListenerAccepter.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastSenderAccepter.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastReceiver.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastSender.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastSender.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Client.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Client.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientConnector.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientConnector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientListener.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientListener.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientSender.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientSender.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/FindRoomActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/FindRoomActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Server.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Server.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerAccepter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerAccepter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerConnector.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerConnector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerListener.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerListener.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerRoomActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerRoomActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerSender.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerSender.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_find_room.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_find_room.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+    </list>
     <ignored path="Telegraph.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,50 +65,71 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="BroadcastReceiver.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastReceiver.java">
+      <file leaf-file-name="BroadcastSender.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastSender.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="145">
-              <caret line="45" column="11" selection-start-line="45" selection-start-column="11" selection-end-line="45" selection-end-column="11" />
+            <state relative-caret-position="247">
+              <caret line="54" column="102" selection-start-line="54" selection-start-column="102" selection-end-line="54" selection-end-column="102" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#Init#0;class#BroadcastReceiver#0" expanded="false" />
-                <element signature="method#BroadcastReceiver#0;class#BroadcastReceiver#0" expanded="false" />
+                <element signature="method#Started#0;class#BroadcastSender#0" expanded="false" />
+                <element signature="method#Stopped#0;class#BroadcastSender#0" expanded="false" />
+                <element signature="method#BroadcastSender#0;class#BroadcastSender#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FindRoomActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="FindRoomActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/FindRoomActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="53" column="15" selection-start-line="53" selection-start-column="15" selection-end-line="53" selection-end-column="15" />
+            <state relative-caret-position="258">
+              <caret line="48" column="32" selection-start-line="48" selection-start-column="32" selection-end-line="48" selection-end-column="32" />
               <folding>
+                <element signature="imports" expanded="true" />
                 <element signature="method#onCreate#0;class#FindRoomActivity#0" expanded="false" />
+                <element signature="e#1389#1611#0" expanded="true" />
+                <element signature="e#1610#1611#0" expanded="true" />
+                <element signature="method#ClearRooms#0;class#FindRoomActivity#0" expanded="false" />
+                <element signature="method#AddRoom#0;class#FindRoomActivity#0" expanded="false" />
+                <element signature="class#ShowMessage#0;class#FindRoomActivity#0" expanded="false" />
+                <element signature="method#run#0;class#ShowMessage#0;class#FindRoomActivity#0" expanded="false" />
                 <element signature="method#ScrollMessagesBoxScrollView#0;class#FindRoomActivity#0" expanded="false" />
-                <element signature="method#StartBroadcastSender#0;class#FindRoomActivity#0" expanded="false" />
-                <element signature="method#StopBroadcastSender#0;class#FindRoomActivity#0" expanded="false" />
+                <element signature="method#FindRoomButtonClick#0;class#FindRoomActivity#0" expanded="false" />
+                <element signature="e#3467#3488#0" expanded="false" />
+                <element signature="method#StartBroadcastAccepter#0;class#FindRoomActivity#0" expanded="false" />
+                <element signature="method#StopBroadcastAccepter#0;class#FindRoomActivity#0" expanded="false" />
               </folding>
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_client_room.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_client_room.xml">
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="89" column="26" selection-start-line="89" selection-start-column="26" selection-end-line="89" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+          <provider selected="true" editor-type-id="android-designer2">
+            <state />
           </provider>
         </entry>
       </file>
       <file leaf-file-name="ClientRoomActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="424">
-              <caret line="89" column="15" selection-start-line="80" selection-start-column="12" selection-end-line="89" selection-end-column="15" />
+            <state relative-caret-position="196">
+              <caret line="72" column="23" selection-start-line="72" selection-start-column="23" selection-end-line="72" selection-end-column="23" />
               <folding>
                 <element signature="method#ScrollMessagesBoxScrollView#0;class#ClientRoomActivity#0" expanded="false" />
                 <element signature="method#Exit#0;class#ClientRoomActivity#0" expanded="false" />
-                <element signature="method#GetServerIP#0;class#ClientRoomActivity#0" expanded="false" />
                 <element signature="method#Start#0;class#ClientRoomActivity#0" expanded="false" />
                 <element signature="method#SendMessage#0;class#ClientRoomActivity#0" expanded="false" />
                 <element signature="method#StartButtonClick#0;class#ClientRoomActivity#0" expanded="false" />
                 <element signature="method#ClientSendMessageButtonClick#0;class#ClientRoomActivity#0" expanded="false" />
                 <element signature="method#GetMessagesBox#0;class#ClientRoomActivity#0" expanded="false" />
-                <element signature="method#ShowMessage#0;class#ShowMessage#0;class#ClientRoomActivity#0" expanded="false" />
+                <element signature="class#ShowMessage#0;class#ClientRoomActivity#0" expanded="false" />
                 <element signature="method#GetStringStatus#0;class#ClientRoomActivity#0" expanded="false" />
                 <element signature="method#PushStatus#0;class#ClientRoomActivity#0" expanded="false" />
                 <element signature="method#PopStatus#0;class#ClientRoomActivity#0" expanded="false" />
@@ -96,18 +142,45 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BroadcastSender.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastSender.java">
+      <file leaf-file-name="activity_find_room.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_find_room.xml">
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="935">
+              <caret line="57" column="63" selection-start-line="57" selection-start-column="63" selection-end-line="57" selection-end-column="63" />
+              <folding />
+            </state>
+          </provider>
+          <provider selected="true" editor-type-id="android-designer2">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BroadcastSenderAccepter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastSenderAccepter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
-              <caret line="42" column="5" selection-start-line="42" selection-start-column="5" selection-end-line="42" selection-end-column="5" />
+            <state relative-caret-position="17">
+              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
               <folding>
-                <element signature="method#Started#0;class#BroadcastSender#0" expanded="false" />
-                <element signature="method#Stopped#0;class#BroadcastSender#0" expanded="false" />
-                <element signature="method#Stop#0;class#BroadcastSender#0" expanded="false" />
-                <element signature="method#Init#0;class#BroadcastSender#0" expanded="false" />
-                <element signature="method#BroadcastSender#0;class#BroadcastSender#0" expanded="false" />
+                <element signature="imports" expanded="true" />
+                <element signature="method#Starting#0;class#BroadcastSenderAccepter#0" expanded="false" />
+                <element signature="method#Started#0;class#BroadcastSenderAccepter#0" expanded="false" />
+                <element signature="method#Stopped#0;class#BroadcastSenderAccepter#0" expanded="false" />
+                <element signature="method#Stop#0;class#BroadcastSenderAccepter#0" expanded="false" />
+                <element signature="method#GetIP#0;class#BroadcastSenderAccepter#0" expanded="false" />
+                <element signature="method#BroadcastSenderAccepter#0;class#BroadcastSenderAccepter#0" expanded="false" />
+                <element signature="method#Send#0;class#BroadcastSenderAccepter#0" expanded="false" />
+                <element signature="method#Start#0;class#BroadcastSenderAccepter#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/MainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="17" column="119" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="119" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -1774,28 +1847,31 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientConnector.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_client_room.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_server_room.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Package.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Command.java" />
+        <option value="$PROJECT_DIR$/app/build/generated/source/buildConfig/debug/com/jcp83/telegraph/BuildConfig.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastReceiver.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastListenerAccepter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerRoomActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Client.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientConnector.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientListener.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientSender.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerSender.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Package.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerListener.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Command.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerRoomActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java" />
-        <option value="$PROJECT_DIR$/app/build/generated/source/buildConfig/debug/com/jcp83/telegraph/BuildConfig.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Client.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Server.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerAccepter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/MainActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_find_room.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastReceiver.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerConnector.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/FindRoomActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerListener.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerSender.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastListener.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Server.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_find_room.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastSenderAccepter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastSender.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/FindRoomActivity.java" />
       </list>
     </option>
   </component>
@@ -1848,6 +1924,28 @@
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Telegraph" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -1867,11 +1965,21 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Telegraph" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="ProjectPane" />
       <pane id="Scope" />
+      <pane id="ProjectPane" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2282,30 +2390,30 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1374" height="748" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289256" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5096419" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962137" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5030211" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.57190084" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32930514" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289256" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289256" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289256" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.4903581" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289256" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32930514" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.49697885" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5096419" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -2334,28 +2442,172 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java</url>
-          <line>76</line>
-          <properties />
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="63" />
+      <option name="time" value="93" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastReceiver.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastSender.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#Init#0;class#BroadcastReceiver#0" expanded="false" />
-            <element signature="method#BroadcastReceiver#0;class#BroadcastReceiver#0" expanded="false" />
+            <element signature="method#Started#0;class#BroadcastSender#0" expanded="false" />
+            <element signature="method#Stopped#0;class#BroadcastSender#0" expanded="false" />
+            <element signature="method#BroadcastSender#0;class#BroadcastSender#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/FindRoomActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="40" column="4" selection-start-line="40" selection-start-column="4" selection-end-line="40" selection-end-column="4" />
+          <folding>
+            <element signature="method#onCreate#0;class#FindRoomActivity#0" expanded="false" />
+            <element signature="method#ScrollMessagesBoxScrollView#0;class#FindRoomActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastSender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="method#Started#0;class#BroadcastSender#0" expanded="false" />
+            <element signature="method#Stopped#0;class#BroadcastSender#0" expanded="false" />
+            <element signature="method#BroadcastSender#0;class#BroadcastSender#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/FindRoomActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="40" column="4" selection-start-line="40" selection-start-column="4" selection-end-line="40" selection-end-column="4" />
+          <folding>
+            <element signature="method#onCreate#0;class#FindRoomActivity#0" expanded="false" />
+            <element signature="method#ScrollMessagesBoxScrollView#0;class#FindRoomActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastReceiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastSender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="30" column="98" selection-start-line="30" selection-start-column="98" selection-end-line="30" selection-end-column="98" />
+          <folding>
+            <element signature="method#Started#0;class#BroadcastSender#0" expanded="false" />
+            <element signature="method#Stopped#0;class#BroadcastSender#0" expanded="false" />
+            <element signature="method#BroadcastSender#0;class#BroadcastSender#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/FindRoomActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="901">
+          <caret line="53" column="15" selection-start-line="53" selection-start-column="15" selection-end-line="53" selection-end-column="15" />
+          <folding>
+            <element signature="method#onCreate#0;class#FindRoomActivity#0" expanded="false" />
+            <element signature="method#ScrollMessagesBoxScrollView#0;class#FindRoomActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="918">
+          <caret line="89" column="15" selection-start-line="80" selection-start-column="12" selection-end-line="89" selection-end-column="15" />
+          <folding>
+            <element signature="method#ScrollMessagesBoxScrollView#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#Exit#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#Start#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#SendMessage#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#StartButtonClick#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#ClientSendMessageButtonClick#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#GetMessagesBox#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="class#ShowMessage#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#GetStringStatus#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#PushStatus#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#PopStatus#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#_SetStatus#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="class#SetStatus#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#run#0;class#SetStatus#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#SetStatus#0;class#SetStatus#0;class#ClientRoomActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastReceiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/FindRoomActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="901">
+          <caret line="53" column="15" selection-start-line="53" selection-start-column="15" selection-end-line="53" selection-end-column="15" />
+          <folding>
+            <element signature="method#onCreate#0;class#FindRoomActivity#0" expanded="false" />
+            <element signature="method#ScrollMessagesBoxScrollView#0;class#FindRoomActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="918">
+          <caret line="89" column="15" selection-start-line="80" selection-start-column="12" selection-end-line="89" selection-end-column="15" />
+          <folding>
+            <element signature="method#ScrollMessagesBoxScrollView#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#Exit#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#Start#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#SendMessage#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#StartButtonClick#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#ClientSendMessageButtonClick#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#GetMessagesBox#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="class#ShowMessage#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#GetStringStatus#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#PushStatus#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#PopStatus#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#_SetStatus#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="class#SetStatus#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#run#0;class#SetStatus#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="method#SetStatus#0;class#SetStatus#0;class#ClientRoomActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastSender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="42" column="5" selection-start-line="42" selection-start-column="5" selection-end-line="42" selection-end-column="5" />
+          <folding>
+            <element signature="method#Started#0;class#BroadcastSender#0" expanded="false" />
+            <element signature="method#Stopped#0;class#BroadcastSender#0" expanded="false" />
+            <element signature="method#BroadcastSender#0;class#BroadcastSender#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastReceiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2366,8 +2618,6 @@
           <folding>
             <element signature="method#Started#0;class#BroadcastSender#0" expanded="false" />
             <element signature="method#Stopped#0;class#BroadcastSender#0" expanded="false" />
-            <element signature="method#Stop#0;class#BroadcastSender#0" expanded="false" />
-            <element signature="method#Init#0;class#BroadcastSender#0" expanded="false" />
             <element signature="method#BroadcastSender#0;class#BroadcastSender#0" expanded="false" />
           </folding>
         </state>
@@ -2380,153 +2630,247 @@
           <folding>
             <element signature="method#onCreate#0;class#FindRoomActivity#0" expanded="false" />
             <element signature="method#ScrollMessagesBoxScrollView#0;class#FindRoomActivity#0" expanded="false" />
-            <element signature="method#StartBroadcastSender#0;class#FindRoomActivity#0" expanded="false" />
-            <element signature="method#StopBroadcastSender#0;class#FindRoomActivity#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Client.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="44" column="31" selection-start-line="44" selection-start-column="31" selection-end-line="44" selection-end-column="31" />
-          <folding>
-            <element signature="method#Client#0;class#Client#0" expanded="false" />
-            <element signature="method#Stop#0;class#Client#0" expanded="false" />
-            <element signature="method#GetMessage#0;class#Client#0" expanded="false" />
-            <element signature="method#Send#0;class#Client#0" expanded="false" />
-            <element signature="method#Start#0;class#Client#0" expanded="false" />
-            <element signature="method#StartConnector#0;class#Client#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="493">
           <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="17" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="15" column="44" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="44" />
-        </state>
+      <provider editor-type-id="android-designer2">
+        <state />
       </provider>
     </entry>
     <entry file="jar://D:/Util/Android/SDK/extras/android/m2repository/com/android/support/appcompat-v7/25.2.0/appcompat-v7-25.2.0-sources.jar!/android/support/v7/app/AppCompatDelegateImplBase.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="248">
           <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientConnector.java">
+    <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="56" column="1" selection-start-line="56" selection-start-column="1" selection-end-line="56" selection-end-column="1" />
-          <folding>
-            <element signature="method#ClientConnector#0;class#ClientConnector#0" expanded="false" />
-            <element signature="method#Started#0;class#ClientConnector#0" expanded="false" />
-            <element signature="method#Success#0;class#ClientConnector#0" expanded="false" />
-            <element signature="method#Fail#0;class#ClientConnector#0" expanded="false" />
-            <element signature="method#Connect#0;class#ClientConnector#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="34">
+          <caret line="2" column="8" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_find_room.xml">
-      <provider selected="true" editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="356">
-          <caret line="38" column="31" selection-start-line="38" selection-start-column="31" selection-end-line="38" selection-end-column="31" />
-          <folding>
-            <element signature="e#570#598#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_client_room.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Package.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="89" column="26" selection-start-line="89" selection-start-column="26" selection-end-line="89" selection-end-column="26" />
-          <folding>
-            <element signature="e#3965#3996#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="68">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerAccepter.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-18">
-          <caret line="55" column="20" selection-start-line="55" selection-start-column="20" selection-end-line="55" selection-end-column="20" />
-          <folding />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerRoomActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastReceiver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="44" column="23" selection-start-line="44" selection-start-column="23" selection-end-line="44" selection-end-column="23" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="14" column="36" selection-start-line="14" selection-start-column="34" selection-end-line="14" selection-end-column="36" />
+        <state relative-caret-position="126">
+          <caret line="24" column="23" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
+          <folding>
+            <element signature="e#690#691#0" expanded="true" />
+            <element signature="e#747#748#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientSender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
+          <folding>
+            <element signature="e#590#591#0" expanded="true" />
+            <element signature="e#645#646#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerAccepter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="22" column="17" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
+          <folding>
+            <element signature="e#722#723#0" expanded="true" />
+            <element signature="e#774#775#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="23" column="23" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
+          <folding>
+            <element signature="e#625#626#0" expanded="true" />
+            <element signature="e#682#683#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerSender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="143">
+          <caret line="25" column="5" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
+          <folding>
+            <element signature="e#597#598#0" expanded="true" />
+            <element signature="e#652#653#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/Util/Android/SDK/extras/android/m2repository/com/android/support/appcompat-v7/25.2.0/appcompat-v7-25.2.0-sources.jar!/android/support/v7/app/AppCompatViewInflater.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="295" column="0" selection-start-line="295" selection-start-column="0" selection-end-line="295" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Server.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastListenerAccepter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="113" column="51" selection-start-line="113" selection-start-column="51" selection-end-line="113" selection-end-column="51" />
+        <state relative-caret-position="85">
+          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="55" column="20" selection-start-line="55" selection-start-column="20" selection-end-line="55" selection-end-column="20" />
+          <folding>
+            <element signature="method#BroadcastListener#0;class#BroadcastListener#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerRoomActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="670">
+          <caret line="83" column="40" selection-start-line="83" selection-start-column="40" selection-end-line="83" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ServerConnector.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="124">
-          <caret line="83" column="36" selection-start-line="83" selection-start-column="36" selection-end-line="83" selection-end-column="36" />
+        <state relative-caret-position="43">
+          <caret line="36" column="15" selection-start-line="36" selection-start-column="15" selection-end-line="36" selection-end-column="15" />
           <folding>
             <element signature="method#ServerConnector#0;class#ServerConnector#0" expanded="false" />
             <element signature="method#Started#0;class#ServerConnector#0" expanded="false" />
             <element signature="method#Stopped#0;class#ServerConnector#0" expanded="false" />
-            <element signature="method#Connect#0;class#ServerConnector#0" expanded="false" />
             <element signature="method#StartBroadcastReceiver#0;class#ServerConnector#0" expanded="false" />
+            <element signature="method#StopBroadcastReceiver#0;class#ServerConnector#0" expanded="false" />
             <element signature="method#run#0;class#ServerConnector#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="95" column="43" selection-start-line="95" selection-start-column="43" selection-end-line="95" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="22" column="28" selection-start-line="22" selection-start-column="28" selection-end-line="22" selection-end-column="28" />
+          <folding>
+            <element signature="method#Client#0;class#Client#0" expanded="false" />
+            <element signature="e#610#611#0" expanded="true" />
+            <element signature="e#662#663#0" expanded="true" />
+            <element signature="method#Stop#0;class#Client#0" expanded="false" />
+            <element signature="method#GetMessage#0;class#Client#0" expanded="false" />
+            <element signature="method#Send#0;class#Client#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientConnector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="23" column="28" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="28" />
+          <folding>
+            <element signature="method#ClientConnector#0;class#ClientConnector#0" expanded="false" />
+            <element signature="method#Started#0;class#ClientConnector#0" expanded="false" />
+            <element signature="method#Success#0;class#ClientConnector#0" expanded="false" />
+            <element signature="e#679#680#0" expanded="true" />
+            <element signature="e#731#732#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_find_room.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="935">
+          <caret line="57" column="63" selection-start-line="57" selection-start-column="63" selection-end-line="57" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="17" column="119" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="119" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastSenderAccepter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#Starting#0;class#BroadcastSenderAccepter#0" expanded="false" />
+            <element signature="method#Started#0;class#BroadcastSenderAccepter#0" expanded="false" />
+            <element signature="method#Stopped#0;class#BroadcastSenderAccepter#0" expanded="false" />
+            <element signature="method#Stop#0;class#BroadcastSenderAccepter#0" expanded="false" />
+            <element signature="method#GetIP#0;class#BroadcastSenderAccepter#0" expanded="false" />
+            <element signature="method#BroadcastSenderAccepter#0;class#BroadcastSenderAccepter#0" expanded="false" />
+            <element signature="method#Send#0;class#BroadcastSenderAccepter#0" expanded="false" />
+            <element signature="method#Start#0;class#BroadcastSenderAccepter#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/ClientRoomActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="89" column="15" selection-start-line="80" selection-start-column="12" selection-end-line="89" selection-end-column="15" />
+        <state relative-caret-position="196">
+          <caret line="72" column="23" selection-start-line="72" selection-start-column="23" selection-end-line="72" selection-end-column="23" />
           <folding>
             <element signature="method#ScrollMessagesBoxScrollView#0;class#ClientRoomActivity#0" expanded="false" />
             <element signature="method#Exit#0;class#ClientRoomActivity#0" expanded="false" />
-            <element signature="method#GetServerIP#0;class#ClientRoomActivity#0" expanded="false" />
             <element signature="method#Start#0;class#ClientRoomActivity#0" expanded="false" />
             <element signature="method#SendMessage#0;class#ClientRoomActivity#0" expanded="false" />
             <element signature="method#StartButtonClick#0;class#ClientRoomActivity#0" expanded="false" />
             <element signature="method#ClientSendMessageButtonClick#0;class#ClientRoomActivity#0" expanded="false" />
             <element signature="method#GetMessagesBox#0;class#ClientRoomActivity#0" expanded="false" />
-            <element signature="method#ShowMessage#0;class#ShowMessage#0;class#ClientRoomActivity#0" expanded="false" />
+            <element signature="class#ShowMessage#0;class#ClientRoomActivity#0" expanded="false" />
             <element signature="method#GetStringStatus#0;class#ClientRoomActivity#0" expanded="false" />
             <element signature="method#PushStatus#0;class#ClientRoomActivity#0" expanded="false" />
             <element signature="method#PopStatus#0;class#ClientRoomActivity#0" expanded="false" />
@@ -2538,41 +2882,47 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/FindRoomActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="53" column="15" selection-start-line="53" selection-start-column="15" selection-end-line="53" selection-end-column="15" />
-          <folding>
-            <element signature="method#onCreate#0;class#FindRoomActivity#0" expanded="false" />
-            <element signature="method#ScrollMessagesBoxScrollView#0;class#FindRoomActivity#0" expanded="false" />
-            <element signature="method#StartBroadcastSender#0;class#FindRoomActivity#0" expanded="false" />
-            <element signature="method#StopBroadcastSender#0;class#FindRoomActivity#0" expanded="false" />
-          </folding>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_client_room.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="89" column="26" selection-start-line="89" selection-start-column="26" selection-end-line="89" selection-end-column="26" />
+          <folding />
         </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastSender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="42" column="5" selection-start-line="42" selection-start-column="5" selection-end-line="42" selection-end-column="5" />
+        <state relative-caret-position="247">
+          <caret line="54" column="102" selection-start-line="54" selection-start-column="102" selection-end-line="54" selection-end-column="102" />
           <folding>
             <element signature="method#Started#0;class#BroadcastSender#0" expanded="false" />
             <element signature="method#Stopped#0;class#BroadcastSender#0" expanded="false" />
-            <element signature="method#Stop#0;class#BroadcastSender#0" expanded="false" />
-            <element signature="method#Init#0;class#BroadcastSender#0" expanded="false" />
             <element signature="method#BroadcastSender#0;class#BroadcastSender#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/BroadcastReceiver.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jcp83/telegraph/FindRoomActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="45" column="11" selection-start-line="45" selection-start-column="11" selection-end-line="45" selection-end-column="11" />
+        <state relative-caret-position="258">
+          <caret line="48" column="32" selection-start-line="48" selection-start-column="32" selection-end-line="48" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#Init#0;class#BroadcastReceiver#0" expanded="false" />
-            <element signature="method#BroadcastReceiver#0;class#BroadcastReceiver#0" expanded="false" />
+            <element signature="method#onCreate#0;class#FindRoomActivity#0" expanded="false" />
+            <element signature="e#1389#1611#0" expanded="true" />
+            <element signature="e#1610#1611#0" expanded="true" />
+            <element signature="method#ClearRooms#0;class#FindRoomActivity#0" expanded="false" />
+            <element signature="method#AddRoom#0;class#FindRoomActivity#0" expanded="false" />
+            <element signature="class#ShowMessage#0;class#FindRoomActivity#0" expanded="false" />
+            <element signature="method#run#0;class#ShowMessage#0;class#FindRoomActivity#0" expanded="false" />
+            <element signature="method#ScrollMessagesBoxScrollView#0;class#FindRoomActivity#0" expanded="false" />
+            <element signature="method#FindRoomButtonClick#0;class#FindRoomActivity#0" expanded="false" />
+            <element signature="e#3467#3488#0" expanded="false" />
+            <element signature="method#StartBroadcastAccepter#0;class#FindRoomActivity#0" expanded="false" />
+            <element signature="method#StopBroadcastAccepter#0;class#FindRoomActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>
