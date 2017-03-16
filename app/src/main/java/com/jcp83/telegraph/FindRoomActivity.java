@@ -45,6 +45,8 @@ public class FindRoomActivity extends AppCompatActivity
     AdapterView.OnItemClickListener _RoomsClickListener;
     private void Join(int ID)
     {
+        if(_SenderAccepter==null) return;
+        if(!_SenderAccepter.Sent()) return;
         _SenderAccepter.Join(ID);
         StopBroadcastAccepter();
         startActivity(new Intent(FindRoomActivity.this,ClientRoomActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
@@ -118,5 +120,6 @@ public class FindRoomActivity extends AppCompatActivity
     {
         _SenderAccepter.Stop();
         while(!_SenderAccepter.Stopped());
+        _SenderAccepter=null;
     }
 }

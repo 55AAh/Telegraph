@@ -20,14 +20,8 @@ public class BroadcastSenderAccepter extends Thread
     public void Stop()
     {
         Log("\nSTOPPING ...");
-        Log("\nStopping : ");
-        for(int S=0;S<16;S++)
-            _Senders[S].Stop();
-        for(int S=0;S<16;S++)
-        {
-            while(!_Senders[S].Stopped());
-            Log(".");
-        }
+        _Sender.Stop();
+        while(!_Sender.Stopped());
         Log("\nSTOPPED.");
         _Stopped = true;
     }
@@ -58,6 +52,8 @@ public class BroadcastSenderAccepter extends Thread
         if(_Sockets.size()<=ID) return;
         Log("JOINING TO "+_Addresses.get(ID)+" ...");
     }
+    protected boolean _Sent=false;
+    protected boolean Sent() { return _Sent; }
     FindRoomActivity _FindRoomActivity;
     public BroadcastSenderAccepter(FindRoomActivity _FindRoomActivity)
     {
@@ -77,41 +73,35 @@ public class BroadcastSenderAccepter extends Thread
     }
     protected void Send()
     {
+        if(!_Started) return;
+        _Sent=false;
         _FindRoomActivity.ClearRooms();
-        Log("\nSEARCHING ...");
+        Log("\nSEARCHING : ");
         _Sockets.clear();
         try
         {
             InetAddress MyIP = InetAddress.getByName(GetIP());
-            for(int S = 0; S < 16; S++)
-            {
-                _Senders[S].SetIP(MyIP);
-                _Senders[S].Send();
-            }
+            _Sender.SetIP(MyIP);
+            _Sender.Send();
         }
         catch (Exception e) { }
     }
-    private BroadcastSender[] _Senders = new BroadcastSender[16];
-    private Thread[] _SenderThreads = new Thread[16];
+    private BroadcastSender _Sender;
+    private Thread _SenderThread;
     private void Start()
     {
         Log("\nSTARTING ...");
         _Starting = true;
-        Log("\nStarting : ");
-        for(int S=0;S<16;S++)
+        for(int S=0;S<1;S++)
         {
-            _Senders[S]=new BroadcastSender(this, S*16);
-            _SenderThreads[S]=new Thread(_Senders[S]);
-            _SenderThreads[S].start();
+            _Sender=new BroadcastSender(this);
+            _SenderThread=new Thread(_Sender);
+            _SenderThread.start();
         }
-        for(int S=0;S<16;S++)
-        {
-            while(!_Senders[S].Started());
-            Log(".");
-        }
-        Log(" Ready");
+        for(int S=0;S<1;S++)
+            while(!_Sender.Started());
+        Log(" OK");
         _Started = true;
-        Log("\nSTARTED.");
     }
     public void run()
     {

@@ -62,7 +62,7 @@ class Client implements Runnable
         StartConnector();
         if(!_ClientConnector.Success()) return;
         Log("\nLogin : "+_Login);
-        final String _Password = "1234";
+        final String _Password = "#AveJava#";
         Log("\nPassword : "+ _Password);
         Log("\nConnecting ...");
         Package P_LOGIN = new Package(Command.LOGIN, _Login);
