@@ -11,14 +11,12 @@ public class Package implements Serializable
     static final long serialVersionUID=1;
     private final Command _Command;
     private byte[] _Data = null;
-    public Package(Command _Command)
-    {
-        this._Command = _Command;
-    }
-    public Package(Command _Command,Object _Data)
+    private final String _Sender;
+    public Package(Command _Command,Object _Data,String _Sender)
     {
         this._Command=_Command;
         this._Data = _GetBytes(_Data);
+        this._Sender = _Sender;
     }
     public Command GetCommand()
     {
@@ -28,6 +26,7 @@ public class Package implements Serializable
     {
         return _GetObject(_Data);
     }
+    public String GetSender() { return _Sender; }
     public static byte[] _GetBytes(Object P)
     {
         ByteArrayOutputStream _BAOS = new ByteArrayOutputStream();

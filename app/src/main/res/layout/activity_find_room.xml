@@ -10,13 +10,12 @@
         android:id="@+id/FindRoomTimeoutTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="11dp"
-        android:layout_marginRight="11dp"
         android:text="Время ожидания :"
-        android:layout_alignBaseline="@+id/ExitFromFindRoomButton"
-        android:layout_alignBottom="@+id/ExitFromFindRoomButton"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/FoundedRoomsTextView"
+        android:layout_toEndOf="@+id/FoundedRoomsTextView"
+        android:layout_marginLeft="6dp"
+        android:layout_marginStart="6dp" />
 
     <SeekBar
         android:id="@+id/FindRoomTimeoutSeekBar"
@@ -84,18 +83,18 @@
         android:id="@+id/FindRoomTimeoutNTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/FindRoomProgressBar"
-        android:layout_toLeftOf="@+id/FindRoomTimeoutSeekBar"
-        android:layout_toStartOf="@+id/FindRoomTimeoutSeekBar"
-        android:text="TextView" />
+        android:text="TextView"
+        android:layout_alignTop="@+id/FindRoomTimeoutSeekBar"
+        android:layout_toRightOf="@+id/FindRoomTimeoutTextView"
+        android:layout_toEndOf="@+id/FindRoomTimeoutTextView" />
 
     <TextView
         android:id="@+id/FindRoomProgressTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/FindRoomTimeoutNTextView"
-        android:layout_toLeftOf="@+id/FindRoomProgressBar"
-        android:layout_toStartOf="@+id/FindRoomProgressBar"
-        android:text="TextView" />
+        android:text="TextView"
+        android:layout_below="@+id/FindRoomTimeoutSeekBar"
+        android:layout_toRightOf="@+id/FindRoomProgressBar"
+        android:layout_toEndOf="@+id/FindRoomProgressBar" />
 
 </RelativeLayout>

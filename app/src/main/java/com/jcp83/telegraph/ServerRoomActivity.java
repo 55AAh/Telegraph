@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ public class ServerRoomActivity extends AppCompatActivity
     private TextView _MessagesBox = null;
     private ScrollView _ServerMessagesBoxScrollView = null;
     private TextView _StatusTextView = null;
+    private EditText _MessageBox = null;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -26,10 +28,17 @@ public class ServerRoomActivity extends AppCompatActivity
         _MessagesBox = (TextView)findViewById(R.id.ServerMessagesBox);
         _ServerMessagesBoxScrollView = (ScrollView)findViewById(R.id.ServerMessagesBoxScrollView);
         _StatusTextView = (TextView)findViewById(R.id.ServerStatusTextView);
+        _MessageBox = (EditText)findViewById(R.id.ServerMessageBox);
         _Server = new Server(this, PORT);
         _ServerThread = new Thread(_Server);
         _StatusesStack.add(Status.SERVER_IDLE);
         _StatusTextView.setText(GetStringStatus(Status.SERVER_IDLE));
+    }
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        StartServer();
     }
     private void ScrollMessagesBoxScrollView()
     {
@@ -62,15 +71,15 @@ public class ServerRoomActivity extends AppCompatActivity
     public void ExitFromServerRoomButtonClick(View view) { Exit(); }
     public void StartServerConnectorButtonClick(View view) { StartConnector(); }
     public void StopServerConnectorButtonClick(View view) { StopConnector(); }
-    public void StartServerButtonClick(View view) { StartServer(); }
-    public TextView GetMessagesBox() { return _MessagesBox; }
     void ShowMessage(String Msg)
     {
         new Thread(new ShowMessage(Msg)).start();
     }
     public void ServerSendMessageButtonClick(View view)
     {
-        Toast.makeText(getApplicationContext(),"SEND",Toast.LENGTH_SHORT).show();
+        if(!_Server.Started()) return;
+        _Server.SendMessage(_MessageBox.getText().toString());
+        _MessageBox.setText("");
     }
     class ShowMessage implements Runnable
     {

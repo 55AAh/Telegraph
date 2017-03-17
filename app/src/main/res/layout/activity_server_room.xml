@@ -19,24 +19,15 @@
         android:layout_alignParentStart="true"/>
 
     <Button
-        android:text="@string/StartServerButtonText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/StartServerButton"
-        android:onClick="StartServerButtonClick"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
-
-    <Button
         android:text="@string/StartServerConnectorButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/StartServerConnectorButton"
         android:onClick="StartServerConnectorButtonClick"
-        android:layout_below="@+id/StartServerButton"
+        android:layout_below="@+id/ExitFromServerRoomButton"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="14dp" />
 
     <Button
         android:text="@string/ExitFromServerRoomButtonText"
@@ -44,9 +35,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/ExitFromServerRoomButton"
         android:onClick="ExitFromServerRoomButtonClick"
-        android:layout_below="@+id/StartServerConnectorButton"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:text="@string/StopServerConnectorButtonText"
@@ -54,9 +45,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/StopServerConnectorButton"
         android:onClick="StopServerConnectorButtonClick"
-        android:layout_below="@+id/ExitFromServerRoomButton"
+        android:layout_below="@+id/StartServerConnectorButton"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -95,6 +86,6 @@
         android:id="@+id/ServerMessageBox"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

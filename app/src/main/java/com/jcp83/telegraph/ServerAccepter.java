@@ -38,38 +38,21 @@ class ServerAccepter implements Runnable
             _Socket.setSoTimeout(0);
             String Buf;
             Package LOGIN_P= _ServerListener.Get();
-            String login = (String)LOGIN_P.GetData();
-            Log("\nClient login : "+ login);
-            Package LOGIN_PASSWORD_P= _ServerListener.Get();
-            Buf=(String)LOGIN_PASSWORD_P.GetData();
-            if(LOGIN_P.GetCommand()!= Command.LOGIN||LOGIN_PASSWORD_P.GetCommand()!=Command.LOGIN_PASSWORD) {Log("\nIncorrect login signature."); Fail(); return; }
-            if(Buf.equals("#AveJava#"))
+            String Login = LOGIN_P.GetSender();
+            Log("\nClient login : "+ Login);
+            Buf=(String)LOGIN_P.GetData();
+            if(LOGIN_P.GetCommand()!= Command.LOGIN) {Log("\nIncorrect login signature."); Fail(); return; }
+            if(!Buf.equals("#AveJava#"))
             {
                 Log("\nIncorrect password !");
-                Package LOGIN_FAILED_P = new Package(Command.LOGIN_FAILED, "");
+                Package LOGIN_FAILED_P = new Package(Command.LOGIN_FAILED, "", "SERVER");
                 _ServerSender.Send(LOGIN_FAILED_P);
                 return;
             }
             Log("\nClient successfully connected.");
-            Package LOGIN_SUCCESS_P = new Package(Command.LOGIN_SUCCESS, "");
+            Package LOGIN_SUCCESS_P = new Package(Command.LOGIN_SUCCESS, "", "SERVER");
             _ServerSender.Send(LOGIN_SUCCESS_P);
             _Socket.setSoTimeout(Timeout);
-            /*while (true)
-            {
-                Package MESSAGE = (Package)_ServerListener.Get();
-                switch(MESSAGE._Command)
-                {
-                    case MESSAGE:
-                        Log("Message from client       : " + MESSAGE._Data);
-                        MESSAGE._Data = "#" + MESSAGE._Data;
-                        Log("Sending message to client : " + MESSAGE._Data);
-                        _ServerSender.Send(MESSAGE);
-                        break;
-                    default:
-                        break;
-                }
-
-            }*/
         }
         catch (Exception e) { e.printStackTrace();Disconnect(); }
     }

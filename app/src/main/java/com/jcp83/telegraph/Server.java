@@ -31,11 +31,18 @@ class Server implements Runnable
     private boolean _Stop = false;
     private boolean _Stopped = false;
     public boolean Stopped() { return _Stopped; }
-    public void Send(String Msg, int ID)
+    public void Send(Package P, int ID)
     {
         while(!_Started);
-        Log("\nSENDING : " + Msg);
-        _ServerSenders.get(ID).Send(new Package(Command.MESSAGE, Msg));
+        _ServerSenders.get(ID).Send(P);
+    }
+    public void SendAll(Package P)
+    {
+        for(int ID=0;ID<_ServerSenders.size();ID++) Send(P,ID);
+    }
+    public void SendMessage(String Msg)
+    {
+        SendAll(new Package(Command.MESSAGE,Msg,"SERVER"));
     }
     private boolean Handle(int ID)
     {
@@ -48,9 +55,8 @@ class Server implements Runnable
         {
             case MESSAGE:
                 String Msg = (String)MESSAGE.GetData();
-                Log("\nClient ["+ID+"] : "+Msg);
-                Package ANSWER = new Package(Command.MESSAGE, "Thanks for message \""+Msg+"\" !");
-                _Sender.Send(ANSWER);
+                Log("\n"+MESSAGE.GetSender()+" : "+Msg);
+                SendAll(MESSAGE);
                 break;
             case EXIT:
                 _ServerListeners.get(ID).Stop();
@@ -112,7 +118,7 @@ class Server implements Runnable
         _ServerRoomActivity.PushStatus(Status.SERVER_STOPPING);
         _Stop = true;
         if(_ServerConnector!=null) StopConnector();
-        for (ServerSender _Sender:_ServerSenders) _Sender.Send(new Package(Command.EXIT));
+        for (ServerSender _Sender:_ServerSenders) _Sender.Send(new Package(Command.EXIT,"","SERVER"));
         for (ServerListener _Listener:_ServerListeners) _Listener.Stop();
         for (ServerListener _Listener:_ServerListeners) while(!_Listener.IsStopped());
         Log("\nSERVER STOPPED.");

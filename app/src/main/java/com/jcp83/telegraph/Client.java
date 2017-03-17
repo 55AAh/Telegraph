@@ -65,10 +65,8 @@ class Client implements Runnable
         final String _Password = "#AveJava#";
         Log("\nPassword : "+ _Password);
         Log("\nConnecting ...");
-        Package P_LOGIN = new Package(Command.LOGIN, _Login);
-        Package P_LOGIN_PASSWORD = new Package(Command.LOGIN_PASSWORD, _Password);
+        Package P_LOGIN = new Package(Command.LOGIN, _Password, _Login);
         _ClientSender.Send(P_LOGIN);
-        _ClientSender.Send(P_LOGIN_PASSWORD);
         Package P_LOGIN_RESULT = _ClientListener.Get();
         if(P_LOGIN_RESULT == null) { Fail(); return; }
         _ClientRoomActivity.PopStatus();
@@ -81,7 +79,7 @@ class Client implements Runnable
             {
                 if(HasMessages())
                 {
-                    Package MESSAGE = new Package(Command.MESSAGE, GetMessage());
+                    Package MESSAGE = new Package(Command.MESSAGE, GetMessage(), _Login);
                     _ClientSender.Send(MESSAGE);
                 }
                 if(_ClientListener.HasPackages())
@@ -96,7 +94,7 @@ class Client implements Runnable
                     }
                 }
             }
-            if(!_ServerStopped) _ClientSender.Send(new Package(Command.EXIT));
+            if(!_ServerStopped) _ClientSender.Send(new Package(Command.EXIT,"",_Login));
         }
         else
         {
