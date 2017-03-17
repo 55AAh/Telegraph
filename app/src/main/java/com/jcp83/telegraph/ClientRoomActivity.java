@@ -16,8 +16,8 @@ public class ClientRoomActivity extends AppCompatActivity
     private TextView _MessagesBox = null;
     private ScrollView _ClientMessagesBoxScrollView = null;
     private EditText _MessageBox = null;
-    private EditText _ServerIPAddress = null;
     private TextView _StatusTextView;
+    private String ServerIP;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -26,10 +26,20 @@ public class ClientRoomActivity extends AppCompatActivity
         _MessagesBox = (TextView)findViewById(R.id.ClientMessagesBox);
         _ClientMessagesBoxScrollView = (ScrollView)findViewById(R.id.ClientMessagesBoxScrollView);
         _MessageBox = (EditText)findViewById(R.id.ClientMessageBox);
-        _ServerIPAddress = (EditText)findViewById(R.id.ServerAddressTextBox);
         _StatusTextView = (TextView)findViewById(R.id.ClientStatusTextView);
         _StatusesStack.add(Status.CLIENT_IDLE);
         _StatusTextView.setText(GetStringStatus(Status.CLIENT_IDLE));
+    }
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        ServerIP = getIntent().getStringExtra(FindRoomActivity.ServerIPIntentID);
+        Start();
+    }
+    protected String GetServerIP()
+    {
+        return ServerIP;
     }
     private void ScrollMessagesBoxScrollView()
     {
@@ -45,9 +55,8 @@ public class ClientRoomActivity extends AppCompatActivity
     {
         _Client.Stop();
         while(!_Client.Stopped());
-        startActivity(new Intent(ClientRoomActivity.this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        startActivity(new Intent(ClientRoomActivity.this,FindRoomActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
-    String GetServerIP() { return _ServerIPAddress.getText().toString(); }
     private void Start()
     {
         int PORT = 7000;
@@ -65,9 +74,7 @@ public class ClientRoomActivity extends AppCompatActivity
     {
         Exit();
     }
-    public void StartButtonClick(View view) { Start(); }
     public void ClientSendMessageButtonClick(View view) { SendMessage(_MessageBox.getText().toString()); }
-    public TextView GetMessagesBox() { return _MessagesBox; }
     public void ShowMessage(String Msg)
     {
         new Thread(new ShowMessage(Msg)).start();

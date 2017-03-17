@@ -7,7 +7,11 @@ import java.net.Socket;
 public class BroadcastSender extends Thread
 {
     public static final int PORT = 7001;
-    private final int TIMEOUT=10;
+    private int TIMEOUT=0;
+    protected void SetTimeout(int Timeout)
+    {
+        this.TIMEOUT = Timeout;
+    }
     private final int WAIT=100;
     private boolean _Started = false;
     boolean Started() { return _Started; }
@@ -19,22 +23,9 @@ public class BroadcastSender extends Thread
         _Stop = true;
     }
     BroadcastSenderAccepter _BroadcastSenderAccepter;
-    protected void Log(String Msg)
-    {
-        _BroadcastSenderAccepter.Log(Msg);
-    }
-    private int _StartDevice = 0;
     public BroadcastSender(BroadcastSenderAccepter _BroadcastSenderAccepter)
     {
         this._BroadcastSenderAccepter = _BroadcastSenderAccepter;
-        this._StartDevice = _StartDevice;
-    }
-    private int _Sent = 0;
-    protected void NotifySent()
-    {
-        _Sent++;
-        if(_Sent%16==0) Log(".");
-        if(_Sent==256) Log(" OK");
     }
     private InetAddress _IP;
     protected void SetIP(InetAddress _IP)
@@ -53,11 +44,10 @@ public class BroadcastSender extends Thread
             }
             catch (InterruptedException e) {}
             if (!_Send) continue;
-            _Sent=0;
             byte[] BAddress = _IP.getAddress();
-            for (int D = _StartDevice; D < 256; D++)
+            for (int D = 0; D < 256&&!_Stop; D++)
             {
-                NotifySent();
+                _BroadcastSenderAccepter.NotifySent();
                 try
                 {
                     BAddress[3] = (byte) D;
@@ -66,11 +56,10 @@ public class BroadcastSender extends Thread
                     _Socket.connect(ISA, TIMEOUT);
                     if (_Socket.isConnected())
                     {
-                        Log("\nFOUND " + D + ".\n");
-                        _BroadcastSenderAccepter.AddSocket(_Socket, InetAddress.getByAddress(BAddress));
+                        _BroadcastSenderAccepter.AddSocket(_Socket);
                     }
                 }
-                catch (Exception e) { }
+                catch (Exception e) { if(D==182) e.printStackTrace(); }
             }
             _Send = false;
         }

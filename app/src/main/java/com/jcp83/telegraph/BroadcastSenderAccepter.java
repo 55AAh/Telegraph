@@ -9,9 +9,12 @@ import java.util.Enumeration;
 
 public class BroadcastSenderAccepter extends Thread
 {
-    public static final int PORT = 7001;
-    private boolean _Starting = false;
-    boolean Starting() { return _Starting; }
+    private final int WAIT=100;
+    protected void SetTimeout(int Timeout)
+    {
+        if(!_Started) return;
+        _Sender.SetTimeout(Timeout);
+    }
     private boolean _Started = false;
     boolean Started() { return _Started; }
     private boolean _Stopped = false;
@@ -19,10 +22,8 @@ public class BroadcastSenderAccepter extends Thread
     private boolean _Stop = false;
     public void Stop()
     {
-        Log("\nSTOPPING ...");
         _Sender.Stop();
         while(!_Sender.Stopped());
-        Log("\nSTOPPED.");
         _Stopped = true;
     }
     private String GetIP()
@@ -47,61 +48,74 @@ public class BroadcastSenderAccepter extends Thread
         catch (SocketException e) { }
         return Mask;
     }
-    protected void Join(int ID)
+    protected String Join(int ID)
     {
-        if(_Sockets.size()<=ID) return;
-        Log("JOINING TO "+_Addresses.get(ID)+" ...");
+        if(_Sockets.size()<=ID) return null;
+        return _Sockets.get(ID).getInetAddress().toString().substring(1);
     }
-    protected boolean _Sent=false;
-    protected boolean Sent() { return _Sent; }
+    private int _Sent = 0;
+    protected void NotifySent()
+    {
+        _Sent++;
+        _FindRoomActivity.NotifySent(_Sent);
+        if(_Sent==256) { _FindRoomActivity.NotifyRoomsAdded(); _Finding=false; }
+    }
     FindRoomActivity _FindRoomActivity;
     public BroadcastSenderAccepter(FindRoomActivity _FindRoomActivity)
     {
         this._FindRoomActivity = _FindRoomActivity;
     }
-    protected void Log(String Msg)
-    {
-        _FindRoomActivity.ShowMessage(Msg);
-    }
     private ArrayList<Socket> _Sockets = new ArrayList<>();
-    private ArrayList<String> _Addresses = new ArrayList<>();
-    protected void AddSocket(Socket _Socket, InetAddress _Address)
+    private ArrayList<String> _KnownRooms = new ArrayList<>();
+    protected void AddSocket(Socket _Socket)
     {
+        // TODO: 17.03.2017 Add room verification
         _Sockets.add(_Socket);
-        _Addresses.add(_Address.toString().substring(1));
-        _FindRoomActivity.AddRoom(_Address.toString());
+        String Room = _Socket.getInetAddress().toString().substring(1);
+        boolean Found = false;
+        for(String KnownRoom: _KnownRooms) if(KnownRoom.equals(Room)) { Found=true; break; }
+        if(!Found)
+        {
+            _FindRoomActivity.AddRoom(Room);
+            _KnownRooms.add(Room);
+        }
     }
+    private boolean _Finding=false;
+    private boolean _Send=false;
     protected void Send()
     {
-        if(!_Started) return;
-        _Sent=false;
-        _FindRoomActivity.ClearRooms();
-        Log("\nSEARCHING : ");
-        _Sockets.clear();
-        try
-        {
-            InetAddress MyIP = InetAddress.getByName(GetIP());
-            _Sender.SetIP(MyIP);
-            _Sender.Send();
-        }
-        catch (Exception e) { }
+        _Send = true;
     }
     private BroadcastSender _Sender;
     private Thread _SenderThread;
     private void Start()
     {
-        Log("\nSTARTING ...");
-        _Starting = true;
-        for(int S=0;S<1;S++)
-        {
-            _Sender=new BroadcastSender(this);
-            _SenderThread=new Thread(_Sender);
-            _SenderThread.start();
-        }
-        for(int S=0;S<1;S++)
-            while(!_Sender.Started());
-        Log(" OK");
+        _Sender=new BroadcastSender(this);
+        _SenderThread=new Thread(_Sender);
+        _SenderThread.start();
+        while(!_Sender.Started());
         _Started = true;
+        if(!_Started) return;
+        while(!_Stop)
+        {
+            try
+            {
+                Thread.sleep(WAIT);
+            }
+            catch (Exception e) { }
+            if(!_Send) continue;
+            _Finding = true;
+            _Sent=0;
+            _Sockets.clear();
+            try
+            {
+                InetAddress MyIP = InetAddress.getByName(GetIP());
+                _Sender.SetIP(MyIP);
+                _Sender.Send();
+            }
+            catch (Exception e) { }
+            while(_Finding);
+        }
     }
     public void run()
     {

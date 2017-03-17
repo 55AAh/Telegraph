@@ -20,16 +20,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
 
-    <Button
-        android:text="@string/StartButtonClickText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/StartButton"
-        android:onClick="StartButtonClick"
-        android:layout_below="@+id/ExitFromClientRoomButton"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,29 +37,6 @@
         android:id="@+id/ClientSendMessageButton"
         android:onClick="ClientSendMessageButtonClick"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
-
-    <EditText
-        android:layout_width="145dp"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:ems="10"
-        android:id="@+id/ServerAddressTextBox"
-        android:text="@string/ServerAddressTextBoxText"
-        android:layout_above="@+id/ClientSendMessageButton"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-        android:layout_alignLeft="@+id/StartButton"
-        android:layout_alignStart="@+id/StartButton" />
-
-    <TextView
-        android:text="@string/ServerAddressTextViewText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ServerAddressTextView"
-        android:layout_above="@+id/ServerAddressTextBox"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
 

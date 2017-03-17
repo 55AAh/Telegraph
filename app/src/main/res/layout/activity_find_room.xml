@@ -6,63 +6,96 @@
     android:layout_height="match_parent"
     tools:context="com.jcp83.telegraph.FindRoomActivity">
 
-    <Button
-        android:id="@+id/FindRoomButton"
+    <TextView
+        android:id="@+id/FindRoomTimeoutTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="FindRoomButtonClick"
-        android:text="@string/FindRoomButtonText"
-        tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="6dp"
-        android:layout_below="@+id/StartAccepterButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <ListView
-        android:id="@+id/FoundedRoomsListView"
-        android:layout_width="366dp"
-        android:layout_height="451dp"
-        tools:layout_editor_absoluteX="9dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_below="@+id/FindRoomButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_marginEnd="11dp"
+        android:layout_marginRight="11dp"
+        android:text="Время ожидания :"
+        android:layout_alignBaseline="@+id/ExitFromFindRoomButton"
+        android:layout_alignBottom="@+id/ExitFromFindRoomButton"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <SeekBar
+        android:id="@+id/FindRoomTimeoutSeekBar"
+        style="@android:style/Widget.Material.Light.SeekBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/FindRoomTimeoutTextView"
+        android:layout_alignLeft="@+id/FindRoomTimeoutTextView"
+        android:layout_alignRight="@+id/FindRoomTimeoutTextView"
+        android:layout_alignStart="@+id/FindRoomTimeoutTextView"
+        android:layout_below="@+id/FindRoomTimeoutTextView"
+        android:layout_marginTop="6dp"
+        android:max="100" />
+
     <ScrollView
+        android:id="@+id/FoundedRoomsScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:id="@+id/FindRoomMessagesBoxScrollView"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/StopAccepterButton"
-        android:layout_toEndOf="@+id/StopAccepterButton"
-        android:layout_marginLeft="21dp"
-        android:layout_marginStart="21dp">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/FoundedRoomsTextView"
+        android:layout_marginTop="10dp"
+        android:fillViewport="true">
 
-        <TextView
-            android:id="@+id/FindRoomMessagesBox"
+        <ListView
+            android:id="@+id/FoundedRoomsListView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/FindRoomMessagesBoxText" />
+            android:layout_height="wrap_content" />
     </ScrollView>
 
     <Button
-        android:id="@+id/StartAccepterButton"
-        android:onClick="StartBroadcastSenderAccepterButtonClick"
+        android:id="@+id/ExitFromFindRoomButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/StartBroadcastSenderAccepterButtonText"/>
-
-    <Button
-        android:id="@+id/StopAccepterButton"
-        android:onClick="StopBroadcastSenderAccepterButtonClick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/StopBroadcastSenderAccepterButtonText"
+        android:onClick="ExitFromFindRoomButtonClick"
+        android:text="@string/ExitFromFindRoomButtonText"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/StartAccepterButton"
-        android:layout_toEndOf="@+id/StartAccepterButton" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/FoundedRoomsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/FoundedRoomsTextViewText"
+        android:layout_below="@+id/ExitFromFindRoomButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ProgressBar
+        android:id="@+id/FindRoomProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/FindRoomTimeoutSeekBar"
+        android:layout_alignLeft="@+id/FindRoomTimeoutSeekBar"
+        android:layout_alignRight="@+id/FindRoomTimeoutSeekBar"
+        android:layout_alignStart="@+id/FindRoomTimeoutSeekBar"
+        android:layout_below="@+id/FindRoomTimeoutSeekBar"
+        android:indeterminate="false"
+        android:max="256"
+        android:progress="0" />
+
+    <TextView
+        android:id="@+id/FindRoomTimeoutNTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/FindRoomProgressBar"
+        android:layout_toLeftOf="@+id/FindRoomTimeoutSeekBar"
+        android:layout_toStartOf="@+id/FindRoomTimeoutSeekBar"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/FindRoomProgressTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/FindRoomTimeoutNTextView"
+        android:layout_toLeftOf="@+id/FindRoomProgressBar"
+        android:layout_toStartOf="@+id/FindRoomProgressBar"
+        android:text="TextView" />
 
 </RelativeLayout>

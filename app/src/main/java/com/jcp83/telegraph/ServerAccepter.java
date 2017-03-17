@@ -43,7 +43,7 @@ class ServerAccepter implements Runnable
             Package LOGIN_PASSWORD_P= _ServerListener.Get();
             Buf=(String)LOGIN_PASSWORD_P.GetData();
             if(LOGIN_P.GetCommand()!= Command.LOGIN||LOGIN_PASSWORD_P.GetCommand()!=Command.LOGIN_PASSWORD) {Log("\nIncorrect login signature."); Fail(); return; }
-            if(Buf.compareTo("#AveJava#")!=0)
+            if(Buf.equals("#AveJava#"))
             {
                 Log("\nIncorrect password !");
                 Package LOGIN_FAILED_P = new Package(Command.LOGIN_FAILED, "");

@@ -2,7 +2,6 @@
     <string name="app_name">Telegraph</string>
     <string name="JoinButtonText">Подключиться</string>
     <string name="CreateButtonText">Создать</string>
-    <string name="StartButtonClickText">Запуск</string>
     <string name="ExitFromServerRoomButtonText">Выйти</string>
     <string name="ClientMessagesBoxText">Сообщения :</string>
     <string name="ServerMessagesBoxText">Сообщения :</string>
@@ -12,8 +11,6 @@
     <string name="ExitFromClientRoomButtonText">Выйти</string>
     <string name="StopServerConnectorButtonText">Остановка\nКоннектора</string>
     <string name="StartServerButtonText">Запуск</string>
-    <string name="ServerAddressTextViewText">IP сервера :</string>
-    <string name="ServerAddressTextBoxText">192.168.43.182</string>
     <string name="Status_SERVER_IDLE_Text">СЕРВЕР</string>
     <string name="Status_SERVER_STARTING_Text">ЗАПУСК СЕРВЕРА …</string>
     <string name="Status_SERVER_STOPPING_Text">ОСТАНОВКА СЕРВЕРА …</string>
@@ -23,8 +20,6 @@
     <string name="Status_CLIENT_STARTING_Text">ЗАПУСК КЛИЕНТА …</string>
     <string name="Status_CLIENT_STOPPING_Text">ОСТАНОВКА КЛИЕНТА …</string>
     <string name="Status_CLIENT_CONNECTOR_STARTING_Text">СОЕДИНЕНИЕ</string>
-    <string name="FindRoomButtonText">Найти комнаты</string>
-    <string name="FindRoomMessagesBoxText">Сообщения :</string>
-    <string name="StartBroadcastSenderAccepterButtonText">Запуск</string>
-    <string name="StopBroadcastSenderAccepterButtonText">Остановка</string>
+    <string name="ExitFromFindRoomButtonText">Выйти</string>
+    <string name="FoundedRoomsTextViewText">Найденные комнаты :</string>
 </resources>
