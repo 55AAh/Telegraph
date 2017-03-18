@@ -178,7 +178,6 @@ public class FindRoomActivity extends AppCompatActivity
         if(_SenderAccepter==null) return;
         if(_SenderAccepter.Stopped()) return;
         _SenderAccepter.Stop();
-        while(!_SenderAccepter.Stopped());
         _SenderAccepter=null;
     }
 }

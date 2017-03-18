@@ -38,18 +38,16 @@ class ServerAccepter implements Runnable
             _Socket.setSoTimeout(0);
             String Buf;
             Package LOGIN_P= _ServerListener.Get();
-            String Login = LOGIN_P.GetSender();
-            Log("\nClient login : "+ Login);
             Buf=(String)LOGIN_P.GetData();
             if(LOGIN_P.GetCommand()!= Command.LOGIN) {Log("\nIncorrect login signature."); Fail(); return; }
             if(!Buf.equals("#AveJava#"))
             {
-                Log("\nIncorrect password !");
                 Package LOGIN_FAILED_P = new Package(Command.LOGIN_FAILED, "", "SERVER");
                 _ServerSender.Send(LOGIN_FAILED_P);
                 return;
             }
-            Log("\nClient successfully connected.");
+            Package INFO_LOGIN_P = new Package(Command.INFO_LOGIN, LOGIN_P.GetSender(), "SERVER");
+            _Server.SendAll(INFO_LOGIN_P);
             Package LOGIN_SUCCESS_P = new Package(Command.LOGIN_SUCCESS, "", "SERVER");
             _ServerSender.Send(LOGIN_SUCCESS_P);
             _Socket.setSoTimeout(Timeout);

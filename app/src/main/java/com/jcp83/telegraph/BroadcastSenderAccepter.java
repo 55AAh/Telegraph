@@ -24,6 +24,7 @@ public class BroadcastSenderAccepter extends Thread
     {
         _Sender.Stop();
         while(!_Sender.Stopped());
+        _Sender=null;
         _Stopped = true;
     }
     private String GetIP()

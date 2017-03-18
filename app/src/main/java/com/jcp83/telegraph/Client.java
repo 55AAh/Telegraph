@@ -56,6 +56,20 @@ class Client implements Runnable
         //_ClientSender.Send(new Package(Command.MESSAGE, Msg));
         Messages.add(Msg);
     }
+    private boolean _ServerStopped = false;
+    private void Handle()
+    {
+        Package PACKAGE = _ClientListener.Get();
+        Command _Command = PACKAGE.GetCommand();
+        switch (_Command)
+        {
+            case MESSAGE: Log("\n"+PACKAGE.GetSender()+" : "+PACKAGE.GetData()); break;
+            case EXIT: Log("\nRoom closed."); _ServerStopped = true; break;
+            case INFO_LOGIN: Log("\n"+PACKAGE.GetData()+" joined room."); break;
+            case INFO_LOGOUT: Log("\n"+PACKAGE.GetData()+" leaved room."); break;
+            default: break;
+        }
+    }
     private void Start()
     {
         _ClientRoomActivity.PushStatus(Status.CLIENT_STARTING);
@@ -72,7 +86,6 @@ class Client implements Runnable
         _ClientRoomActivity.PopStatus();
         if(P_LOGIN_RESULT.GetCommand()==Command.LOGIN_SUCCESS)
         {
-            boolean _ServerStopped = false;
             Log("\nLogin success.");
             _Started = true;
             while(!_Stop&&!_ServerStopped)
@@ -84,14 +97,7 @@ class Client implements Runnable
                 }
                 if(_ClientListener.HasPackages())
                 {
-                    Package P = _ClientListener.Get();
-                    Command _Command = P.GetCommand();
-                    switch (_Command)
-                    {
-                        case MESSAGE: Log("\nSERVER : "+P.GetData()); break;
-                        case EXIT: Log("\nRoom closed."); _ServerStopped = true; break;
-                        default: break;
-                    }
+                    Handle();
                 }
             }
             if(!_ServerStopped) _ClientSender.Send(new Package(Command.EXIT,"",_Login));

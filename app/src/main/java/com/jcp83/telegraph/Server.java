@@ -22,10 +22,6 @@ class Server implements Runnable
     {
         _ServerRoomActivity.ShowMessage(Msg);
     }
-    private void Fail()
-    {
-        Log("\nServer failed.");
-    }
     private boolean _Started = false;
     public boolean Started() { return _Started; }
     private boolean _Stop = false;
@@ -43,20 +39,20 @@ class Server implements Runnable
     public void SendMessage(String Msg)
     {
         SendAll(new Package(Command.MESSAGE,Msg,"SERVER"));
+        Log("\nSERVER : "+Msg);
     }
     private boolean Handle(int ID)
     {
         ServerListener _Listener = _ServerListeners.get(ID);
-        ServerSender _Sender = _ServerSenders.get(ID);
         if(_Listener._Stack.isEmpty()) return true;
-        Package MESSAGE = _Listener.Get();
-        Command _Command = MESSAGE.GetCommand();
+        Package PACKAGE = _Listener.Get();
+        Command _Command = PACKAGE.GetCommand();
         switch(_Command)
         {
             case MESSAGE:
-                String Msg = (String)MESSAGE.GetData();
-                Log("\n"+MESSAGE.GetSender()+" : "+Msg);
-                SendAll(MESSAGE);
+                String Msg = (String)PACKAGE.GetData();
+                Log("\n"+PACKAGE.GetSender()+" : "+Msg);
+                SendAll(PACKAGE);
                 break;
             case EXIT:
                 _ServerListeners.get(ID).Stop();
@@ -65,7 +61,8 @@ class Server implements Runnable
                 _ServerListenerThreads.remove(ID);
                 _ServerSenderThreads.remove(ID);
                 _ClientsCount--;
-                Log("\nClient ["+ID+"] leaved room.");
+                Log("\n"+PACKAGE.GetSender()+" leaved room.");
+                SendAll(new Package(Command.INFO_LOGOUT,PACKAGE.GetSender(),"SERVER"));
                 break;
             default: break;
         }

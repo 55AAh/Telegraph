@@ -18,7 +18,7 @@
         android:onClick="ExitFromClientRoomButtonClick"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -52,13 +52,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:id="@+id/ClientMessagesBoxScrollView"
+        android:layout_below="@+id/ExitFromClientRoomButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/ClientStatusTextView"
-        android:id="@+id/ClientMessagesBoxScrollView"
-        android:layout_above="@+id/ClientSendMessageButton"
-        android:layout_toLeftOf="@+id/ServerAddressTextBox"
-        android:layout_toStartOf="@+id/ServerAddressTextBox">
+        android:layout_above="@+id/ClientSendMessageButton">
 
         <TextView
             android:text="@string/ClientMessagesBoxText"
