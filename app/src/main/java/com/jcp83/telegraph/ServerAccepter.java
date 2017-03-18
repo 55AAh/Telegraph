@@ -27,19 +27,17 @@ class ServerAccepter implements Runnable
     private boolean _Failed = false;
     private void Fail()
     {
-        Log("\n\tClientSender failed.");
         _Failed = true;
     }
     private void Accept()
     {
-        Log("\nAccepting new client ...");
         try
         {
             _Socket.setSoTimeout(0);
             String Buf;
             Package LOGIN_P= _ServerListener.Get();
             Buf=(String)LOGIN_P.GetData();
-            if(LOGIN_P.GetCommand()!= Command.LOGIN) {Log("\nIncorrect login signature."); Fail(); return; }
+            if(LOGIN_P.GetCommand()!= Command.LOGIN) { Fail(); return; }
             if(!Buf.equals("#AveJava#"))
             {
                 Package LOGIN_FAILED_P = new Package(Command.LOGIN_FAILED, "", "SERVER");
@@ -48,24 +46,12 @@ class ServerAccepter implements Runnable
             }
             Package INFO_LOGIN_P = new Package(Command.INFO_LOGIN, LOGIN_P.GetSender(), "SERVER");
             _Server.SendAll(INFO_LOGIN_P);
+            Log("\n> "+LOGIN_P.GetSender()+" JOINED ROOM.");
             Package LOGIN_SUCCESS_P = new Package(Command.LOGIN_SUCCESS, "", "SERVER");
             _ServerSender.Send(LOGIN_SUCCESS_P);
             _Socket.setSoTimeout(Timeout);
         }
-        catch (Exception e) { e.printStackTrace();Disconnect(); }
-    }
-    private void Disconnect()
-    {
-        Log("\nClient disconnected.");
-        try
-        {
-            _Socket.close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        Fail();
+        catch (Exception e) { e.printStackTrace(); }
     }
     private void Start()
     {

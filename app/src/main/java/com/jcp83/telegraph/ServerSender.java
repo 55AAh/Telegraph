@@ -20,7 +20,7 @@ class ServerSender implements Runnable
     //private void Log(String Msg) { _Server.Log(Msg); }
     private void Fail()
     {
-        _Server.Log("\n\tServerSender failed.");
+        _Server.Log("\n> SERVERSENDER FAILED.");
     }
     void Send(Package P)
     {

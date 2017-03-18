@@ -11,23 +11,12 @@
     tools:context="com.jcp83.telegraph.ServerRoomActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/ServerStatusTextView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <Button
-        android:text="@string/StartServerConnectorButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/StartServerConnectorButton"
-        android:onClick="StartServerConnectorButtonClick"
-        android:layout_below="@+id/ExitFromServerRoomButton"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="14dp" />
+        android:layout_alignLeft="@+id/ServerVisibilityToggleButton"
+        android:layout_alignStart="@+id/ServerVisibilityToggleButton"
+        android:layout_below="@+id/ExitFromServerRoomButton" />
 
     <Button
         android:text="@string/ExitFromServerRoomButtonText"
@@ -39,26 +28,14 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-    <Button
-        android:text="@string/StopServerConnectorButtonText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/StopServerConnectorButton"
-        android:onClick="StopServerConnectorButtonClick"
-        android:layout_below="@+id/StartServerConnectorButton"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/ServerMessagesBoxScrollView"
         android:layout_below="@+id/ServerStatusTextView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/StartServerConnectorButton"
-        android:layout_toLeftOf="@+id/StartServerConnectorButton"
-        android:layout_above="@+id/ServerSendMessageButton"
-        android:id="@+id/ServerMessagesBoxScrollView">
+        android:layout_above="@+id/ServerSendMessageButton">
 
         <TextView
             android:text="@string/ServerMessagesBoxText"
@@ -76,7 +53,7 @@
         android:onClick="ServerSendMessageButtonClick"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -85,6 +62,18 @@
         android:ems="10"
         android:id="@+id/ServerMessageBox"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ToggleButton
+        android:id="@+id/ServerVisibilityToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="ToggleButton"
+        android:textOff="Видимость : OFF"
+        android:textOn="Видимость : ON"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

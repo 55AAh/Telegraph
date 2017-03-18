@@ -33,8 +33,6 @@ class ServerConnector extends Thread
     }
     private void Connect()
     {
-        Log("\nPORT : "+PORT);
-        Log("\nWaiting client connections ...");
         try
         {
             _Started = true;

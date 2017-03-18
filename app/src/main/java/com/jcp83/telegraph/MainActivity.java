@@ -13,6 +13,12 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        new LockOrientation(this);
+    }
     public void CreateButtonClick(View view)
     {
         startActivity(new Intent(MainActivity.this,ServerRoomActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));

@@ -1,19 +1,16 @@
 package com.jcp83.telegraph;
 
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -52,7 +49,9 @@ public class FindRoomActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b)
             {
-                _FindRoomTimeoutNTextView.setText(String.valueOf(_FindRoomTimeoutSeekBar.getProgress()));
+                int Timeout = _FindRoomTimeoutSeekBar.getProgress();
+                if(Timeout==0) Timeout=1;
+                _FindRoomTimeoutNTextView.setText(String.valueOf(Timeout));
             }
 
             @Override
@@ -64,7 +63,9 @@ public class FindRoomActivity extends AppCompatActivity
             @Override
             public void onStopTrackingTouch(SeekBar seekBar)
             {
-                _SenderAccepter.SetTimeout(_FindRoomTimeoutSeekBar.getProgress());
+                int Timeout = _FindRoomTimeoutSeekBar.getProgress();
+                if(Timeout==0) Timeout=1;
+                _SenderAccepter.SetTimeout(Timeout);
             }
         };
         _FindRoomTimeoutSeekBar.setOnSeekBarChangeListener(_TimeoutChangeListener);
@@ -73,6 +74,7 @@ public class FindRoomActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
+        new LockOrientation(this);
         StartBroadcastAccepter();
         _SenderAccepter.SetTimeout(START_TIMEOUT);
         _FindRoomTimeoutNTextView.setText(String.valueOf(START_TIMEOUT));

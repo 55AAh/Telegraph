@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -20,6 +22,7 @@ public class ServerRoomActivity extends AppCompatActivity
     private ScrollView _ServerMessagesBoxScrollView = null;
     private TextView _StatusTextView = null;
     private EditText _MessageBox = null;
+    private ToggleButton _VisibilityToggleButton = null;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -33,12 +36,24 @@ public class ServerRoomActivity extends AppCompatActivity
         _ServerThread = new Thread(_Server);
         _StatusesStack.add(Status.SERVER_IDLE);
         _StatusTextView.setText(GetStringStatus(Status.SERVER_IDLE));
+        _VisibilityToggleButton = (ToggleButton)findViewById(R.id.ServerVisibilityToggleButton);
+        _VisibilityToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b)
+            {
+                if(b) StartConnector(); else StopConnector();
+            }
+        });
     }
     @Override
     protected void onStart()
     {
         super.onStart();
+        new LockOrientation(this);
         StartServer();
+        StartConnector();
+        _VisibilityToggleButton.setChecked(true);
     }
     private void ScrollMessagesBoxScrollView()
     {
@@ -69,8 +84,6 @@ public class ServerRoomActivity extends AppCompatActivity
         _ServerThread.start();
     }
     public void ExitFromServerRoomButtonClick(View view) { Exit(); }
-    public void StartServerConnectorButtonClick(View view) { StartConnector(); }
-    public void StopServerConnectorButtonClick(View view) { StopConnector(); }
     void ShowMessage(String Msg)
     {
         new Thread(new ShowMessage(Msg)).start();

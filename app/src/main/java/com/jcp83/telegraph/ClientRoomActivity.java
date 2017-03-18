@@ -34,6 +34,7 @@ public class ClientRoomActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
+        new LockOrientation(this);
         ServerIP = getIntent().getStringExtra(FindRoomActivity.ServerIPIntentID);
         Start();
     }

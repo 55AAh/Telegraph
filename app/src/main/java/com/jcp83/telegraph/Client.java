@@ -24,7 +24,7 @@ class Client implements Runnable
     }
     private void Fail()
     {
-        Log("\nClient failed.");
+        Log("\n> CLIENT FAILED.");
     }
     private boolean _Started = false;
     boolean Started() { return _Started; }
@@ -52,8 +52,6 @@ class Client implements Runnable
     public void Send(String Msg)
     {
         while(!_Started);
-        //Log("SENDING : " + Msg);
-        //_ClientSender.Send(new Package(Command.MESSAGE, Msg));
         Messages.add(Msg);
     }
     private boolean _ServerStopped = false;
@@ -64,9 +62,9 @@ class Client implements Runnable
         switch (_Command)
         {
             case MESSAGE: Log("\n"+PACKAGE.GetSender()+" : "+PACKAGE.GetData()); break;
-            case EXIT: Log("\nRoom closed."); _ServerStopped = true; break;
-            case INFO_LOGIN: Log("\n"+PACKAGE.GetData()+" joined room."); break;
-            case INFO_LOGOUT: Log("\n"+PACKAGE.GetData()+" leaved room."); break;
+            case EXIT: Log("\n> ROOM CLOSED."); _ServerStopped = true; break;
+            case INFO_LOGIN: Log("\n> "+PACKAGE.GetData()+" JOINED ROOM."); break;
+            case INFO_LOGOUT: Log("\n> "+PACKAGE.GetData()+" LEAVED ROOM."); break;
             default: break;
         }
     }
@@ -75,10 +73,7 @@ class Client implements Runnable
         _ClientRoomActivity.PushStatus(Status.CLIENT_STARTING);
         StartConnector();
         if(!_ClientConnector.Success()) return;
-        Log("\nLogin : "+_Login);
         final String _Password = "#AveJava#";
-        Log("\nPassword : "+ _Password);
-        Log("\nConnecting ...");
         Package P_LOGIN = new Package(Command.LOGIN, _Password, _Login);
         _ClientSender.Send(P_LOGIN);
         Package P_LOGIN_RESULT = _ClientListener.Get();
@@ -86,7 +81,7 @@ class Client implements Runnable
         _ClientRoomActivity.PopStatus();
         if(P_LOGIN_RESULT.GetCommand()==Command.LOGIN_SUCCESS)
         {
-            Log("\nLogin success.");
+            Log("\n> LOGIN SUCCESS.");
             _Started = true;
             while(!_Stop&&!_ServerStopped)
             {
@@ -104,7 +99,7 @@ class Client implements Runnable
         }
         else
         {
-            Log("\nLogin failed !");
+            Log("\n> LOGIN FAILED.");
         }
     }
     public void run() { Start(); }
@@ -118,7 +113,6 @@ class Client implements Runnable
         _ClientConnectorThread.start();
         while(!_ClientConnector.Started()&&_ClientConnector.Success());
         if(!_ClientConnector.Success()) { Fail(); return; }
-        Log("\nCLIENT CONNECTOR STARTED.");
         _ClientRoomActivity.PopStatus();
     }
 }

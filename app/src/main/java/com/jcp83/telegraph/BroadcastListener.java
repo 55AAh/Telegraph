@@ -29,7 +29,6 @@ public class BroadcastListener extends Thread
     }
     private void Start()
     {
-        Log("\nBROADCAST RECEIVER STARTED.");
         _Started = true;
         try
         {
@@ -44,14 +43,12 @@ public class BroadcastListener extends Thread
                     try
                     {
                         _Socket = _ServerSocket.accept();
-                        Log("\n\tACCEPTED");
                     }
                     catch (SocketTimeoutException e) { Connected = false; }
                 }
                 if(_Stop)
                 {
                     _ServerSocket.close();
-                    Log("\nBROADCAST RECEIVER STOPPED");
                     _Stopped = true;
                     return;
                 }
@@ -66,7 +63,6 @@ public class BroadcastListener extends Thread
             }
             catch (IOException e1) { }
         }
-        Log("\nBROADCAST RECEIVER STOPPED");
         _Stopped = true;
     }
     public void run()

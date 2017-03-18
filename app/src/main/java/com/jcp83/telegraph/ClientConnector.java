@@ -23,16 +23,15 @@ class ClientConnector extends Thread
     {
         _ClientRoomActivity.ShowMessage(Msg);
     }
-    private void Fail() { Log("\nClientConnector failed."); _Success = false; }
+    private void Fail() { Log("\n> CLIENTCONNECTOR FAILED."); _Success = false; }
     private void Connect()
     {
         try
         {
             String serverIP = _ClientRoomActivity.GetServerIP();
-            Log("\nConnecting to server at PORT "+PORT+" and address "+ serverIP +" ...");
+            Log("\n> CONNECTING ...");
             InetAddress IPAddress=InetAddress.getByName(serverIP);
             Socket _Socket = new Socket(IPAddress, PORT);
-            Log("\nConnected.");
             ClientListener _ClientListener = new ClientListener(_Client, _Socket);
             //_ClientListener._ClientRoomActivity = _ClientRoomActivity;
             _Client._ClientListener=_ClientListener;
