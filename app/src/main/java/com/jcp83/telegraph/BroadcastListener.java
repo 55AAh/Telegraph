@@ -3,8 +3,12 @@ package com.jcp83.telegraph;
 import android.util.Log;
 
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 public class BroadcastListener extends Thread
@@ -18,7 +22,7 @@ public class BroadcastListener extends Thread
     private Socket _Socket;
     public boolean Stopped() { return _Stopped; }
     public void Stop() { _Stop = true; }
-    ServerConnector _ServerConnector;
+    private ServerConnector _ServerConnector;
     protected void Log(String Msg)
     {
         _ServerConnector.Log(Msg);
@@ -29,11 +33,16 @@ public class BroadcastListener extends Thread
     }
     private void Start()
     {
+        DatagramSocket _Socket = null;
+        try
+        {
+            _Socket = new DatagramSocket(PORT);
+            _Socket.setSoTimeout(TIMEOUT);
+        }
+        catch (SocketException e) { }
         _Started = true;
         try
         {
-            ServerSocket _ServerSocket = new ServerSocket(PORT);
-            _ServerSocket.setSoTimeout(TIMEOUT);
             while(!_Stop)
             {
                 boolean Connected = false;
@@ -42,27 +51,29 @@ public class BroadcastListener extends Thread
                     Connected = true;
                     try
                     {
-                        _Socket = _ServerSocket.accept();
+                        byte[] Buf = new byte[256];
+                        DatagramPacket _Packet = new DatagramPacket(Buf,Buf.length);
+                        _Socket.receive(_Packet);
+                        InetAddress _ClientAddress = _Packet.getAddress();
+                        int P = _Packet.getPort();
+                        if(_Packet.getPort()==PORT)
+                        {
+                            BroadcastListenerAccepter _ListenerAccepter = new BroadcastListenerAccepter(_ServerConnector, _ClientAddress);
+                            Thread _ListenerAccepterThread = new Thread(_ListenerAccepter);
+                            _ListenerAccepterThread.start();
+                        }
                     }
-                    catch (SocketTimeoutException e) { Connected = false; }
+                    catch (Exception e) { Connected = false; }
                 }
                 if(_Stop)
                 {
-                    _ServerSocket.close();
+                    _Socket.close();
                     _Stopped = true;
                     return;
                 }
             }
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            try
-            {
-                _Socket.close();
-            }
-            catch (IOException e1) { }
-        }
+        catch (Exception e) { }
         _Stopped = true;
     }
     public void run()

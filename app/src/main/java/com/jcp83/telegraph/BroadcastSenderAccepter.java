@@ -10,11 +10,6 @@ import java.util.Enumeration;
 public class BroadcastSenderAccepter extends Thread
 {
     private final int WAIT=100;
-    protected void SetTimeout(int Timeout)
-    {
-        if(!_Started) return;
-        _Sender.SetTimeout(Timeout);
-    }
     private boolean _Started = false;
     boolean Started() { return _Started; }
     private boolean _Stopped = false;
@@ -54,13 +49,6 @@ public class BroadcastSenderAccepter extends Thread
         if(_Sockets.size()<=ID) return null;
         return _Sockets.get(ID).getInetAddress().toString().substring(1);
     }
-    private int _Sent = 0;
-    protected void NotifySent()
-    {
-        _Sent++;
-        _FindRoomActivity.NotifySent(_Sent);
-        if(_Sent==256) { _FindRoomActivity.NotifyRoomsAdded(); _Finding=false; }
-    }
     FindRoomActivity _FindRoomActivity;
     public BroadcastSenderAccepter(FindRoomActivity _FindRoomActivity)
     {
@@ -97,6 +85,7 @@ public class BroadcastSenderAccepter extends Thread
         while(!_Sender.Started());
         _Started = true;
         if(!_Started) return;
+        while(!_Stop&&!_Send);
         while(!_Stop)
         {
             try
@@ -106,16 +95,14 @@ public class BroadcastSenderAccepter extends Thread
             catch (Exception e) { }
             if(!_Send) continue;
             _Finding = true;
-            _Sent=0;
             _Sockets.clear();
             try
             {
                 InetAddress MyIP = InetAddress.getByName(GetIP());
                 _Sender.SetIP(MyIP);
-                _Sender.Send();
+                _Sender.Start();
             }
             catch (Exception e) { }
-            while(_Finding);
         }
     }
     public void run()

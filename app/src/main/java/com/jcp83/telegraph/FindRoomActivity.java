@@ -1,9 +1,8 @@
 package com.jcp83.telegraph;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,11 +16,6 @@ import java.util.ArrayList;
 public class FindRoomActivity extends AppCompatActivity
 {
     public static final String ServerIPIntentID = "SERVER_IP";
-    public static final int START_TIMEOUT=100;
-    private SeekBar _FindRoomTimeoutSeekBar = null;
-    private ProgressBar _FindRoomProgressBar = null;
-    private TextView _FindRoomTimeoutNTextView = null;
-    private TextView _FindRoomProgressTextView = null;
     ListView _FoundedRoomsListView;
     ArrayList<String> _Rooms = new ArrayList<>();
     ArrayAdapter<String> _RoomsAdapter;
@@ -30,10 +24,6 @@ public class FindRoomActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_room);
-        _FindRoomTimeoutSeekBar = (SeekBar)findViewById(R.id.FindRoomTimeoutSeekBar);
-        _FindRoomProgressBar = (ProgressBar)findViewById(R.id.FindRoomProgressBar);
-        _FindRoomTimeoutNTextView = (TextView)findViewById(R.id.FindRoomTimeoutNTextView);
-        _FindRoomProgressTextView = (TextView)findViewById(R.id.FindRoomProgressTextView);
         _FoundedRoomsListView = (ListView)findViewById(R.id.FoundedRoomsListView);
         _RoomsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, _Rooms);
         _FoundedRoomsListView.setAdapter(_RoomsAdapter);
@@ -44,31 +34,6 @@ public class FindRoomActivity extends AppCompatActivity
             { Join(i); }
         };
         _FoundedRoomsListView.setOnItemClickListener(_RoomsClickListener);
-        _TimeoutChangeListener = new SeekBar.OnSeekBarChangeListener()
-        {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b)
-            {
-                int Timeout = _FindRoomTimeoutSeekBar.getProgress();
-                if(Timeout==0) Timeout=1;
-                _FindRoomTimeoutNTextView.setText(String.valueOf(Timeout));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar)
-            {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar)
-            {
-                int Timeout = _FindRoomTimeoutSeekBar.getProgress();
-                if(Timeout==0) Timeout=1;
-                _SenderAccepter.SetTimeout(Timeout);
-            }
-        };
-        _FindRoomTimeoutSeekBar.setOnSeekBarChangeListener(_TimeoutChangeListener);
     }
     @Override
     protected void onStart()
@@ -76,10 +41,6 @@ public class FindRoomActivity extends AppCompatActivity
         super.onStart();
         new LockOrientation(this);
         StartBroadcastAccepter();
-        _SenderAccepter.SetTimeout(START_TIMEOUT);
-        _FindRoomTimeoutNTextView.setText(String.valueOf(START_TIMEOUT));
-        _FindRoomTimeoutSeekBar.setProgress(START_TIMEOUT);
-        _FindRoomProgressTextView.setText("0");
         FindRoom();
     }
     AdapterView.OnItemClickListener _RoomsClickListener;
@@ -100,11 +61,6 @@ public class FindRoomActivity extends AppCompatActivity
         new Thread(new AddRoom(_IP)).start();
     }
     protected void NotifyRoomsAdded() { new Thread(new NotifyRoomsAdded()).start(); }
-    protected void NotifySent(int Progress)
-    {
-        _FindRoomProgressBar.setProgress(Progress);
-        new Thread(new NotifySent(Progress)).start();
-    }
     class AddRoom implements Runnable
     {
         final String IP;
@@ -134,22 +90,6 @@ public class FindRoomActivity extends AppCompatActivity
                 }
             });
         }
-    }
-    class NotifySent implements Runnable
-    {
-        final int Progress;
-        public void run()
-        {
-            _FoundedRoomsListView.post(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    _FindRoomProgressTextView.setText(String.valueOf(Progress));
-                }
-            });
-        }
-        public NotifySent(int Progress) { this.Progress = Progress; }
     }
     BroadcastSenderAccepter _SenderAccepter;
     Thread _SenderAccepterThread;

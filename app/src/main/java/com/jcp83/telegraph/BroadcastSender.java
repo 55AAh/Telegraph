@@ -1,18 +1,21 @@
 package com.jcp83.telegraph;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.util.Date;
 
 public class BroadcastSender extends Thread
 {
     public static final int PORT = 7001;
-    private int TIMEOUT=0;
-    protected void SetTimeout(int Timeout)
-    {
-        this.TIMEOUT = Timeout;
-    }
-    private final int WAIT=100;
+    private DatagramSocket _Socket;
+    private final int WAIT=2500;
     private boolean _Started = false;
     boolean Started() { return _Started; }
     private boolean _Stopped = false;
@@ -27,14 +30,19 @@ public class BroadcastSender extends Thread
     {
         this._BroadcastSenderAccepter = _BroadcastSenderAccepter;
     }
-    private InetAddress _IP;
+    private InetAddress _BroadcastIP;
     protected void SetIP(InetAddress _IP)
     {
-        this._IP = _IP;
+        this._BroadcastIP = _IP;
     }
     private boolean _Send = false;
-    private void Start()
+    private void Init()
     {
+        try
+        {
+            _Socket = new DatagramSocket(PORT);
+        }
+        catch (SocketException e) { }
         _Started = true;
         while (!_Stop)
         {
@@ -44,33 +52,27 @@ public class BroadcastSender extends Thread
             }
             catch (InterruptedException e) {}
             if (!_Send) continue;
-            byte[] BAddress = _IP.getAddress();
-            for (int D = 0; D < 256&&!_Stop; D++)
+            try
             {
-                _BroadcastSenderAccepter.NotifySent();
-                try
-                {
-                    BAddress[3] = (byte) D;
-                    InetSocketAddress ISA = new InetSocketAddress(InetAddress.getByAddress(BAddress), PORT);
-                    Socket _Socket = new Socket();
-                    _Socket.connect(ISA, TIMEOUT);
-                    if (_Socket.isConnected())
-                    {
-                        _BroadcastSenderAccepter.AddSocket(_Socket);
-                    }
-                }
-                catch (Exception e) { if(D==182) e.printStackTrace(); }
+                _BroadcastIP = InetAddress.getByName("192.168.43.255");
+                final byte Buf[] = new byte[0];
+                DatagramPacket _Packet = new DatagramPacket(Buf, Buf.length, _BroadcastIP, PORT);
+                _Socket.send(_Packet);
             }
-            _Send = false;
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
+        _Socket.close();
         _Stopped = true;
     }
-    public void Send()
+    public void Start()
     {
         _Send = true;
     }
     public void run()
     {
-        Start();
+        Init();
     }
 }
