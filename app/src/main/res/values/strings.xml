@@ -22,4 +22,6 @@
     <string name="Status_CLIENT_CONNECTOR_STARTING_Text">СОЕДИНЕНИЕ</string>
     <string name="ExitFromFindRoomButtonText">Выйти</string>
     <string name="FoundedRoomsTextViewText">Найденные комнаты :</string>
+    <string name="main_menu_settings_text">Настройки</string>
+    <string name="Settings_SaveAndExitButtonText">Сохранить и выйти</string>
 </resources>

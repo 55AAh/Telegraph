@@ -21,7 +21,8 @@
         </activity>
         <activity android:name=".ClientRoomActivity" />
         <activity android:name=".ServerRoomActivity" />
-        <activity android:name=".FindRoomActivity"></activity>
+        <activity android:name=".FindRoomActivity" />
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>

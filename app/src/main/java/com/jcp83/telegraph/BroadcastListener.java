@@ -55,7 +55,6 @@ public class BroadcastListener extends Thread
                         DatagramPacket _Packet = new DatagramPacket(Buf,Buf.length);
                         _Socket.receive(_Packet);
                         InetAddress _ClientAddress = _Packet.getAddress();
-                        int P = _Packet.getPort();
                         if(_Packet.getPort()==PORT)
                         {
                             BroadcastListenerAccepter _ListenerAccepter = new BroadcastListenerAccepter(_ServerConnector, _ClientAddress);

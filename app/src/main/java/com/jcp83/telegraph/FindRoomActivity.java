@@ -44,7 +44,6 @@ public class FindRoomActivity extends AppCompatActivity
         FindRoom();
     }
     AdapterView.OnItemClickListener _RoomsClickListener;
-    SeekBar.OnSeekBarChangeListener _TimeoutChangeListener;
     private void Join(int ID)
     {
         if(_SenderAccepter==null) return;
@@ -60,7 +59,6 @@ public class FindRoomActivity extends AppCompatActivity
     {
         new Thread(new AddRoom(_IP)).start();
     }
-    protected void NotifyRoomsAdded() { new Thread(new NotifyRoomsAdded()).start(); }
     class AddRoom implements Runnable
     {
         final String IP;
@@ -76,20 +74,6 @@ public class FindRoomActivity extends AppCompatActivity
             });
         }
         public AddRoom(String IP) { this.IP = IP; }
-    }
-    class NotifyRoomsAdded implements Runnable
-    {
-        public void run()
-        {
-            _FoundedRoomsListView.post(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    _RoomsAdapter.notifyDataSetChanged();
-                }
-            });
-        }
     }
     BroadcastSenderAccepter _SenderAccepter;
     Thread _SenderAccepterThread;
