@@ -1,21 +1,15 @@
 package com.jcp83.telegraph;
 
-import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.text.DateFormat;
-import java.util.Date;
 
 public class BroadcastSender extends Thread
 {
     public static final int PORT = 7001;
     private DatagramSocket _Socket;
-    private final int WAIT=2500;
+    private final int WAIT=500;
     private boolean _Started = false;
     boolean Started() { return _Started; }
     private boolean _Stopped = false;
@@ -46,12 +40,7 @@ public class BroadcastSender extends Thread
         _Started = true;
         while (!_Stop)
         {
-            try
-            {
-                Thread.sleep(WAIT);
-            }
-            catch (InterruptedException e) {}
-            if (!_Send) continue;
+            _BroadcastSenderAccepter.DecreaseTTL();
             try
             {
                 _BroadcastIP = InetAddress.getByName("192.168.43.255");
@@ -63,6 +52,11 @@ public class BroadcastSender extends Thread
             {
                 e.printStackTrace();
             }
+            try
+            {
+                Thread.sleep(WAIT);
+            }
+            catch (InterruptedException e) {}
         }
         _Socket.close();
         _Stopped = true;

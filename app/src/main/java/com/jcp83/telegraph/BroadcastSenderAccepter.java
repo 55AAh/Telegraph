@@ -13,6 +13,7 @@ public class BroadcastSenderAccepter extends Thread
 {
     public static final int PORT = 7002;
     public static final int DEFAULT_ROOM_TTL = 3;
+    public static final int TIMEOUT = 100;
     private final int WAIT=100;
     private boolean _Started = false;
     boolean Started() { return _Started; }
@@ -60,30 +61,36 @@ public class BroadcastSenderAccepter extends Thread
     }
     class RoomTTL
     {
-        private String RoomName;
         private InetAddress Address;
         private int TTL = DEFAULT_ROOM_TTL;
         public void Discover() { TTL = DEFAULT_ROOM_TTL; }
         public boolean CheckTTLExpired() { return TTL==0; }
         public void DecreaseTTL() { TTL--; }
-        RoomTTL(String RoomName, InetAddress Address)
+        public boolean Compare(InetAddress Address)
         {
-            this.RoomName = RoomName;
+            return this.Address.getHostAddress().equals(Address.getHostAddress());
+        }
+        RoomTTL(InetAddress Address)
+        {
             this.Address = Address;
         }
     }
-    private ArrayList<String> _KnownRooms = new ArrayList<>();
+    private ArrayList<RoomTTL> _KnownRooms = new ArrayList<>();
     protected void AddRoom(InetAddress _Address, String _RoomName)
     {
         boolean Found = false;
-        for(String KnownRoom: _KnownRooms) if(KnownRoom.equals(_RoomName)) { Found=true; break; }
+        for(RoomTTL KnownRoom: _KnownRooms) if(KnownRoom.Compare(_Address))
+        {
+            KnownRoom.Discover();
+            Found = true;
+            break;
+        }
         if(!Found)
         {
             _FindRoomActivity.AddRoom(_RoomName);
-            _KnownRooms.add(_RoomName);
+            _KnownRooms.add(new RoomTTL(_Address));
         }
     }
-    private boolean _Finding=false;
     private boolean _Send=false;
     protected void Send()
     {
@@ -91,40 +98,59 @@ public class BroadcastSenderAccepter extends Thread
     }
     private BroadcastSender _Sender;
     private Thread _SenderThread;
-    private void StartListener()
+    protected void DecreaseTTL()
     {
-        try
+        for(int c=0;c<_KnownRooms.size();c++)
         {
-            DatagramSocket _Socket = new DatagramSocket(PORT);
-            while(!_Stop)
+            _KnownRooms.get(c).DecreaseTTL();
+            if(_KnownRooms.get(c).CheckTTLExpired())
             {
-                boolean Connected = false;
-                while(!Connected&&!_Stop)
-                {
-                    Connected = true;
-                    try
-                    {
-                        byte[] Buf = new byte[256];
-                        DatagramPacket _Packet = new DatagramPacket(Buf,Buf.length);
-                        _Socket.receive(_Packet);
-                        InetAddress _ClientAddress = _Packet.getAddress();
-                        if(_Packet.getPort()==PORT)
-                        {
-                            String Msg = (String)Package._GetObject(Buf);
-                            AddRoom(_ClientAddress, Msg);
-                        }
-                    }
-                    catch (Exception e) { Connected = false; }
-                }
-                if(_Stop)
-                {
-                    _Socket.close();
-                    _Stopped = true;
-                    return;
-                }
+                _KnownRooms.remove(c);
+                c--;
             }
         }
-        catch (Exception e) { }
+    }
+    private void StartListener()
+    {
+        while(!_Stop)
+        {
+            try
+            {
+                DatagramSocket _Socket = new DatagramSocket(PORT);
+                _Socket.setSoTimeout(TIMEOUT);
+                while (!_Stop)
+                {
+                    boolean Connected = false;
+                    while (!Connected && !_Stop)
+                    {
+                        Connected = true;
+                        try
+                        {
+                            byte[] Buf = new byte[4096];
+                            DatagramPacket _Packet = new DatagramPacket(Buf, Buf.length);
+                            _Socket.receive(_Packet);
+                            InetAddress _ClientAddress = _Packet.getAddress();
+                            if (_Packet.getPort() == PORT)
+                            {
+                                RoomInfo Info = (RoomInfo) Package._GetObject(Buf);
+                                AddRoom(_ClientAddress, Info.GetName());
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Connected = false;
+                        }
+                    }
+                    if (_Stop)
+                    {
+                        _Socket.close();
+                        _Stopped = true;
+                        return;
+                    }
+                }
+            }
+            catch (Exception e) { }
+        }
     }
     private void Start()
     {
@@ -142,9 +168,8 @@ public class BroadcastSenderAccepter extends Thread
             }
             catch (Exception e) { }
         }
-        if(!_Send)
+        if(_Send)
         {
-            _Finding = true;
             try
             {
                 InetAddress MyIP = InetAddress.getByName(GetIP());
@@ -152,10 +177,7 @@ public class BroadcastSenderAccepter extends Thread
                 _Sender.Start();
             }
             catch (Exception e) { }
-            while(!_Stop)
-            {
-
-            }
+            StartListener();
         }
     }
     public void run()

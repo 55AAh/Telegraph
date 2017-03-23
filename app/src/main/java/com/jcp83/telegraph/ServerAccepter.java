@@ -1,11 +1,10 @@
 package com.jcp83.telegraph;
 
-import java.io.IOException;
 import java.net.Socket;
 
 class ServerAccepter implements Runnable
 {
-    private final int Timeout=30000;
+    private final int Timeout=1000;
     private final Server _Server;
     private final Socket _Socket;
     private final ServerRoomActivity _ServerRoomActivity;

@@ -55,13 +55,13 @@ public class FindRoomActivity extends AppCompatActivity
         StopBroadcastAccepter();
         startActivity(RoomJoinIntent);
     }
-    protected void AddRoom(String _IP)
+    protected void AddRoom(String _Name)
     {
-        new Thread(new AddRoom(_IP)).start();
+        new Thread(new AddRoom(_Name)).start();
     }
     class AddRoom implements Runnable
     {
-        final String IP;
+        final String Name;
         public void run()
         {
             _FoundedRoomsListView.post(new Runnable()
@@ -69,11 +69,31 @@ public class FindRoomActivity extends AppCompatActivity
                 @Override
                 public void run()
                 {
-                    _Rooms.add(IP);
+                    _Rooms.add(Name);
+                    try
+                    {
+                        Thread.sleep(50);
+                    }
+                    catch (InterruptedException e) { }
+                    new Thread(new NotifyRoomAdded()).start();
                 }
             });
         }
-        public AddRoom(String IP) { this.IP = IP; }
+        public AddRoom(String Name) { this.Name = Name; }
+    }
+    class NotifyRoomAdded implements Runnable
+    {
+        public void run()
+        {
+            _FoundedRoomsListView.post(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    _RoomsAdapter.notifyDataSetChanged();
+                }
+            });
+        }
     }
     BroadcastSenderAccepter _SenderAccepter;
     Thread _SenderAccepterThread;

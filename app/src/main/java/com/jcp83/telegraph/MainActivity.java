@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
+        if(!_Settings.CheckInitConfig()) OpenSettings();
         _Settings.Load();
         new LockOrientation(this);
     }

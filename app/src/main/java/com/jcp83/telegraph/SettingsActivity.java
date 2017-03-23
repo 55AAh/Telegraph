@@ -18,8 +18,8 @@ public class SettingsActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        _Settings_UserNameBox = (EditText)findViewById(R.id.Settings_UserNameBox);
         setContentView(R.layout.activity_settings);
+        _Settings_UserNameBox = (EditText)findViewById(R.id.Settings_UserNameBox);
     }
     private void InitSettings()
     {

@@ -70,7 +70,7 @@ class ServerConnector extends Thread
     Thread _ListenerThread;
     private void StartBroadcastReceiver()
     {
-        _Listener = new BroadcastListener(this);
+        _Listener = new BroadcastListener(this, _Server.GetRoomName());
         _ListenerThread = new Thread(_Listener);
         _ListenerThread.start();
         while(!_Listener.Started());

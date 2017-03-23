@@ -23,8 +23,8 @@ public class Settings implements Serializable
     }
     protected void Save()
     {
-        if(!CheckInitConfig()) return;
         SharedPreferences.Editor _Editor = _Settings.edit();
+        if(!CheckInitConfig()) _Editor.putBoolean(APP_SETTINGS_INITIALIZED, true);
         _Editor.putString(APP_SETTINGS_USERNAME, _UserName);
         _Editor.apply();
     }

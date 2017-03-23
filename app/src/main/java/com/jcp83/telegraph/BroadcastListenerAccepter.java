@@ -10,17 +10,16 @@ import java.util.Random;
 public class BroadcastListenerAccepter extends Thread
 {
     public static final int PORT = 7002;
+    private String _RoomName;
     private InetAddress _Address;
     private boolean _Started = false;
     boolean Started() { return _Started; }
-    private boolean _Stop = false;
-    private boolean _Stopped = false;
     private DatagramSocket _Socket;
     ServerConnector _ServerConnector;
     protected void Handle()
     {
-        String Msg = "ROOM"+Math.abs(new Random().nextInt(1000));
-        final byte[] Buf = Package._GetBytes(Msg);
+        RoomInfo Info = new RoomInfo(_RoomName);
+        final byte[] Buf = Package._GetBytes(Info);
         DatagramPacket _Packet = new DatagramPacket(Buf, Buf.length, _Address, PORT);
         try
         {
@@ -33,10 +32,11 @@ public class BroadcastListenerAccepter extends Thread
     {
         _ServerConnector.Log(Msg);
     }
-    BroadcastListenerAccepter(ServerConnector _ServerConnector, InetAddress _Address)
+    BroadcastListenerAccepter(ServerConnector _ServerConnector, InetAddress _Address, String _RoomName)
     {
         this._ServerConnector = _ServerConnector;
         this._Address=_Address;
+        this._RoomName = _RoomName;
     }
     public void run()
     {

@@ -1,6 +1,7 @@
 package com.jcp83.telegraph;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 class Server implements Runnable
 {
@@ -13,6 +14,8 @@ class Server implements Runnable
     private final ArrayList<Thread> _ServerListenerThreads = new ArrayList<>();
     private final ArrayList<Thread> _ServerSenderThreads = new ArrayList<>();
     private final ServerRoomActivity _ServerRoomActivity;
+    private String _RoomName;
+    protected String GetRoomName() { return _RoomName; }
     Server(ServerRoomActivity _ServerRoomActivity, int PORT)
     {
         this._ServerRoomActivity = _ServerRoomActivity;
@@ -72,6 +75,7 @@ class Server implements Runnable
     {
         if(_Started) return;
         _ServerRoomActivity.PushStatus(Status.SERVER_STARTING);
+        _RoomName = "ROOM"+Math.abs(new Random().nextInt(1000));
         _Started = true;
         _ServerRoomActivity.PopStatus();
         while(!_Stop)

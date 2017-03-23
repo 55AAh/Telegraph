@@ -1,15 +1,9 @@
 package com.jcp83.telegraph;
 
-import android.util.Log;
-
-import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.SocketException;
-import java.net.SocketTimeoutException;
 
 public class BroadcastListener extends Thread
 {
@@ -19,7 +13,7 @@ public class BroadcastListener extends Thread
     boolean Started() { return _Started; }
     private boolean _Stop = false;
     private boolean _Stopped = false;
-    private Socket _Socket;
+    private String _RoomName;
     public boolean Stopped() { return _Stopped; }
     public void Stop() { _Stop = true; }
     private ServerConnector _ServerConnector;
@@ -27,9 +21,10 @@ public class BroadcastListener extends Thread
     {
         _ServerConnector.Log(Msg);
     }
-    public BroadcastListener(ServerConnector _ServerConnector)
+    public BroadcastListener(ServerConnector _ServerConnector, String _RoomName)
     {
         this._ServerConnector = _ServerConnector;
+        this._RoomName = _RoomName;
     }
     private void Start()
     {
@@ -57,7 +52,7 @@ public class BroadcastListener extends Thread
                         InetAddress _ClientAddress = _Packet.getAddress();
                         if(_Packet.getPort()==PORT)
                         {
-                            BroadcastListenerAccepter _ListenerAccepter = new BroadcastListenerAccepter(_ServerConnector, _ClientAddress);
+                            BroadcastListenerAccepter _ListenerAccepter = new BroadcastListenerAccepter(_ServerConnector, _ClientAddress, _RoomName);
                             Thread _ListenerAccepterThread = new Thread(_ListenerAccepter);
                             _ListenerAccepterThread.start();
                         }
