@@ -1,5 +1,7 @@
 package com.jcp83.telegraph;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
@@ -9,6 +11,8 @@ import java.util.Enumeration;
 
 public class BroadcastSenderAccepter extends Thread
 {
+    public static final int PORT = 7002;
+    public static final int DEFAULT_ROOM_TTL = 3;
     private final int WAIT=100;
     private boolean _Started = false;
     boolean Started() { return _Started; }
@@ -46,27 +50,37 @@ public class BroadcastSenderAccepter extends Thread
     }
     protected String Join(int ID)
     {
-        if(_Sockets.size()<=ID) return null;
-        return _Sockets.get(ID).getInetAddress().toString().substring(1);
+        if(_KnownRooms.size()<=ID) return null;
+        return "";
     }
     FindRoomActivity _FindRoomActivity;
     public BroadcastSenderAccepter(FindRoomActivity _FindRoomActivity)
     {
         this._FindRoomActivity = _FindRoomActivity;
     }
-    private ArrayList<Socket> _Sockets = new ArrayList<>();
-    private ArrayList<String> _KnownRooms = new ArrayList<>();
-    protected void AddSocket(Socket _Socket)
+    class RoomTTL
     {
-        // TODO: 17.03.2017 Add room verification
-        _Sockets.add(_Socket);
-        String Room = _Socket.getInetAddress().toString().substring(1);
+        private String RoomName;
+        private InetAddress Address;
+        private int TTL = DEFAULT_ROOM_TTL;
+        public void Discover() { TTL = DEFAULT_ROOM_TTL; }
+        public boolean CheckTTLExpired() { return TTL==0; }
+        public void DecreaseTTL() { TTL--; }
+        RoomTTL(String RoomName, InetAddress Address)
+        {
+            this.RoomName = RoomName;
+            this.Address = Address;
+        }
+    }
+    private ArrayList<String> _KnownRooms = new ArrayList<>();
+    protected void AddRoom(InetAddress _Address, String _RoomName)
+    {
         boolean Found = false;
-        for(String KnownRoom: _KnownRooms) if(KnownRoom.equals(Room)) { Found=true; break; }
+        for(String KnownRoom: _KnownRooms) if(KnownRoom.equals(_RoomName)) { Found=true; break; }
         if(!Found)
         {
-            _FindRoomActivity.AddRoom(Room);
-            _KnownRooms.add(Room);
+            _FindRoomActivity.AddRoom(_RoomName);
+            _KnownRooms.add(_RoomName);
         }
     }
     private boolean _Finding=false;
@@ -77,6 +91,41 @@ public class BroadcastSenderAccepter extends Thread
     }
     private BroadcastSender _Sender;
     private Thread _SenderThread;
+    private void StartListener()
+    {
+        try
+        {
+            DatagramSocket _Socket = new DatagramSocket(PORT);
+            while(!_Stop)
+            {
+                boolean Connected = false;
+                while(!Connected&&!_Stop)
+                {
+                    Connected = true;
+                    try
+                    {
+                        byte[] Buf = new byte[256];
+                        DatagramPacket _Packet = new DatagramPacket(Buf,Buf.length);
+                        _Socket.receive(_Packet);
+                        InetAddress _ClientAddress = _Packet.getAddress();
+                        if(_Packet.getPort()==PORT)
+                        {
+                            String Msg = (String)Package._GetObject(Buf);
+                            AddRoom(_ClientAddress, Msg);
+                        }
+                    }
+                    catch (Exception e) { Connected = false; }
+                }
+                if(_Stop)
+                {
+                    _Socket.close();
+                    _Stopped = true;
+                    return;
+                }
+            }
+        }
+        catch (Exception e) { }
+    }
     private void Start()
     {
         _Sender=new BroadcastSender(this);
@@ -85,17 +134,17 @@ public class BroadcastSenderAccepter extends Thread
         while(!_Sender.Started());
         _Started = true;
         if(!_Started) return;
-        while(!_Stop&&!_Send);
-        while(!_Stop)
+        while(!_Stop&&!_Send)
         {
             try
             {
                 Thread.sleep(WAIT);
             }
             catch (Exception e) { }
-            if(!_Send) continue;
+        }
+        if(!_Send)
+        {
             _Finding = true;
-            _Sockets.clear();
             try
             {
                 InetAddress MyIP = InetAddress.getByName(GetIP());
@@ -103,6 +152,10 @@ public class BroadcastSenderAccepter extends Thread
                 _Sender.Start();
             }
             catch (Exception e) { }
+            while(!_Stop)
+            {
+
+            }
         }
     }
     public void run()
