@@ -52,7 +52,7 @@ public class BroadcastSenderAccepter extends Thread
     protected String Join(int ID)
     {
         if(_KnownRooms.size()<=ID) return null;
-        return "";
+        return _KnownRooms.get(ID).Address.toString().substring(1);
     }
     FindRoomActivity _FindRoomActivity;
     public BroadcastSenderAccepter(FindRoomActivity _FindRoomActivity)
@@ -68,14 +68,14 @@ public class BroadcastSenderAccepter extends Thread
         public void DecreaseTTL() { TTL--; }
         public boolean Compare(InetAddress Address)
         {
-            return this.Address.getHostAddress().equals(Address.getHostAddress());
+            return this.Address.toString().equals(Address.toString());
         }
         RoomTTL(InetAddress Address)
         {
             this.Address = Address;
         }
     }
-    private ArrayList<RoomTTL> _KnownRooms = new ArrayList<>();
+    protected ArrayList<RoomTTL> _KnownRooms = new ArrayList<>();
     protected void AddRoom(InetAddress _Address, String _RoomName)
     {
         boolean Found = false;
@@ -90,6 +90,7 @@ public class BroadcastSenderAccepter extends Thread
             _FindRoomActivity.AddRoom(_RoomName);
             _KnownRooms.add(new RoomTTL(_Address));
         }
+        _FindRoomActivity.NotifyDataSetChanged();
     }
     private boolean _Send=false;
     protected void Send()
@@ -106,6 +107,8 @@ public class BroadcastSenderAccepter extends Thread
             if(_KnownRooms.get(c).CheckTTLExpired())
             {
                 _KnownRooms.remove(c);
+                _FindRoomActivity._Rooms.remove(c);
+                _FindRoomActivity.NotifyDataSetChanged();
                 c--;
             }
         }

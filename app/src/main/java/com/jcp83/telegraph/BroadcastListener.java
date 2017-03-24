@@ -17,6 +17,8 @@ public class BroadcastListener extends Thread
     public boolean Stopped() { return _Stopped; }
     public void Stop() { _Stop = true; }
     private ServerConnector _ServerConnector;
+    private BroadcastListenerAccepter _ListenerAccepter;
+    private Thread _ListenerAccepterThread;
     protected void Log(String Msg)
     {
         _ServerConnector.Log(Msg);
@@ -31,6 +33,10 @@ public class BroadcastListener extends Thread
         DatagramSocket _Socket = null;
         try
         {
+            _ListenerAccepter = new BroadcastListenerAccepter(_ServerConnector, _RoomName);
+            _ListenerAccepterThread = new Thread(_ListenerAccepter);
+            _ListenerAccepterThread.start();
+            while(!_ListenerAccepter.Started());
             _Socket = new DatagramSocket(PORT);
             _Socket.setSoTimeout(TIMEOUT);
         }
@@ -52,9 +58,7 @@ public class BroadcastListener extends Thread
                         InetAddress _ClientAddress = _Packet.getAddress();
                         if(_Packet.getPort()==PORT)
                         {
-                            BroadcastListenerAccepter _ListenerAccepter = new BroadcastListenerAccepter(_ServerConnector, _ClientAddress, _RoomName);
-                            Thread _ListenerAccepterThread = new Thread(_ListenerAccepter);
-                            _ListenerAccepterThread.start();
+                            _ListenerAccepter.Send(_ClientAddress);
                         }
                     }
                     catch (Exception e) { Connected = false; }

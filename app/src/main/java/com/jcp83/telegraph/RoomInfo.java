@@ -1,6 +1,8 @@
 package com.jcp83.telegraph;
 
-public class RoomInfo
+import java.io.Serializable;
+
+public class RoomInfo implements Serializable
 {
     private String Name;
     public String GetName() { return Name; }

@@ -14,10 +14,11 @@ class Server implements Runnable
     private final ArrayList<Thread> _ServerListenerThreads = new ArrayList<>();
     private final ArrayList<Thread> _ServerSenderThreads = new ArrayList<>();
     private final ServerRoomActivity _ServerRoomActivity;
-    private String _RoomName;
+    protected String _RoomName;
     protected String GetRoomName() { return _RoomName; }
     Server(ServerRoomActivity _ServerRoomActivity, int PORT)
     {
+        _RoomName = "ROOM"+Math.abs(new Random().nextInt(1000));
         this._ServerRoomActivity = _ServerRoomActivity;
         this.PORT = PORT;
     }
@@ -75,9 +76,9 @@ class Server implements Runnable
     {
         if(_Started) return;
         _ServerRoomActivity.PushStatus(Status.SERVER_STARTING);
-        _RoomName = "ROOM"+Math.abs(new Random().nextInt(1000));
         _Started = true;
         _ServerRoomActivity.PopStatus();
+        _ServerRoomActivity.SetRoomNameToStatus();
         while(!_Stop)
             for(int c=0;c<_ClientsCount&&!_Stop;c++)
                 if(!Handle(c)) c--;

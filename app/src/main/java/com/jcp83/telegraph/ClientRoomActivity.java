@@ -18,6 +18,7 @@ public class ClientRoomActivity extends AppCompatActivity
     private EditText _MessageBox = null;
     private TextView _StatusTextView;
     private String ServerIP;
+    private String UserName;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -36,6 +37,7 @@ public class ClientRoomActivity extends AppCompatActivity
         super.onStart();
         new LockOrientation(this);
         ServerIP = getIntent().getStringExtra(FindRoomActivity.ServerIPIntentID);
+        UserName = getIntent().getStringExtra(FindRoomActivity.UserNameIntentID);
         Start();
     }
     protected String GetServerIP()
@@ -56,12 +58,12 @@ public class ClientRoomActivity extends AppCompatActivity
     {
         _Client.Stop();
         while(!_Client.Stopped());
-        startActivity(new Intent(ClientRoomActivity.this,FindRoomActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        startActivity(new Intent(ClientRoomActivity.this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
     private void Start()
     {
         int PORT = 7000;
-        _Client = new Client(this, PORT);
+        _Client = new Client(this, PORT, UserName);
         Thread _ClientThread = new Thread(_Client);
         _ClientThread.start();
     }

@@ -47,7 +47,8 @@ class ClientConnector extends Thread
             while(!_ClientListener.Started()||!_ClientSender.Started());
             _Started = true;
         }
-        catch (Exception e) { Fail(); }
+        catch (Exception e) { Fail();
+        e.printStackTrace();}
     }
     public void run()
     {

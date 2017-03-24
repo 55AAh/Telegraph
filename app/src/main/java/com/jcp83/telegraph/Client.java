@@ -13,10 +13,11 @@ class Client implements Runnable
     Thread _ClientListenerThread;
     Thread _ClientSenderThread;
     private final ClientRoomActivity _ClientRoomActivity;
-    public Client(ClientRoomActivity _ClientRoomActivity, int PORT)
+    public Client(ClientRoomActivity _ClientRoomActivity, int PORT, String _Login)
     {
         this._ClientRoomActivity = _ClientRoomActivity;
         this.PORT = PORT;
+        this._Login = _Login;
     }
     void Log(String Msg)
     {
@@ -38,9 +39,7 @@ class Client implements Runnable
         _ClientRoomActivity.PopStatus();
         _Stopped = true;
     }
-    //protected void Stop() { _Stop = true; }
     private final ArrayList<String> Messages = new ArrayList<>();
-    //protected void Send()
     private boolean HasMessages() { return !Messages.isEmpty(); }
     private String GetMessage()
     {
@@ -106,7 +105,6 @@ class Client implements Runnable
     private void StartConnector()
     {
         _ClientRoomActivity.PushStatus(Status.CLIENT_CONNECTOR_STARTING);
-        _Login = "USER" + new Random().nextInt(100);
         if(_ClientConnector!=null) return;
         _ClientConnector = new ClientConnector(_ClientRoomActivity, this, PORT);
         Thread _ClientConnectorThread = new Thread(_ClientConnector);

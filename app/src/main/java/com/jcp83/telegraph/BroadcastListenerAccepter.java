@@ -11,12 +11,11 @@ public class BroadcastListenerAccepter extends Thread
 {
     public static final int PORT = 7002;
     private String _RoomName;
-    private InetAddress _Address;
     private boolean _Started = false;
     boolean Started() { return _Started; }
     private DatagramSocket _Socket;
     ServerConnector _ServerConnector;
-    protected void Handle()
+    protected void Send(InetAddress _Address)
     {
         RoomInfo Info = new RoomInfo(_RoomName);
         final byte[] Buf = Package._GetBytes(Info);
@@ -25,21 +24,25 @@ public class BroadcastListenerAccepter extends Thread
         {
             _Socket = new DatagramSocket(PORT);
             _Socket.send(_Packet);
+            _Socket.close();
         }
         catch (Exception e) {}
+    }
+    protected void Start()
+    {
+        _Started = true;
     }
     protected void Log(String Msg)
     {
         _ServerConnector.Log(Msg);
     }
-    BroadcastListenerAccepter(ServerConnector _ServerConnector, InetAddress _Address, String _RoomName)
+    BroadcastListenerAccepter(ServerConnector _ServerConnector, String _RoomName)
     {
         this._ServerConnector = _ServerConnector;
-        this._Address=_Address;
         this._RoomName = _RoomName;
     }
     public void run()
     {
-        Handle();
+        Start();
     }
 }

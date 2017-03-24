@@ -16,9 +16,10 @@ import java.util.ArrayList;
 public class FindRoomActivity extends AppCompatActivity
 {
     public static final String ServerIPIntentID = "SERVER_IP";
-    ListView _FoundedRoomsListView;
-    ArrayList<String> _Rooms = new ArrayList<>();
-    ArrayAdapter<String> _RoomsAdapter;
+    public static final String UserNameIntentID = "USERNAME";
+    private ListView _FoundedRoomsListView;
+    protected ArrayList<String> _Rooms = new ArrayList<>();
+    private ArrayAdapter<String> _RoomsAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -40,7 +41,6 @@ public class FindRoomActivity extends AppCompatActivity
     {
         super.onStart();
         new LockOrientation(this);
-        StartBroadcastAccepter();
         FindRoom();
     }
     AdapterView.OnItemClickListener _RoomsClickListener;
@@ -52,6 +52,9 @@ public class FindRoomActivity extends AppCompatActivity
         String ServerIP = _SenderAccepter.Join(ID);
         if(ServerIP==null) return;
         RoomJoinIntent.putExtra(ServerIPIntentID, ServerIP);
+        Settings _Settings = new Settings(getSharedPreferences(Settings.APP_SETTINGS, MODE_PRIVATE));
+        _Settings.Load();
+        RoomJoinIntent.putExtra(UserNameIntentID, _Settings.GetUserName());
         StopBroadcastAccepter();
         startActivity(RoomJoinIntent);
     }
@@ -59,6 +62,7 @@ public class FindRoomActivity extends AppCompatActivity
     {
         new Thread(new AddRoom(_Name)).start();
     }
+    protected void NotifyDataSetChanged() { new Thread(new NotifyDataSetChanged()).start(); }
     class AddRoom implements Runnable
     {
         final String Name;
@@ -70,18 +74,18 @@ public class FindRoomActivity extends AppCompatActivity
                 public void run()
                 {
                     _Rooms.add(Name);
-                    try
+                    /*try
                     {
-                        Thread.sleep(50);
+                        Thread.sleep(500);
                     }
                     catch (InterruptedException e) { }
-                    new Thread(new NotifyRoomAdded()).start();
+                    NotifyDataSetChanged();*/
                 }
             });
         }
         public AddRoom(String Name) { this.Name = Name; }
     }
-    class NotifyRoomAdded implements Runnable
+    class NotifyDataSetChanged implements Runnable
     {
         public void run()
         {
@@ -108,6 +112,8 @@ public class FindRoomActivity extends AppCompatActivity
     }
     private void FindRoom()
     {
+        _Rooms.clear();
+        NotifyDataSetChanged();
         StartBroadcastAccepter();
         _SenderAccepter.Send();
     }
@@ -118,6 +124,7 @@ public class FindRoomActivity extends AppCompatActivity
         _SenderAccepterThread = new Thread(_SenderAccepter);
         _SenderAccepterThread.start();
         while(!_SenderAccepter.Started());
+        _SenderAccepter._KnownRooms.clear();
     }
     private void StopBroadcastAccepter()
     {

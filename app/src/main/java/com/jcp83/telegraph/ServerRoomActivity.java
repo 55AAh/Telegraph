@@ -70,6 +70,10 @@ public class ServerRoomActivity extends AppCompatActivity
         while(!_Server.Stopped());
         startActivity(new Intent(ServerRoomActivity.this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
+    protected void SetRoomNameToStatus()
+    {
+        _StatusTextView.setText(_Server._RoomName);
+    }
     private void StartConnector()
     {
         _Server.StartConnector();
@@ -82,6 +86,7 @@ public class ServerRoomActivity extends AppCompatActivity
     {
         if(_Server.Started()) return;
         _ServerThread.start();
+        while(!_Server.Started());
     }
     public void ExitFromServerRoomButtonClick(View view) { Exit(); }
     void ShowMessage(String Msg)
@@ -115,7 +120,9 @@ public class ServerRoomActivity extends AppCompatActivity
     {
         switch(_Status)
         {
-            case SERVER_IDLE:return getString(R.string.Status_SERVER_IDLE_Text);
+            case SERVER_IDLE:if(_Server==null||_Server._RoomName==null)
+                return getString(R.string.Status_SERVER_IDLE_Text);
+                else return _Server._RoomName;
             case SERVER_STARTING:return getString(R.string.Status_SERVER_STARTING_Text);
             case SERVER_STOPPING:return getString(R.string.Status_SERVER_STOPPING_Text);
             case SERVER_CONNECTOR_STARTING:return getString(R.string.Status_SERVER_CONNECTOR_STARTING_Text);
