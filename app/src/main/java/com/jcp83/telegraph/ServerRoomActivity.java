@@ -53,7 +53,7 @@ public class ServerRoomActivity extends AppCompatActivity
         _Server = new Server(this, PORT, _Intent.getStringExtra(RoomPresetActivity.RoomNameIntentID));
         _ServerThread = new Thread(_Server);
         StartServer();
-        boolean _Visibility = _VisibilityToggleButton.isChecked();
+        boolean _Visibility = _Intent.getBooleanExtra(RoomPresetActivity.RoomStartVisibilityIntentID, true);
         if(_Visibility) StartConnector();
         _VisibilityToggleButton.setChecked(_Visibility);
     }

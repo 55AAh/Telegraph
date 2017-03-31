@@ -13,6 +13,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FindRoomActivity extends AppCompatActivity
 {
@@ -43,9 +45,7 @@ public class FindRoomActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
-        //new LockOrientation(this);
-        _Rooms.clear();
-        _RoomsAdapter.add("JAVA");
+        new LockOrientation(this);
         FindRoom();
     }
     AdapterView.OnItemClickListener _RoomsClickListener;
@@ -63,26 +63,16 @@ public class FindRoomActivity extends AppCompatActivity
         StopBroadcastAccepter();
         startActivity(RoomJoinIntent);
     }
-    protected void AddRoom(String _Name)
+    protected void AddRoom(final String _Name)
     {
-        new Thread(new AddRoom(_Name)).start();
-    }
-    class AddRoom implements Runnable
-    {
-        final String Name;
-        public void run()
+        _FoundedRoomsListView.post(new Runnable()
         {
-            _RoomsAdapter.add(Name);
-            _FoundedRoomsListView.post(new Runnable()
+            @Override
+            public void run()
             {
-                @Override
-                public void run()
-                {
-                    _RoomsAdapter.add(Name);
-                }
-            });
-        }
-        public AddRoom(String Name) { this.Name = Name; }
+                _RoomsAdapter.add(_Name);
+            }
+        });
     }
     BroadcastSenderAccepter _SenderAccepter;
     Thread _SenderAccepterThread;

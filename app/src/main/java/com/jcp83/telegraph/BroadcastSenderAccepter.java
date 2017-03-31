@@ -90,8 +90,8 @@ public class BroadcastSenderAccepter extends Thread
         }
         if(!Found)
         {
-            _FindRoomActivity.AddRoom(_RoomName);
             _KnownRooms.add(new RoomTTL(_Address));
+            _FindRoomActivity.AddRoom(_RoomName);
         }
     }
     private BroadcastSender _Sender;
