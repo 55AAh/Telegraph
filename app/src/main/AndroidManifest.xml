@@ -22,7 +22,8 @@
         <activity android:name=".ClientRoomActivity" />
         <activity android:name=".ServerRoomActivity" />
         <activity android:name=".FindRoomActivity" />
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".RoomPresetActivity"></activity>
     </application>
 
 </manifest>

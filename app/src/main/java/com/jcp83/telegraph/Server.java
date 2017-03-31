@@ -16,9 +16,9 @@ class Server implements Runnable
     private final ServerRoomActivity _ServerRoomActivity;
     protected String _RoomName;
     protected String GetRoomName() { return _RoomName; }
-    Server(ServerRoomActivity _ServerRoomActivity, int PORT)
+    Server(ServerRoomActivity _ServerRoomActivity, int PORT, String _RoomName)
     {
-        _RoomName = "ROOM"+Math.abs(new Random().nextInt(1000));
+        this._RoomName = _RoomName;
         this._ServerRoomActivity = _ServerRoomActivity;
         this.PORT = PORT;
     }

@@ -32,8 +32,6 @@ public class ServerRoomActivity extends AppCompatActivity
         _ServerMessagesBoxScrollView = (ScrollView)findViewById(R.id.ServerMessagesBoxScrollView);
         _StatusTextView = (TextView)findViewById(R.id.ServerStatusTextView);
         _MessageBox = (EditText)findViewById(R.id.ServerMessageBox);
-        _Server = new Server(this, PORT);
-        _ServerThread = new Thread(_Server);
         _StatusesStack.add(Status.SERVER_IDLE);
         _StatusTextView.setText(GetStringStatus(Status.SERVER_IDLE));
         _VisibilityToggleButton = (ToggleButton)findViewById(R.id.ServerVisibilityToggleButton);
@@ -51,9 +49,13 @@ public class ServerRoomActivity extends AppCompatActivity
     {
         super.onStart();
         new LockOrientation(this);
+        Intent _Intent = getIntent();
+        _Server = new Server(this, PORT, _Intent.getStringExtra(RoomPresetActivity.RoomNameIntentID));
+        _ServerThread = new Thread(_Server);
         StartServer();
-        StartConnector();
-        _VisibilityToggleButton.setChecked(true);
+        boolean _Visibility = _VisibilityToggleButton.isChecked();
+        if(_Visibility) StartConnector();
+        _VisibilityToggleButton.setChecked(_Visibility);
     }
     private void ScrollMessagesBoxScrollView()
     {

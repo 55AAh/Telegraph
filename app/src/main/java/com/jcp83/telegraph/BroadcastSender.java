@@ -29,7 +29,6 @@ public class BroadcastSender extends Thread
     {
         this._BroadcastIP = _IP;
     }
-    private boolean _Send = false;
     private void Init()
     {
         try
@@ -43,7 +42,6 @@ public class BroadcastSender extends Thread
             _BroadcastSenderAccepter.DecreaseTTL();
             try
             {
-                _BroadcastIP = InetAddress.getByName("192.168.43.255");
                 final byte Buf[] = new byte[0];
                 DatagramPacket _Packet = new DatagramPacket(Buf, Buf.length, _BroadcastIP, PORT);
                 _Socket.send(_Packet);
@@ -60,10 +58,6 @@ public class BroadcastSender extends Thread
         }
         _Socket.close();
         _Stopped = true;
-    }
-    public void Start()
-    {
-        _Send = true;
     }
     public void run()
     {

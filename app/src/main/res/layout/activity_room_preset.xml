@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jcp83.telegraph.RoomPresetActivity">
+
+    <TextView
+        android:id="@+id/RoomStartNameTextBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Имя комнаты :"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginStart="22dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/RoomStartVisibilityTextBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Видимость комнаты :"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="76dp"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/RoomStartNameEditBox"
+        android:layout_alignLeft="@+id/RoomStartNameEditBox"
+        android:layout_alignStart="@+id/RoomStartNameEditBox" />
+
+    <EditText
+        android:id="@+id/RoomStartNameEditBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="ROOM"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="33dp"
+        android:layout_marginTop="13dp"
+        android:layout_below="@+id/RoomStartNameTextBox"
+        android:layout_alignLeft="@+id/RoomStartNameTextBox"
+        android:layout_alignStart="@+id/RoomStartNameTextBox" />
+
+    <ToggleButton
+        android:id="@+id/RoomStartVisibilityToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Видимость"
+        android:textOff="Видимость : OFF"
+        android:textOn="Видимость : ON"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="93dp"
+        android:layout_below="@+id/RoomStartVisibilityTextBox"
+        android:layout_alignLeft="@+id/RoomStartVisibilityTextBox"
+        android:layout_alignStart="@+id/RoomStartVisibilityTextBox"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/CreateRoomButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="CreateRoomButtonClick"
+        android:text="Создать комнату"
+        tools:layout_editor_absoluteX="112dp"
+        tools:layout_editor_absoluteY="447dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

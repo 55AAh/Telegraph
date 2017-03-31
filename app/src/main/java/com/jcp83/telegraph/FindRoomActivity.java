@@ -2,6 +2,7 @@ package com.jcp83.telegraph;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,15 +19,17 @@ public class FindRoomActivity extends AppCompatActivity
     public static final String ServerIPIntentID = "SERVER_IP";
     public static final String UserNameIntentID = "USERNAME";
     private ListView _FoundedRoomsListView;
-    protected ArrayList<String> _Rooms = new ArrayList<>();
-    private ArrayAdapter<String> _RoomsAdapter;
+    protected ArrayList<String> _Rooms;
+    protected ArrayAdapter<String> _RoomsAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_room);
+        _Rooms = new ArrayList<>();
         _FoundedRoomsListView = (ListView)findViewById(R.id.FoundedRoomsListView);
         _RoomsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, _Rooms);
+        _RoomsAdapter.setNotifyOnChange(true);
         _FoundedRoomsListView.setAdapter(_RoomsAdapter);
         _RoomsClickListener = new AdapterView.OnItemClickListener()
         {
@@ -40,7 +43,9 @@ public class FindRoomActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
-        new LockOrientation(this);
+        //new LockOrientation(this);
+        _Rooms.clear();
+        _RoomsAdapter.add("JAVA");
         FindRoom();
     }
     AdapterView.OnItemClickListener _RoomsClickListener;
@@ -62,42 +67,22 @@ public class FindRoomActivity extends AppCompatActivity
     {
         new Thread(new AddRoom(_Name)).start();
     }
-    protected void NotifyDataSetChanged() { new Thread(new NotifyDataSetChanged()).start(); }
     class AddRoom implements Runnable
     {
         final String Name;
         public void run()
         {
+            _RoomsAdapter.add(Name);
             _FoundedRoomsListView.post(new Runnable()
             {
                 @Override
                 public void run()
                 {
-                    _Rooms.add(Name);
-                    /*try
-                    {
-                        Thread.sleep(500);
-                    }
-                    catch (InterruptedException e) { }
-                    NotifyDataSetChanged();*/
+                    _RoomsAdapter.add(Name);
                 }
             });
         }
         public AddRoom(String Name) { this.Name = Name; }
-    }
-    class NotifyDataSetChanged implements Runnable
-    {
-        public void run()
-        {
-            _FoundedRoomsListView.post(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    _RoomsAdapter.notifyDataSetChanged();
-                }
-            });
-        }
     }
     BroadcastSenderAccepter _SenderAccepter;
     Thread _SenderAccepterThread;
@@ -112,14 +97,10 @@ public class FindRoomActivity extends AppCompatActivity
     }
     private void FindRoom()
     {
-        _Rooms.clear();
-        NotifyDataSetChanged();
         StartBroadcastAccepter();
-        _SenderAccepter.Send();
     }
     private void StartBroadcastAccepter()
     {
-        if(_SenderAccepter!=null&&_SenderAccepter.Started()) return;
         _SenderAccepter = new BroadcastSenderAccepter(this);
         _SenderAccepterThread = new Thread(_SenderAccepter);
         _SenderAccepterThread.start();
