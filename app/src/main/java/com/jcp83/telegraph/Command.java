@@ -8,5 +8,7 @@ public enum Command
     EXIT,
     MESSAGE,
     INFO_LOGIN,
-    INFO_LOGOUT
+    INFO_LOGOUT,
+    INFO_DISCONNECT,
+    CHECK
 }

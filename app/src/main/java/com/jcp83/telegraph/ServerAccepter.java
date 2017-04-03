@@ -10,7 +10,6 @@ class ServerAccepter implements Runnable
     private final ServerRoomActivity _ServerRoomActivity;
     private ServerListener _ServerListener;
     private ServerSender _ServerSender;
-
     public ServerAccepter(Server _Server, Socket _Socket, ServerRoomActivity _ServerRoomActivity)
     {
         this._Server = _Server;
@@ -19,15 +18,12 @@ class ServerAccepter implements Runnable
     }
     private boolean _Started = false;
     boolean Started() { return _Started; }
-    private void Log(String Msg)
-    {
-        _ServerRoomActivity.ShowMessage(Msg);
-    }
     private boolean _Failed = false;
     private void Fail()
     {
         _Failed = true;
     }
+    private String _Name;
     private void Accept()
     {
         try
@@ -41,14 +37,13 @@ class ServerAccepter implements Runnable
             {
                 Package LOGIN_FAILED_P = new Package(Command.LOGIN_FAILED, "", "SERVER");
                 _ServerSender.Send(LOGIN_FAILED_P);
+                Fail();
                 return;
             }
-            Package INFO_LOGIN_P = new Package(Command.INFO_LOGIN, LOGIN_P.GetSender(), "SERVER");
-            _Server.SendAll(INFO_LOGIN_P);
-            Log("\n> "+LOGIN_P.GetSender()+" JOINED ROOM.");
             Package LOGIN_SUCCESS_P = new Package(Command.LOGIN_SUCCESS, "", "SERVER");
             _ServerSender.Send(LOGIN_SUCCESS_P);
             _Socket.setSoTimeout(Timeout);
+            _Name = LOGIN_P.GetSender();
         }
         catch (Exception e) { e.printStackTrace(); }
     }
@@ -62,7 +57,7 @@ class ServerAccepter implements Runnable
         _ServerSenderThread.start();
         while(!_ServerListener.Started()||!_ServerSender.Started());
         Accept();
-        if(!_Failed) _Server.Add(_ServerSender, _ServerListener, _ServerSenderThread, _ServerListenerThread);
+        if(!_Failed) _Server.AddClient(_Name, _ServerSender, _ServerListener, _ServerSenderThread, _ServerListenerThread);
         _Started = true;
     }
     public void run() { Start(); }

@@ -17,10 +17,10 @@ class ClientSender implements Runnable
         this._Client = _Client;
         this._Socket = _Socket;
     }
-    //private void Log(String Msg) { _Client.Log(Msg); }
     private void Fail()
     {
-        _Client.Log("\n> CLIENTSENDER FAILED.");
+        _Client._ServerDisconnected = true;
+        _Client._ServerStopped = true;
     }
     void Send(Package P)
     {

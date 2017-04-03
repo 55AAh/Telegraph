@@ -12,15 +12,15 @@ class ServerSender implements Runnable
     private DataOutputStream _DStream;
     private boolean _Started = false;
     boolean Started() { return _Started; }
+    protected int ID;
     public ServerSender(Server _Server, Socket _Socket)
     {
         this._Server = _Server;
         this._Socket = _Socket;
     }
-    //private void Log(String Msg) { _Server.Log(Msg); }
     private void Fail()
     {
-        _Server.Log("\n> SERVERSENDER FAILED.");
+        _Server.DisconnectClient(ID, true);
     }
     void Send(Package P)
     {

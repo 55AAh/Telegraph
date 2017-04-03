@@ -2,9 +2,12 @@ package com.jcp83.telegraph;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 class Client implements Runnable
 {
+    public static final int SERVER_CHECK_TIME = 3000;
     private ClientConnector _ClientConnector = null;
     private final int PORT;
     private String _Login;
@@ -13,6 +16,8 @@ class Client implements Runnable
     Thread _ClientListenerThread;
     Thread _ClientSenderThread;
     private final ClientRoomActivity _ClientRoomActivity;
+    private Timer _ServerCheckTimer = null;
+    private TimerTask _ServerCheckTimerTask = null;
     public Client(ClientRoomActivity _ClientRoomActivity, int PORT, String _Login)
     {
         this._ClientRoomActivity = _ClientRoomActivity;
@@ -35,6 +40,7 @@ class Client implements Runnable
     public void Stop()
     {
         _ClientRoomActivity.PushStatus(Status.CLIENT_STOPPING);
+        _ServerCheckTimer.cancel();
         _Stop = true;
         _ClientRoomActivity.PopStatus();
         _Stopped = true;
@@ -53,7 +59,7 @@ class Client implements Runnable
         while(!_Started);
         Messages.add(Msg);
     }
-    private boolean _ServerStopped = false;
+    protected boolean _ServerStopped = false;
     private void Handle()
     {
         Package PACKAGE = _ClientListener.Get();
@@ -67,9 +73,19 @@ class Client implements Runnable
             default: break;
         }
     }
+    protected boolean _ServerDisconnected = false;
     private void Start()
     {
         _ClientRoomActivity.PushStatus(Status.CLIENT_STARTING);
+        _ServerCheckTimer = new Timer();
+        _ServerCheckTimerTask = new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                _ClientSender.Send(new Package(Command.CHECK, "", _Login));
+            }
+        };
         StartConnector();
         if(!_ClientConnector.Success()) return;
         final String _Password = "#AveJava#";
@@ -81,6 +97,7 @@ class Client implements Runnable
         if(P_LOGIN_RESULT.GetCommand()==Command.LOGIN_SUCCESS)
         {
             Log("\n> LOGIN SUCCESS.");
+            _ServerCheckTimer.schedule(_ServerCheckTimerTask, SERVER_CHECK_TIME, SERVER_CHECK_TIME);
             _Started = true;
             while(!_Stop&&!_ServerStopped)
             {
@@ -95,6 +112,10 @@ class Client implements Runnable
                 }
             }
             if(!_ServerStopped) _ClientSender.Send(new Package(Command.EXIT,"",_Login));
+            else if (_ServerDisconnected)
+            {
+                Log("\nSERVER DISCONNECTED.");
+            }
         }
         else
         {
