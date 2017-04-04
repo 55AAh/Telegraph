@@ -49,8 +49,9 @@ public class MainActivity extends AppCompatActivity
     }
     public void CreateButtonClick(View view)
     {
-        if(!_Settings.CheckInitConfig()) OpenSettings();
-        startActivity(new Intent(MainActivity.this,RoomPresetActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        startActivity(new Intent(MainActivity.this, FileSelectDialogActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        //if(!_Settings.CheckInitConfig()) OpenSettings();
+        //startActivity(new Intent(MainActivity.this,RoomPresetActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
     public void JoinButtonClick(View view)
     {
