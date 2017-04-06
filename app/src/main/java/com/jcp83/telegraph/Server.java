@@ -36,11 +36,11 @@ class Server implements Runnable
     private boolean _Stopped = false;
     public boolean Stopped() { return _Stopped; }
     private ArrayList<PackageTask> _TasksStack = new ArrayList<>();
-    private int _TransmittersUID=0;
-    private int GetNewTransmitterUID()
+    private int _TasksUID=0;
+    private int GetNewTaskUID()
     {
-        int UID = _TransmittersUID;
-        _TransmittersUID++;
+        int UID = _TasksUID;
+        _TasksUID++;
         return UID;
     }
     private int _LastTask=0;
@@ -53,9 +53,36 @@ class Server implements Runnable
     {
         for(int ID=0;ID<_ServerSenders.size();ID++) Send(PT,ID);
     }
+    private void TTS()
+    {
+        int UID = GetNewTaskUID();
+        PackageTask Task = new PackageTask();
+        for(int c=0;c<10;c++)
+        {
+            PackageTransmitter Transmitter = new PackageTransmitter(UID, c);
+            Transmitter.SetData(Package._GetBytes(new Package(Command.MESSAGE, String.valueOf(c), "SERVER")));
+            Transmitter._IsSingle = true;
+            Task.Add(Transmitter);
+        }
+        _TasksStack.add(Task);
+    }
+    private void ParseCommand(String Msg)
+    {
+        int SP=0;for(;SP<Msg.length();SP++) if(Msg.charAt(SP)==' ') break;
+        if(SP==0||SP==Msg.length()-1) return;
+        String Cmd = Msg.substring(1, SP);
+        String Param = ""; if(SP<Msg.length()-1) Msg.substring(SP+1);
+        switch(Cmd)
+        {
+            case "start": Start(); break;
+            case "stop": Stop(); break;
+            case "tts": TTS(); break;
+        }
+    }
     public void SendMessage(String Msg)
     {
-        SendAll(new Package(Command.MESSAGE, Msg, "SERVER").GetSingleTransmitter(GetNewTransmitterUID()));
+        if(Msg.length()>0) if(Msg.getBytes()[0]=='#') ParseCommand(Msg);
+        else SendAll(new Package(Command.MESSAGE, Msg, "SERVER").GetSingleTransmitter(GetNewTaskUID()));
         Log("\nSERVER : "+Msg);
     }
     class ClientInfo
@@ -81,12 +108,12 @@ class Server implements Runnable
         if(!Disconnected)
         {
             Log("\n> " + Name + " LEAVED ROOM.");
-            SendAll(new Package(Command.INFO_LOGOUT,Name,"SERVER").GetSingleTransmitter(GetNewTransmitterUID()));
+            SendAll(new Package(Command.INFO_LOGOUT,Name,"SERVER").GetSingleTransmitter(GetNewTaskUID()));
         }
         else
         {
             Log("\n> " + Name + " DISCONNECTED.");
-            SendAll(new Package(Command.INFO_DISCONNECT,Name,"SERVER").GetSingleTransmitter(GetNewTransmitterUID()));
+            SendAll(new Package(Command.INFO_DISCONNECT,Name,"SERVER").GetSingleTransmitter(GetNewTaskUID()));
         }
     }
     private boolean Handle(int ID)
@@ -102,7 +129,7 @@ class Server implements Runnable
             case MESSAGE:
                 String Msg = (String)PACKAGE.GetData();
                 Log("\n"+PACKAGE.GetSender()+" : "+Msg);
-                SendAll(PACKAGE.GetSingleTransmitter(GetNewTransmitterUID()));
+                SendAll(PACKAGE.GetSingleTransmitter(GetNewTaskUID()));
                 break;
             case EXIT:
                 DisconnectClient(ID, false);
@@ -122,7 +149,7 @@ class Server implements Runnable
     {
         if(!_Started) return;
         for(ServerSender _Sender: _ServerSenders)
-            _Sender.Send(new Package(Command.CHECK, "", "SERVER").GetSingleTransmitter(GetNewTransmitterUID()));
+            _Sender.Send(new Package(Command.CHECK, "", "SERVER").GetSingleTransmitter(GetNewTaskUID()));
     }
     private void Start()
     {
@@ -155,7 +182,7 @@ class Server implements Runnable
         _ServerSender.ID = _ClientsCount;
         ClientInfo _Info = new ClientInfo(_Name);
         Package INFO_LOGIN_P = new Package(Command.INFO_LOGIN, _Name, "SERVER");
-        SendAll(INFO_LOGIN_P.GetSingleTransmitter(GetNewTransmitterUID()));
+        SendAll(INFO_LOGIN_P.GetSingleTransmitter(GetNewTaskUID()));
         _ClientInfos.add(_Info);
         Log("\n> "+_Name+" JOINED ROOM.");
         _ServerListeners.add(_ServerListener);
@@ -189,7 +216,7 @@ class Server implements Runnable
         _ServerRoomActivity.PushStatus(Status.SERVER_STOPPING);
         _Stop = true;
         if(_ServerConnector!=null) StopConnector();
-        for (ServerSender _Sender:_ServerSenders) _Sender.Send(new Package(Command.EXIT,"","SERVER").GetSingleTransmitter(GetNewTransmitterUID()));
+        for (ServerSender _Sender:_ServerSenders) _Sender.Send(new Package(Command.EXIT,"","SERVER").GetSingleTransmitter(GetNewTaskUID()));
         for (ServerListener _Listener:_ServerListeners) _Listener.Stop();
         for (ServerListener _Listener:_ServerListeners) while(!_Listener.IsStopped());
         _ServerRoomActivity.PopStatus();
