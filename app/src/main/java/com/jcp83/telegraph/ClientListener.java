@@ -11,7 +11,7 @@ class ClientListener implements Runnable
     private final Socket _Socket;
     private InputStream _Stream;
     private DataInputStream _DStream;
-    private final ArrayList<Package> _Stack = new ArrayList<>();
+    private final ArrayList<PackageTransmitter> _Stack = new ArrayList<>();
     private boolean _Started = false;
     boolean Started() { return _Started; }
     public ClientListener(Client _Client, Socket _Socket)
@@ -19,54 +19,19 @@ class ClientListener implements Runnable
         this._Client = _Client;
         this._Socket = _Socket;
     }
-    //private void Log(String Msg) { _Client.Log(Msg); }
     private void Fail()
     {
         _Client.Log("\n> CLIENTLISTENER FAILED.");
     }
     public boolean HasPackages() { return !_Stack.isEmpty(); }
     private boolean _Stop = false;
-    private boolean _Stopped = false;
     protected void Stop() { _Stop = true; }
-    protected boolean IsStopped() { return _Stopped; }
-    /*private class Getter implements Runnable
-    {
-        private InputStream _Stream;
-        //private DataInputStream
-        private boolean _Ready = false;
-        public boolean Ready() { return _Ready; }
-        private Package P;
-        public Package Get() { return P; }
-        private void _Get()
-        {
-            try { P = (Package)_Stream.readObject(); }
-            catch (Exception e) { e.printStackTrace(); Fail(); }
-            _Ready = true;
-        }
-        public Getter(ObjectInputStream _Stream)
-        {
-            this._Stream = _Stream;
-        }
-        public void run()
-        {
-            _Get();
-        }
-    }
-    protected Package Get()
-    {
-        Getter _Getter = new Getter(_Stream);
-        Thread _Thread = new Thread(_Getter);
-        _Thread.start();
-        while(!_Getter.Ready());
-        Package P = _Getter.Get();
-        return P;
-    }*/
-    Package Get()
+    PackageTransmitter Get()
     {
         while(!HasPackages());
-        Package P = _Stack.get(0);
+        PackageTransmitter PT = _Stack.get(0);
         _Stack.remove(0);
-        return P;
+        return PT;
     }
     private void Start()
     {
@@ -82,12 +47,12 @@ class ClientListener implements Runnable
                     {
                         byte[] B = new byte[S];
                         _Stream.read(B);
-                        Package P = (Package)Package._GetObject(B);
-                        if(P==null) { Fail(); return; }
-                        _Stack.add(P);
+                        PackageTransmitter PT = (PackageTransmitter) Package._GetObject(B);
+                        if(PT==null) { Fail(); return; }
+                        _Stack.add(PT);
                     }
                 }
-                if(_Stop) { _Stopped = true; return; }
+                if(_Stop) return;
             }
             catch (Exception e)
             {

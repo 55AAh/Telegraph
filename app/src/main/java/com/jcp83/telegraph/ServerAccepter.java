@@ -24,24 +24,31 @@ class ServerAccepter implements Runnable
         _Failed = true;
     }
     private String _Name;
+    private int _TransmittersUID=0;
+    private int GetNewTransmitterUID()
+    {
+        int UID = _TransmittersUID;
+        _TransmittersUID++;
+        return UID;
+    }
     private void Accept()
     {
         try
         {
             _Socket.setSoTimeout(0);
             String Buf;
-            Package LOGIN_P= _ServerListener.Get();
+            Package LOGIN_P=(Package)Package._GetObject(_ServerListener.Get().GetData());
             Buf=(String)LOGIN_P.GetData();
             if(LOGIN_P.GetCommand()!= Command.LOGIN) { Fail(); return; }
             if(!Buf.equals("#AveJava#"))
             {
                 Package LOGIN_FAILED_P = new Package(Command.LOGIN_FAILED, "", "SERVER");
-                _ServerSender.Send(LOGIN_FAILED_P);
+                _ServerSender.Send(LOGIN_FAILED_P.GetSingleTransmitter(GetNewTransmitterUID()));
                 Fail();
                 return;
             }
             Package LOGIN_SUCCESS_P = new Package(Command.LOGIN_SUCCESS, "", "SERVER");
-            _ServerSender.Send(LOGIN_SUCCESS_P);
+            _ServerSender.Send(LOGIN_SUCCESS_P.GetSingleTransmitter(GetNewTransmitterUID()));
             _Socket.setSoTimeout(Timeout);
             _Name = LOGIN_P.GetSender();
         }

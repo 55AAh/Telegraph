@@ -11,7 +11,7 @@ class ServerListener implements Runnable
     private final Socket _Socket;
     private InputStream _Stream;
     private DataInputStream _DStream;
-    final ArrayList<Package> _Stack = new ArrayList<>();
+    final ArrayList<PackageTransmitter> _Stack = new ArrayList<>();
     public ServerListener(Server _Server, Socket _Socket)
     {
         this._Server = _Server;
@@ -27,12 +27,12 @@ class ServerListener implements Runnable
     private boolean _Stopped = false;
     void Stop() { _Stop = true; }
     boolean IsStopped() { return _Stopped; }
-    Package Get()
+    PackageTransmitter Get()
     {
         while(_Stack.isEmpty());
-        Package P = _Stack.get(0);
+        PackageTransmitter PT = _Stack.get(0);
         _Stack.remove(0);
-        return P;
+        return PT;
     }
     private void Start()
     {
@@ -48,9 +48,9 @@ class ServerListener implements Runnable
                     {
                         byte[] B = new byte[S];
                         _Stream.read(B);
-                        Package P = (Package)Package._GetObject(B);
-                        if(P==null) { Fail(); return; }
-                        _Stack.add(P);
+                        PackageTransmitter PT = (PackageTransmitter) Package._GetObject(B);
+                        if(PT==null) { Fail(); return; }
+                        _Stack.add(PT);
                     }
                 }
                 if(_Stop) { _Stopped = true; return; }

@@ -60,9 +60,18 @@ class Client implements Runnable
         Messages.add(Msg);
     }
     protected boolean _ServerStopped = false;
+    private int _TransmittersUID=0;
+    private int GetNewTransmitterUID()
+    {
+        int UID = _TransmittersUID;
+        _TransmittersUID++;
+        return UID;
+    }
     private void Handle()
     {
-        Package PACKAGE = _ClientListener.Get();
+        PackageTransmitter PT = _ClientListener.Get();
+        if(!PT._IsSingle) return;
+        Package PACKAGE = (Package)Package._GetObject(PT.GetData());
         Command _Command = PACKAGE.GetCommand();
         switch (_Command)
         {
@@ -83,15 +92,15 @@ class Client implements Runnable
             @Override
             public void run()
             {
-                _ClientSender.Send(new Package(Command.CHECK, "", _Login));
+                _ClientSender.Send(new Package(Command.CHECK, "", _Login).GetSingleTransmitter(GetNewTransmitterUID()));
             }
         };
         StartConnector();
         if(!_ClientConnector.Success()) return;
         final String _Password = "#AveJava#";
         Package P_LOGIN = new Package(Command.LOGIN, _Password, _Login);
-        _ClientSender.Send(P_LOGIN);
-        Package P_LOGIN_RESULT = _ClientListener.Get();
+        _ClientSender.Send(P_LOGIN.GetSingleTransmitter(GetNewTransmitterUID()));
+        Package P_LOGIN_RESULT = (Package)Package._GetObject(_ClientListener.Get().GetData());
         if(P_LOGIN_RESULT == null) { Fail(); return; }
         _ClientRoomActivity.PopStatus();
         if(P_LOGIN_RESULT.GetCommand()==Command.LOGIN_SUCCESS)
@@ -104,14 +113,14 @@ class Client implements Runnable
                 if(HasMessages())
                 {
                     Package MESSAGE = new Package(Command.MESSAGE, GetMessage(), _Login);
-                    _ClientSender.Send(MESSAGE);
+                    _ClientSender.Send(MESSAGE.GetSingleTransmitter(GetNewTransmitterUID()));
                 }
                 if(_ClientListener.HasPackages())
                 {
                     Handle();
                 }
             }
-            if(!_ServerStopped) _ClientSender.Send(new Package(Command.EXIT,"",_Login));
+            if(!_ServerStopped) _ClientSender.Send(new Package(Command.EXIT,"",_Login).GetSingleTransmitter(GetNewTransmitterUID()));
             else if (_ServerDisconnected)
             {
                 Log("\nSERVER DISCONNECTED.");

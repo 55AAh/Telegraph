@@ -22,11 +22,11 @@ class ClientSender implements Runnable
         _Client._ServerDisconnected = true;
         _Client._ServerStopped = true;
     }
-    void Send(Package P)
+    void Send(PackageTransmitter PT)
     {
         try
         {
-            byte[] B = Package._GetBytes(P);
+            byte[] B = Package._GetBytes(PT);
             _DStream.writeInt(B.length);
             _DStream.flush();
             _Stream.write(B);

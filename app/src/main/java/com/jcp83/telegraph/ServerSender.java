@@ -22,11 +22,11 @@ class ServerSender implements Runnable
     {
         _Server.DisconnectClient(ID, true);
     }
-    void Send(Package P)
+    void Send(PackageTransmitter PT)
     {
         try
         {
-            byte[] B = Package._GetBytes(P);
+            byte[] B = Package._GetBytes(PT);
             _DStream.writeInt(B.length);
             _DStream.flush();
             _Stream.write(B);
