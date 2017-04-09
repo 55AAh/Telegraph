@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.InputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.UUID;
 
 class ServerListener implements Runnable
 {
@@ -12,10 +13,13 @@ class ServerListener implements Runnable
     private InputStream _Stream;
     private DataInputStream _DStream;
     final ArrayList<PackageTransmitter> _Stack = new ArrayList<>();
-    public ServerListener(Server _Server, Socket _Socket)
+    protected UUID _UUID;
+    protected Thread _Thread;
+    public ServerListener(Server _Server, Socket _Socket, UUID _UUID)
     {
         this._Server = _Server;
         this._Socket = _Socket;
+        this._UUID = _UUID;
     }
     private boolean _Started = false;
     boolean Started() { return _Started; }

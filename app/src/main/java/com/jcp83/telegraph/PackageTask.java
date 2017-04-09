@@ -17,6 +17,7 @@ public class PackageTask
         _ToAll = true;
     }
     public void Add(PackageTransmitter P) { _Stack.add(P); }
+    public boolean IsCompleted() { return _Stack.size()==0; }
     public PackageTransmitter Handle()
     {
         PackageTransmitter P = _Stack.get(0);

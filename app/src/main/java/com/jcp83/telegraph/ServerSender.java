@@ -3,6 +3,7 @@ package com.jcp83.telegraph;
 import java.io.DataOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.UUID;
 
 class ServerSender implements Runnable
 {
@@ -12,15 +13,17 @@ class ServerSender implements Runnable
     private DataOutputStream _DStream;
     private boolean _Started = false;
     boolean Started() { return _Started; }
-    protected int ID;
-    public ServerSender(Server _Server, Socket _Socket)
+    protected UUID _UUID;
+    protected Thread _Thread;
+    public ServerSender(Server _Server, Socket _Socket, UUID _UUID)
     {
         this._Server = _Server;
         this._Socket = _Socket;
+        this._UUID = _UUID;
     }
     private void Fail()
     {
-        _Server.DisconnectClient(ID, true);
+        _Server.DisconnectClient(_UUID, true);
     }
     void Send(PackageTransmitter PT)
     {

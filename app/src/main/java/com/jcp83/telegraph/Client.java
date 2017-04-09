@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
 class Client implements Runnable
 {
@@ -11,6 +12,7 @@ class Client implements Runnable
     private ClientConnector _ClientConnector = null;
     private final int PORT;
     private String _Login;
+    private UUID _UUID;
     ClientListener _ClientListener;
     ClientSender _ClientSender;
     Thread _ClientListenerThread;
@@ -18,11 +20,12 @@ class Client implements Runnable
     private final ClientRoomActivity _ClientRoomActivity;
     private Timer _ServerCheckTimer = null;
     private TimerTask _ServerCheckTimerTask = null;
-    public Client(ClientRoomActivity _ClientRoomActivity, int PORT, String _Login)
+    public Client(ClientRoomActivity _ClientRoomActivity, int PORT, String _Login, UUID _UUID)
     {
         this._ClientRoomActivity = _ClientRoomActivity;
         this.PORT = PORT;
         this._Login = _Login;
+        this._UUID = _UUID;
     }
     void Log(String Msg)
     {
@@ -100,6 +103,8 @@ class Client implements Runnable
         final String _Password = "#AveJava#";
         Package P_LOGIN = new Package(Command.LOGIN, _Password, _Login);
         _ClientSender.Send(P_LOGIN.GetSingleTransmitter(GetNewTransmitterUID()));
+        Package P_LOGIN_UUID = new Package(Command.UUID, _UUID, _Login);
+        _ClientSender.Send(P_LOGIN_UUID.GetSingleTransmitter(GetNewTransmitterUID()));
         Package P_LOGIN_RESULT = (Package)Package._GetObject(_ClientListener.Get().GetData());
         if(P_LOGIN_RESULT == null) { Fail(); return; }
         _ClientRoomActivity.PopStatus();

@@ -9,6 +9,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class ClientRoomActivity extends AppCompatActivity
 {
@@ -19,6 +20,7 @@ public class ClientRoomActivity extends AppCompatActivity
     private TextView _StatusTextView;
     private String ServerIP;
     private String UserName;
+    private UUID _UUID;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -38,6 +40,7 @@ public class ClientRoomActivity extends AppCompatActivity
         new LockOrientation(this);
         ServerIP = getIntent().getStringExtra(FindRoomActivity.ServerIPIntentID);
         UserName = getIntent().getStringExtra(FindRoomActivity.UserNameIntentID);
+        _UUID = UUID.fromString(getIntent().getStringExtra(FindRoomActivity.UserUUIDIntentID));
         Start();
     }
     protected String GetServerIP()
@@ -63,7 +66,7 @@ public class ClientRoomActivity extends AppCompatActivity
     private void Start()
     {
         int PORT = 7000;
-        _Client = new Client(this, PORT, UserName);
+        _Client = new Client(this, PORT, UserName, _UUID);
         Thread _ClientThread = new Thread(_Client);
         _ClientThread.start();
     }

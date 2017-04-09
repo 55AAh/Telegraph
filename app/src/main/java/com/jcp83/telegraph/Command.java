@@ -2,8 +2,8 @@ package com.jcp83.telegraph;
 
 public enum Command
 {
-    TRANSMIT,
     LOGIN,
+    UUID,
     LOGIN_FAILED,
     LOGIN_SUCCESS,
     EXIT,

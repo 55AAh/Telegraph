@@ -20,6 +20,7 @@ public class FindRoomActivity extends AppCompatActivity
 {
     public static final String ServerIPIntentID = "SERVER_IP";
     public static final String UserNameIntentID = "USERNAME";
+    public static final String UserUUIDIntentID = "UUID";
     private ListView _FoundedRoomsListView;
     protected ArrayList<String> _Rooms;
     protected ArrayAdapter<String> _RoomsAdapter;
@@ -60,6 +61,7 @@ public class FindRoomActivity extends AppCompatActivity
         Settings _Settings = new Settings(getSharedPreferences(Settings.APP_SETTINGS, MODE_PRIVATE));
         _Settings.Load();
         RoomJoinIntent.putExtra(UserNameIntentID, _Settings.GetUserName());
+        RoomJoinIntent.putExtra(UserUUIDIntentID, _Settings.GetUUID());
         StopBroadcastAccepter();
         startActivity(RoomJoinIntent);
     }

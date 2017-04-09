@@ -48,7 +48,7 @@ public class SettingsActivity extends AppCompatActivity
     {
         _Settings.SetUserName(_Settings_UserNameBox.getText().toString());
         _Settings.Save();
-        Toast.makeText(getApplicationContext(), "Настройки сохранены", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "SETTINGS SAVED", Toast.LENGTH_SHORT).show();
     }
     @Override
     protected void onStart()
