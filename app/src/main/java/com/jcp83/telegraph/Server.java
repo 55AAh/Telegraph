@@ -168,6 +168,7 @@ class Server implements Runnable
     private void HandlePushTasks()
     {
         if(_LastPushTask>=_TasksPushStack.size()) _LastPushTask=0;
+        if(_TasksPushStack.size()==0) return;
         PackageTask Task = _TasksPushStack.get(_LastPushTask);
         if(Task.IsCompleted())
         {
@@ -180,6 +181,7 @@ class Server implements Runnable
     public void HandlePopTasks()
     {
         if(_LastPopTask>=_TasksPopStack.size()) _LastPopTask=0;
+        if(_TasksPopStack.size()==0) return;
         PackageTask Task = _TasksPopStack.get(_LastPopTask);
         if(Task.IsCompleted())
         {
@@ -229,8 +231,10 @@ class Server implements Runnable
         SendAll(P_INFO_LOGIN.GetSingleTransmitter(GetNewTaskUID()));
         _ClientInfos.add(_Info);
         Log("\n> "+_Name+" JOINED ROOM.");
+        _ServerListener._UUID = _UUID;
         _ServerListener._Thread = _ServerListenerThread;
         _ServerListeners.add(_ServerListener);
+        _ServerSender._UUID = _UUID;
         _ServerSender._Thread = _ServerSenderThread;
         _ServerSenders.add(_ServerSender);
         _ClientsCount++;

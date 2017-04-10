@@ -40,7 +40,8 @@ public class ClientRoomActivity extends AppCompatActivity
         new LockOrientation(this);
         ServerIP = getIntent().getStringExtra(FindRoomActivity.ServerIPIntentID);
         UserName = getIntent().getStringExtra(FindRoomActivity.UserNameIntentID);
-        _UUID = UUID.fromString(getIntent().getStringExtra(FindRoomActivity.UserUUIDIntentID));
+        String _UUIDString = getIntent().getStringExtra(FindRoomActivity.UserUUIDIntentID);
+        _UUID = UUID.fromString(_UUIDString);
         Start();
     }
     protected String GetServerIP()

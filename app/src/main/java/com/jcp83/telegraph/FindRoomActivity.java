@@ -61,7 +61,7 @@ public class FindRoomActivity extends AppCompatActivity
         Settings _Settings = new Settings(getSharedPreferences(Settings.APP_SETTINGS, MODE_PRIVATE));
         _Settings.Load();
         RoomJoinIntent.putExtra(UserNameIntentID, _Settings.GetUserName());
-        RoomJoinIntent.putExtra(UserUUIDIntentID, _Settings.GetUUID());
+        RoomJoinIntent.putExtra(UserUUIDIntentID, _Settings.GetUUID().toString());
         StopBroadcastAccepter();
         startActivity(RoomJoinIntent);
     }
