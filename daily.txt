@@ -1,0 +1,14 @@
+
+	Telegraph Daily.
+	Chapter one and last.
+	
+20.04.2017, Monday, 9:07 PM
+	< Fixed debugger issue >
+	Hello everyone.
+	I'm a developer of Telegraph, and yesterday my debugger failed.
+	After a long time (reinstalling AndroidStudio, components, editing xml settings) remained only one way - recreate project.
+	So, i copied /src folder and all working (or looks like working).
+	Why I need this daily ? I don't know. I only want to tell my ideas to somebody, and make hours of coding not so boring.
+	I don't know, what Git will say about this, so I'll try to do everything right.
+	Therefore, next commit must not contain phrases like 'fixed project recreating'.
+	I dont think I need to describe project's state here, because short commit can contain everything, like in Twitter.

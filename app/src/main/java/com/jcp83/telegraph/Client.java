@@ -88,6 +88,7 @@ class Client implements Runnable
     protected boolean _ServerDisconnected = false;
     private void Start()
     {
+        Log("A");
         _ClientRoomActivity.PushStatus(Status.CLIENT_STARTING);
         _ServerCheckTimer = new Timer();
         _ServerCheckTimerTask = new TimerTask()
