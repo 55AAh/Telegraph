@@ -30,17 +30,20 @@ public class Settings implements Serializable
         SharedPreferences.Editor _Editor = _Settings.edit();
         if(!CheckInitConfig()) _Editor.putBoolean(APP_SETTINGS_INITIALIZED, true);
         _Editor.putString(APP_SETTINGS_USERNAME, _UserName);
-        _Editor.putString(APP_SETTINGS_UUID, _UUID.toString());
         _Editor.apply();
     }
     protected String GetUserName()
     {
         return _UserName;
     }
-    protected UUID GetUUID() { return _UUID; }
     protected void SetUserName(String _UserName)
     {
         this._UserName = _UserName;
+    }
+    protected UUID GetUUID() { return _UUID; }
+    protected void SetUUID(UUID _UUID)
+    {
+        this._UUID = _UUID;
     }
     Settings(SharedPreferences _Settings)
     {
