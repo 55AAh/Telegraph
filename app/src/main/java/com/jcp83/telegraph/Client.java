@@ -13,13 +13,10 @@ class Client implements Runnable
     private final int PORT;
     private String _Login;
     private UUID _UUID;
-    ClientListener _ClientListener;
-    ClientSender _ClientSender;
-    Thread _ClientListenerThread;
-    Thread _ClientSenderThread;
     private final ClientRoomActivity _ClientRoomActivity;
     private Timer _ServerCheckTimer = null;
     private TimerTask _ServerCheckTimerTask = null;
+    protected ServerInfo Info;
     public Client(ClientRoomActivity _ClientRoomActivity, int PORT, String _Login, UUID _UUID)
     {
         this._ClientRoomActivity = _ClientRoomActivity;
@@ -49,34 +46,39 @@ class Client implements Runnable
         _Stopped = true;
     }
     private final ArrayList<String> Messages = new ArrayList<>();
-    private boolean HasMessages() { return !Messages.isEmpty(); }
-    private String GetMessage()
+    public void SendMessage(String Msg)
     {
-        if(!HasMessages()) return null;
-        String Msg = Messages.get(0);
-        Messages.remove(0);
-        return Msg;
-    }
-    public void Send(String Msg)
-    {
-        while(!_Started);
-        Messages.add(Msg);
+        if(Msg.length()>0)
+        {
+            if(Msg.getBytes()[0]=='#') ParseCommand(Msg);
+            else
+            {
+                PackageTask _Task = new PackageTask(GetNewTaskUID());
+                _Task.Add(new Package(Command.MESSAGE, Msg, "SERVER").GetTransmitter(GetNewTaskUID()));
+                BindTask(_Task);
+            }
+        }
     }
     protected boolean _ServerStopped = false;
-    private int _TransmittersUID=0;
-    private int GetNewTransmitterUID()
+    private int _TasksUID=0;
+    protected int GetNewTaskUID()
     {
-        int UID = _TransmittersUID;
-        _TransmittersUID++;
+        int UID = _TasksUID;
+        _TasksUID++;
         return UID;
     }
-    private void Handle()
+    protected boolean _ServerDisconnected = false;
+    protected void SendSystemMessage(Package PACKAGE)
     {
-        PackageTransmitter PT = _ClientListener.Get();
-        if(!PT._IsSingle) return;
-        Package PACKAGE = (Package)Package._GetObject(PT.GetData());
+        PackageTransmitter _Transmitter = PACKAGE.GetTransmitter(GetNewTaskUID());
+        _Transmitter._IsSystem = true;
+        Info.Send(_Transmitter);
+    }
+    protected boolean HandleSystemMessage(PackageTransmitter _Transmitter)
+    {
+        Package PACKAGE = (Package)Package._GetObject(_Transmitter.GetData());
         Command _Command = PACKAGE.GetCommand();
-        switch (_Command)
+        switch(_Command)
         {
             case MESSAGE: Log("\n"+PACKAGE.GetSender()+" : "+PACKAGE.GetData()); break;
             case EXIT: Log("\n> ROOM CLOSED."); _ServerStopped = true; break;
@@ -84,8 +86,42 @@ class Client implements Runnable
             case INFO_LOGOUT: Log("\n> "+PACKAGE.GetData()+" LEAVED ROOM."); break;
             default: break;
         }
+        return false;
     }
-    protected boolean _ServerDisconnected = false;
+    protected void HandleTransmitter(PackageTransmitter _Transmitter)
+    {
+        Log("\nTRANSMITTER FROM SERVER");
+    }
+    protected void BindTask(PackageTask _Task)
+    {
+        Info._TasksPushStack.add(_Task);
+    }
+    private void TT()
+    {
+        int UID = GetNewTaskUID();
+        PackageTask _Task = new PackageTask(GetNewTaskUID());
+        for(int c=0;c<10;c++)
+        {
+            PackageTransmitter Transmitter = new PackageTransmitter(UID, c);
+            Transmitter.SetData(Package._GetBytes(new Package(Command.MESSAGE, String.valueOf(c), _Login)));
+            _Task.Add(Transmitter);
+        }
+        BindTask(_Task);
+    }
+    private void ParseCommand(String Msg)
+    {
+        int SP=0;for(;SP<Msg.length();SP++) if(Msg.charAt(SP)==' ') break;
+        if(SP==0||SP==Msg.length()-1) return;
+        String Cmd = Msg.substring(1, SP);
+        String Param = ""; if(SP<Msg.length()-1) Msg.substring(SP+1);
+        switch(Cmd)
+        {
+            case "start": Start(); break;
+            case "stop": Stop(); break;
+            case "tt": TT(); break;
+            default: Log("\nNo such command : '"+Cmd+"'"); break;
+        }
+    }
     private void Start()
     {
         _ClientRoomActivity.PushStatus(Status.CLIENT_STARTING);
@@ -95,17 +131,18 @@ class Client implements Runnable
             @Override
             public void run()
             {
-                _ClientSender.Send(new Package(Command.CHECK, "", _Login).GetSingleTransmitter(GetNewTransmitterUID()));
+                SendSystemMessage(new Package(Command.CHECK, "", _Login));
             }
         };
         StartConnector();
         if(!_ClientConnector.Success()) return;
         final String _Password = "#AveJava#";
         Package P_LOGIN = new Package(Command.LOGIN, _Password, _Login);
-        _ClientSender.Send(P_LOGIN.GetSingleTransmitter(GetNewTransmitterUID()));
+        SendSystemMessage(P_LOGIN);
         Package P_LOGIN_UUID = new Package(Command.UUID, _UUID, _Login);
-        _ClientSender.Send(P_LOGIN_UUID.GetSingleTransmitter(GetNewTransmitterUID()));
-        Package P_LOGIN_RESULT = (Package)Package._GetObject(_ClientListener.Get().GetData());
+        SendSystemMessage(P_LOGIN_UUID);
+        while(Info._Listener._Stack.isEmpty());
+        Package P_LOGIN_RESULT = (Package)Package._GetObject(Info._Listener.Get().GetData());
         if(P_LOGIN_RESULT == null) { Fail(); return; }
         _ClientRoomActivity.PopStatus();
         if(P_LOGIN_RESULT.GetCommand()==Command.LOGIN_SUCCESS)
@@ -115,20 +152,17 @@ class Client implements Runnable
             _Started = true;
             while(!_Stop&&!_ServerStopped)
             {
-                if(HasMessages())
-                {
-                    Package MESSAGE = new Package(Command.MESSAGE, GetMessage(), _Login);
-                    _ClientSender.Send(MESSAGE.GetSingleTransmitter(GetNewTransmitterUID()));
-                }
-                if(_ClientListener.HasPackages())
-                {
-                    Handle();
-                }
+                Info.Receive();
+                if(Info._Disconnected) Stop();
+                if(!Info._TasksPushStack.isEmpty()||!Info._TasksPopStack.isEmpty()) Info.HandleTasks();
             }
-            if(!_ServerStopped) _ClientSender.Send(new Package(Command.EXIT,"",_Login).GetSingleTransmitter(GetNewTransmitterUID()));
-            else if (_ServerDisconnected)
+            if(!_ServerStopped) SendSystemMessage(new Package(Command.EXIT,"",_Login));
+            else
             {
-                Log("\nSERVER DISCONNECTED.");
+                if (!Info._Disconnected)
+                    Log("ROOM CLOSED");
+                else
+                    Log("\nSERVER DISCONNECTED.");
             }
         }
         else

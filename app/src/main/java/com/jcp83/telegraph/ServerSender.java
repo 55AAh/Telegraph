@@ -15,15 +15,12 @@ class ServerSender implements Runnable
     boolean Started() { return _Started; }
     protected UUID _UUID;
     protected Thread _Thread;
+    protected boolean _Failed = false;
     public ServerSender(Server _Server, Socket _Socket, UUID _UUID)
     {
         this._Server = _Server;
         this._Socket = _Socket;
         this._UUID = _UUID;
-    }
-    private void Fail()
-    {
-        _Server.DisconnectClient(_UUID, true);
     }
     void Send(PackageTransmitter PT)
     {
@@ -35,12 +32,12 @@ class ServerSender implements Runnable
             _Stream.write(B);
             _Stream.flush();
         }
-        catch (Exception e) { Fail(); }
+        catch (Exception e) { _Failed=true; }
     }
     private void Init()
     {
         try { _Stream = _Socket.getOutputStream(); }
-        catch (Exception e) { Fail(); return; }
+        catch (Exception e) { _Failed = true; return; }
         _DStream = new DataOutputStream(_Stream);
         _Started = true;
     }

@@ -12,15 +12,12 @@ class ClientSender implements Runnable
     private DataOutputStream _DStream;
     private boolean _Started = false;
     boolean Started() { return _Started; }
+    protected Thread _Thread;
+    protected boolean _Failed = false;
     ClientSender(Client _Client, Socket _Socket)
     {
         this._Client = _Client;
         this._Socket = _Socket;
-    }
-    private void Fail()
-    {
-        _Client._ServerDisconnected = true;
-        _Client._ServerStopped = true;
     }
     void Send(PackageTransmitter PT)
     {
@@ -32,12 +29,12 @@ class ClientSender implements Runnable
             _Stream.write(B);
             _Stream.flush();
         }
-        catch (Exception e) { Fail(); }
+        catch (Exception e) { _Failed = true; }
     }
     private void Init()
     {
         try { _Stream = _Socket.getOutputStream(); }
-        catch (Exception e) { Fail(); return; }
+        catch (Exception e) { _Failed = true; return; }
         _DStream = new DataOutputStream(_Stream);
         _Started = true;
     }

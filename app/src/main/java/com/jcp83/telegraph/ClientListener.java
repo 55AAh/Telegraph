@@ -11,7 +11,8 @@ class ClientListener implements Runnable
     private final Socket _Socket;
     private InputStream _Stream;
     private DataInputStream _DStream;
-    private final ArrayList<PackageTransmitter> _Stack = new ArrayList<>();
+    protected final ArrayList<PackageTransmitter> _Stack = new ArrayList<>();
+    protected Thread _Thread;
     private boolean _Started = false;
     boolean Started() { return _Started; }
     public ClientListener(Client _Client, Socket _Socket)

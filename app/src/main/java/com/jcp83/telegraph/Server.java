@@ -13,9 +13,6 @@ class Server implements Runnable
     private Timer _ClientsCheckTimer = null;
     private TimerTask _ClientsCheckTimerTask = null;
     private final int PORT;
-    private int _ClientsCount = 0;
-    private final ArrayList<ServerListener> _ServerListeners = new ArrayList<>();
-    private final ArrayList<ServerSender> _ServerSenders = new ArrayList<>();
     private final ServerRoomActivity _ServerRoomActivity;
     protected String _RoomName;
     protected String GetRoomName() { return _RoomName; }
@@ -34,10 +31,6 @@ class Server implements Runnable
     private boolean _Stop = false;
     private boolean _Stopped = false;
     public boolean Stopped() { return _Stopped; }
-    private ArrayList<PackageTask> _TasksPushStack = new ArrayList<>();
-    private ArrayList<PackageTask> _TasksPopStack = new ArrayList<>();
-    private int _LastPushTask=0;
-    private int _LastPopTask=0;
     private int _TasksUID=0;
     private int GetNewTaskUID()
     {
@@ -45,27 +38,58 @@ class Server implements Runnable
         _TasksUID++;
         return UID;
     }
-    public void Send(PackageTransmitter PT, int ID)
+    protected boolean HandleSystemMessage(PackageTransmitter _Transmitter, UUID _UUID)
     {
-        while(!_Started);
-        _ServerSenders.get(ID).Send(PT);
+        Package PACKAGE = (Package)Package._GetObject(_Transmitter.GetData());
+        Command _Command = PACKAGE.GetCommand();
+        switch(_Command)
+        {
+            case MESSAGE:
+                String Msg = (String)PACKAGE.GetData();
+                Log("\n"+PACKAGE.GetSender()+" : "+Msg);
+                PackageTask _Task = new PackageTask(GetNewTaskUID());
+                _Task.Add(PACKAGE.GetTransmitter(GetNewTaskUID()));
+                BindTaskToAll(_Task);
+                break;
+            case EXIT:
+                DisconnectClient(_UUID);
+                return true;
+            default: break;
+        }
+        return false;
     }
-    public void SendAll(PackageTransmitter PT)
+    protected void HandleTransmitter(PackageTransmitter _Transmitter, UUID _UUID)
     {
-        for(int ID=0;ID<_ServerSenders.size();ID++) Send(PT,ID);
+        Log("\nTRANSMITTER FROM "+_UUID.toString());
     }
-    private void TTS()
+    protected void BindTask(PackageTask _Task, UUID _UUID)
+    {
+        for(int c=0;c<_ClientInfos.size();c++)
+        {
+            ClientInfo _Info = _ClientInfos.get(c);
+            if(_Info.GetUUID()==_UUID)
+            {
+                _Info._TasksPushStack.add(_Task);
+                break;
+            }
+        }
+    }
+    protected void BindTaskToAll(PackageTask _Task)
+    {
+        for(int c=0;c<_ClientInfos.size();c++)
+            _ClientInfos.get(c)._TasksPushStack.add(_Task);
+    }
+    private void TT()
     {
         int UID = GetNewTaskUID();
-        PackageTask Task = new PackageTask();
+        PackageTask _Task = new PackageTask(GetNewTaskUID());
         for(int c=0;c<10;c++)
         {
             PackageTransmitter Transmitter = new PackageTransmitter(UID, c);
             Transmitter.SetData(Package._GetBytes(new Package(Command.MESSAGE, String.valueOf(c), "SERVER")));
-            Transmitter._IsSingle = true;
-            Task.Add(Transmitter);
+            _Task.Add(Transmitter);
         }
-        _TasksPushStack.add(Task);
+        BindTaskToAll(_Task);
     }
     private void ParseCommand(String Msg)
     {
@@ -77,7 +101,8 @@ class Server implements Runnable
         {
             case "start": Start(); break;
             case "stop": Stop(); break;
-            case "tts": TTS(); break;
+            case "tt": TT(); break;
+            default: Log("\nNo such command : '"+Cmd+"'"); break;
         }
     }
     public void SendMessage(String Msg)
@@ -85,116 +110,63 @@ class Server implements Runnable
         if(Msg.length()>0)
         {
             if(Msg.getBytes()[0]=='#') ParseCommand(Msg);
-            else SendAll(new Package(Command.MESSAGE, Msg, "SERVER").GetSingleTransmitter(GetNewTaskUID()));
+            else
+            {
+                PackageTask _Task = new PackageTask(GetNewTaskUID());
+                _Task.Add(new Package(Command.MESSAGE, Msg, "SERVER").GetTransmitter(GetNewTaskUID()));
+                BindTaskToAll(_Task);
+            }
             Log("\nSERVER : "+Msg);
         }
     }
+    protected void SendSystemMessage(ClientInfo _Info, Package PACKAGE)
+    {
+        PackageTransmitter _Transmitter = PACKAGE.GetTransmitter(GetNewTaskUID());
+        _Transmitter._IsSystem = true;
+        _Info.Send(_Transmitter);
+    }
+    protected void SendSystemMessageToAll(Package PACKAGE)
+    {
+        for(int c=0;c<_ClientInfos.size();c++)
+        {
+            PackageTransmitter _Transmitter = PACKAGE.GetTransmitter(GetNewTaskUID());
+            _Transmitter._IsSystem = true;
+            _ClientInfos.get(c).Send(_Transmitter);
+        }
+    }
     private ArrayList<ClientInfo> _ClientInfos = new ArrayList<>();
-    protected void DisconnectClient(UUID _UUID, boolean Disconnected)
+    protected void DisconnectClient(UUID _UUID)
     {
         for(int c=0;c<_ClientInfos.size();c++)
         {
             ClientInfo Info = _ClientInfos.get(c);
             if(Info.GetUUID() == _UUID)
             {
-                _ClientInfos.remove(c);
-                for (int sc = 0; sc < _ServerListeners.size(); sc++)
-                {
-                    ServerListener Listener = _ServerListeners.get(sc);
-                    if (Listener._UUID == _UUID)
-                    {
-                        Listener.Stop();
-                        while (!Listener.IsStopped()) ;
-                        Listener._Thread = null;
-                        _ServerListeners.remove(sc);
-                        break;
-                    }
-                }
-                for (int sc = 0; sc < _ServerSenders.size(); sc++)
-                {
-                    ServerSender Sender = _ServerSenders.get(sc);
-                    if (Sender._UUID == _UUID)
-                    {
-                        Sender._Thread = null;
-                        _ServerSenders.remove(sc);
-                        break;
-                    }
-                }
-                _ClientInfos.remove(c);
-                _ClientsCount--;
+                Info._Listener.Stop();
+                while (!Info._Listener.IsStopped()) ;
+                Info._Listener._Thread = null;
+                Info._Sender._Thread = null;
                 String Name = Info.GetName();
-                if (!Disconnected)
+                boolean _Disconnected = Info._Disconnected;
+                _ClientInfos.remove(c);
+                if (_Disconnected)
                 {
                     Log("\n> " + Name + " LEAVED ROOM.");
-                    SendAll(new Package(Command.INFO_LOGOUT, Name, "SERVER").GetSingleTransmitter(GetNewTaskUID()));
+                    SendSystemMessageToAll(new Package(Command.INFO_LOGOUT, Name, "SERVER"));
                 }
                 else
                 {
                     Log("\n> " + Name + " DISCONNECTED.");
-                    SendAll(new Package(Command.INFO_DISCONNECT, Name, "SERVER").GetSingleTransmitter(GetNewTaskUID()));
+                    SendSystemMessageToAll(new Package(Command.INFO_DISCONNECT, Name, "SERVER"));
                 }
                 break;
             }
         }
     }
-    private boolean HandleClient(UUID _UUID)
-    {
-        for (int c = 0; c < _ServerListeners.size(); c++)
-        {
-            ServerListener Listener = _ServerListeners.get(c);
-            if(Listener._UUID == _UUID)
-            {
-                if(Listener._Stack.isEmpty()) return true;
-                PackageTransmitter PT = Listener.Get();
-                if(!PT._IsSingle) return true;
-                Package PACKAGE = (Package)Package._GetObject(PT.GetData());
-                Command _Command = PACKAGE.GetCommand();
-                switch(_Command)
-                {
-                    case MESSAGE:
-                        String Msg = (String)PACKAGE.GetData();
-                        Log("\n"+PACKAGE.GetSender()+" : "+Msg);
-                        SendAll(PACKAGE.GetSingleTransmitter(GetNewTaskUID()));
-                        break;
-                    case EXIT:
-                        DisconnectClient(_UUID, false);
-                        return false;
-                    default: break;
-                }
-            }
-        }
-        return true;
-    }
-    private void HandlePushTasks()
-    {
-        if(_LastPushTask>=_TasksPushStack.size()) _LastPushTask=0;
-        if(_TasksPushStack.size()==0) return;
-        PackageTask Task = _TasksPushStack.get(_LastPushTask);
-        if(Task.IsCompleted())
-        {
-            _TasksPushStack.remove(_LastPushTask);
-            return;
-        }
-        PackageTransmitter Transmitter = Task.Handle();
-        if(Task.IsToAll()) SendAll(Transmitter); else Send(Transmitter, Task.GetReceiverID());
-    }
-    public void HandlePopTasks()
-    {
-        if(_LastPopTask>=_TasksPopStack.size()) _LastPopTask=0;
-        if(_TasksPopStack.size()==0) return;
-        PackageTask Task = _TasksPopStack.get(_LastPopTask);
-        if(Task.IsCompleted())
-        {
-            _TasksPopStack.remove(_LastPopTask);
-            return;
-        }
-        PackageTransmitter Transmitter = Task.Handle();
-    }
     private void CheckClients()
     {
         if(!_Started) return;
-        for(ServerSender _Sender: _ServerSenders)
-            _Sender.Send(new Package(Command.CHECK, "", "SERVER").GetSingleTransmitter(GetNewTaskUID()));
+        SendSystemMessageToAll(new Package(Command.CHECK, "", "SERVER"));
     }
     private void Start()
     {
@@ -206,7 +178,7 @@ class Server implements Runnable
             @Override
             public void run()
             {
-                CheckClients();
+                //CheckClients();
             }
         };
         _ClientsCheckTimer = new Timer();
@@ -215,29 +187,26 @@ class Server implements Runnable
         _ServerRoomActivity.PopStatus();
         _ServerRoomActivity.SetRoomNameToStatus();
         while(!_Stop)
-            for(int c=0;c<_ClientsCount&&!_Stop;c++)
+            for(int c=0;c<_ClientInfos.size()&&!_Stop;c++)
             {
-                if(!HandleClient(_ClientInfos.get(c).GetUUID())) c--;
-                HandlePushTasks();
-                HandlePopTasks();
+                ClientInfo _Info = _ClientInfos.get(c);
+                _Info.Receive();
+                _Info.HandleTasks();
+                if(_Info._Disconnected) c--;
             }
     }
     public void run() { Start(); }
     void AddClient(String _Name, UUID _UUID, ServerSender _ServerSender, ServerListener _ServerListener, Thread _ServerSenderThread, Thread _ServerListenerThread)
     {
         _ServerSender._UUID = _UUID;
-        ClientInfo _Info = new ClientInfo(_Name, _UUID);
         Package P_INFO_LOGIN = new Package(Command.INFO_LOGIN, _Name, "SERVER");
-        SendAll(P_INFO_LOGIN.GetSingleTransmitter(GetNewTaskUID()));
-        _ClientInfos.add(_Info);
+        SendSystemMessageToAll(P_INFO_LOGIN);
         Log("\n> "+_Name+" JOINED ROOM.");
         _ServerListener._UUID = _UUID;
         _ServerListener._Thread = _ServerListenerThread;
-        _ServerListeners.add(_ServerListener);
         _ServerSender._UUID = _UUID;
         _ServerSender._Thread = _ServerSenderThread;
-        _ServerSenders.add(_ServerSender);
-        _ClientsCount++;
+        _ClientInfos.add(new ClientInfo(this, _ServerListener, _ServerSender, _Name, _UUID));
     }
     void StartConnector()
     {
@@ -264,9 +233,9 @@ class Server implements Runnable
         _ServerRoomActivity.PushStatus(Status.SERVER_STOPPING);
         _Stop = true;
         if(_ServerConnector!=null) StopConnector();
-        for (ServerSender _Sender:_ServerSenders) _Sender.Send(new Package(Command.EXIT,"","SERVER").GetSingleTransmitter(GetNewTaskUID()));
-        for (ServerListener _Listener:_ServerListeners) _Listener.Stop();
-        for (ServerListener _Listener:_ServerListeners) while(!_Listener.IsStopped());
+        SendSystemMessageToAll(new Package(Command.EXIT,"","SERVER"));
+        for(int c=0;c<_ClientInfos.size();c++)
+            DisconnectClient(_ClientInfos.get(c).GetUUID());
         _ServerRoomActivity.PopStatus();
         _ClientsCheckTimer.cancel();
         _Stopped = true;

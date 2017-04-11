@@ -8,14 +8,12 @@ class ServerAccepter implements Runnable
     private final int Timeout=1000;
     private final Server _Server;
     private final Socket _Socket;
-    private final ServerRoomActivity _ServerRoomActivity;
     private ServerListener _ServerListener;
     private ServerSender _ServerSender;
-    public ServerAccepter(Server _Server, Socket _Socket, ServerRoomActivity _ServerRoomActivity)
+    public ServerAccepter(Server _Server, Socket _Socket)
     {
         this._Server = _Server;
         this._Socket = _Socket;
-        this._ServerRoomActivity = _ServerRoomActivity;
     }
     private boolean _Started = false;
     boolean Started() { return _Started; }
@@ -47,12 +45,13 @@ class ServerAccepter implements Runnable
             if(!Buf.equals("#AveJava#"))
             {
                 Package P_LOGIN_FAILED = new Package(Command.LOGIN_FAILED, "", "SERVER");
-                _ServerSender.Send(P_LOGIN_FAILED.GetSingleTransmitter(GetNewTransmitterUID()));
+                _ServerSender
+                        .Send(P_LOGIN_FAILED.GetTransmitter(GetNewTransmitterUID()));
                 Fail();
                 return;
             }
             Package P_LOGIN_SUCCESS = new Package(Command.LOGIN_SUCCESS, "", "SERVER");
-            _ServerSender.Send(P_LOGIN_SUCCESS.GetSingleTransmitter(GetNewTransmitterUID()));
+            _ServerSender.Send(P_LOGIN_SUCCESS.GetTransmitter(GetNewTransmitterUID()));
             _Socket.setSoTimeout(Timeout);
             _Name = P_LOGIN.GetSender();
         }

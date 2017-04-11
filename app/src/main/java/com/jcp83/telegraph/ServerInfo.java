@@ -1,30 +1,35 @@
 package com.jcp83.telegraph;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
-public class ClientInfo
+public class ServerInfo
 {
-    private String _Name;
-    private UUID _UUID;
-    private Server _Server;
-    protected ServerSender _Sender;
-    protected ServerListener _Listener;
+    private Client _Client;
+    protected ClientSender _Sender;
+    protected ClientListener _Listener;
     protected boolean _Disconnected = false;
     protected void Receive()
     {
         if(!_Listener._Stack.isEmpty())
         {
             PackageTransmitter _Transmitter = _Listener.Get();
-            if(_Transmitter._IsSystem) _Server.HandleSystemMessage(_Transmitter, _UUID);
+            if(_Transmitter._IsSystem) _Client.HandleSystemMessage(_Transmitter);
+            boolean HasTask = false;
             for(int c=0;c<_TasksPopStack.size();c++)
             {
                 PackageTask _Task = _TasksPopStack.get(c);
                 if (_Task._UID == _Transmitter._UID)
                 {
                     _Task.Add(_Transmitter);
+                    HasTask = true;
                     break;
                 }
+            }
+            if(!HasTask)
+            {
+                PackageTask _Task = new PackageTask(_Client.GetNewTaskUID());
+                _Task.Add(_Transmitter);
+                _TasksPopStack.add(_Task);
             }
         }
     }
@@ -51,19 +56,15 @@ public class ClientInfo
         if(!_TasksPopStack.isEmpty())
         {
             PackageTask _Task = _TasksPopStack.get(_LastHandledPopTask);
-            _Server.HandleTransmitter(_Task.Handle(), _UUID);
+            _Client.HandleTransmitter(_Task.Handle());
             if(_Task.IsCompleted()) _TasksPopStack.remove(_LastHandledPushTask);
             _LastHandledPopTask++;
         }
     }
-    public String GetName() { return _Name; }
-    public UUID GetUUID() { return _UUID; }
-    public ClientInfo(Server _Server, ServerListener _Listener, ServerSender _Sender, String _Name, UUID _UUID)
+    public ServerInfo(Client _Client, ClientListener _Listener, ClientSender _Sender)
     {
-        this._Server = _Server;
-        this._Sender = _Sender;
+        this._Client = _Client;
         this._Listener = _Listener;
-        this._Name = _Name;
-        this._UUID = _UUID;
+        this._Sender = _Sender;
     }
 }

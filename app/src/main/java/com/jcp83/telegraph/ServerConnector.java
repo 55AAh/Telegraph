@@ -51,7 +51,7 @@ class ServerConnector extends Thread
                     catch (SocketTimeoutException e) { Connected = false; }
                 }
                 if(StopF) { _ServerSocket.close(); return; }
-                ServerAccepter _ServerAccepter = new ServerAccepter(_Server, _Socket, _ServerRoomActivity);
+                ServerAccepter _ServerAccepter = new ServerAccepter(_Server, _Socket);
                 Thread _ServerAccepterThread = new Thread(_ServerAccepter);
                 _ServerAccepterThread.start();
             }

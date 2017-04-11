@@ -27,11 +27,10 @@ public class Package implements Serializable
         return _GetObject(_Data);
     }
     public String GetSender() { return _Sender; }
-    public PackageTransmitter GetSingleTransmitter(int UID)
+    public PackageTransmitter GetTransmitter(int UID)
     {
         PackageTransmitter PT = new PackageTransmitter(UID, 0);
         PT.SetData(_GetBytes(this));
-        PT._IsSingle = true;
         return PT;
     }
     public static byte[] _GetBytes(Object P)
