@@ -74,7 +74,7 @@ public class ClientRoomActivity extends AppCompatActivity
     private void SendMessage(String Msg)
     {
         if(_Client==null||!_Client.Started()) return;
-        _Client.SendMessage(Msg);
+        _Client.SendText(Msg);
         _MessageBox.setText("");
     }
     public void ExitFromClientRoomButtonClick(View view)

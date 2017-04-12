@@ -105,6 +105,7 @@ public class BroadcastSenderAccepter extends Thread
             {
                 _KnownRooms.remove(c);
                 _FindRoomActivity._Rooms.remove(c);
+                _FindRoomActivity.NotifyRoomsChanged();
                 c--;
             }
         }

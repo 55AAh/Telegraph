@@ -45,21 +45,14 @@ class Client implements Runnable
         _ClientRoomActivity.PopStatus();
         _Stopped = true;
     }
-    private final ArrayList<String> Messages = new ArrayList<>();
-    public void SendMessage(String Msg)
+    public void SendText(String Text)
     {
-        if(Msg.length()>0)
+        if(Text.length()>0)
         {
-            if(Msg.getBytes()[0]=='#') ParseCommand(Msg);
-            else
-            {
-                PackageTask _Task = new PackageTask(GetNewTaskUID());
-                _Task.Add(new Package(Command.MESSAGE, Msg, "SERVER").GetTransmitter(GetNewTaskUID()));
-                BindTask(_Task);
-            }
+            if(Text.getBytes()[0]=='#') ParseCommand(Text);
+            else BindToSystemTask(new Package(Command.MESSAGE, Text, "SERVER"));
         }
     }
-    protected boolean _ServerStopped = false;
     private int _TasksUID=0;
     protected int GetNewTaskUID()
     {
@@ -73,28 +66,44 @@ class Client implements Runnable
         PackageTransmitter _Transmitter = PACKAGE.GetTransmitter(GetNewTaskUID());
         _Transmitter._IsSystem = true;
         Info.Send(_Transmitter);
+        if(Info._Disconnected) _ServerDisconnected = true;
     }
+    private int _LastUploadedFile = 0;
     protected boolean HandleSystemMessage(PackageTransmitter _Transmitter)
     {
         Package PACKAGE = (Package)Package._GetObject(_Transmitter.GetData());
         Command _Command = PACKAGE.GetCommand();
         switch(_Command)
         {
-            case MESSAGE: Log("\n"+PACKAGE.GetSender()+" : "+PACKAGE.GetData()); break;
-            case EXIT: Log("\n> ROOM CLOSED."); _ServerStopped = true; break;
+            case EXIT: Log("\n> ROOM CLOSED."); Stop(); break;
             case INFO_LOGIN: Log("\n> "+PACKAGE.GetData()+" JOINED ROOM."); break;
             case INFO_LOGOUT: Log("\n> "+PACKAGE.GetData()+" LEAVED ROOM."); break;
+            case INFO_FILE:
+                Log("\nNEW FILE ADDED : '"+PACKAGE.GetData()+"' ("+_LastUploadedFile+").");
+                _LastUploadedFile++;
+                break;
             default: break;
         }
         return false;
     }
-    protected void HandleTransmitter(PackageTransmitter _Transmitter)
+    protected void HandleSystemTaskTransmitter(PackageTransmitter _Transmitter)
     {
-        Log("\nTRANSMITTER FROM SERVER");
+        Package PACKAGE = (Package)Package._GetObject(_Transmitter.GetData());
+        switch (PACKAGE.GetCommand())
+        {
+            case MESSAGE: Log("\n"+PACKAGE.GetSender()+" : "+PACKAGE.GetData().toString()); break;
+            default: break;
+        }
     }
     protected void BindTask(PackageTask _Task)
     {
         Info._TasksPushStack.add(_Task);
+    }
+    protected void BindToSystemTask(Package PACKAGE)
+    {
+        PackageTransmitter _Transmitter = PACKAGE.GetTransmitter(0);
+        _Transmitter._IsSystemTask = true;
+        Info._TasksPushStack.get(0).Add(_Transmitter);
     }
     private void TT()
     {
@@ -113,13 +122,31 @@ class Client implements Runnable
         int SP=0;for(;SP<Msg.length();SP++) if(Msg.charAt(SP)==' ') break;
         if(SP==0||SP==Msg.length()-1) return;
         String Cmd = Msg.substring(1, SP);
-        String Param = ""; if(SP<Msg.length()-1) Msg.substring(SP+1);
+        String Param = ""; if(SP<Msg.length()-1) Param=Msg.substring(SP+1);
         switch(Cmd)
         {
             case "start": Start(); break;
             case "stop": Stop(); break;
             case "tt": TT(); break;
-            default: Log("\nNo such command : '"+Cmd+"'"); break;
+            case "d":
+                if(Param.isEmpty()) Log("\nERROR : Must be selected file index !");
+                else
+                {
+                    int _Index = -1;
+                    try { _Index = Integer.valueOf(Param); }
+                    catch (Exception e) { Log("\nERROR : Invalid index : '"+Param+"' !"); }
+                    if(_Index>=0)
+                    {
+                        if(_Index>=_LastUploadedFile)
+                            Log("\nERROR : File "+_Index+" not exist.");
+                        else
+                        {
+                            SendSystemMessage(new Package(Command.DOWNLOAD_FILE, Param, _Login));
+                        }
+                    }
+                }
+                break;
+            default: Log("\nERROR : No such command : '"+Cmd+"'"); break;
         }
     }
     private void Start()
@@ -150,19 +177,16 @@ class Client implements Runnable
             Log("\n> LOGIN SUCCESS.");
             _ServerCheckTimer.schedule(_ServerCheckTimerTask, SERVER_CHECK_TIME, SERVER_CHECK_TIME);
             _Started = true;
-            while(!_Stop&&!_ServerStopped)
+            while(!_Stop)
             {
                 Info.Receive();
                 if(Info._Disconnected) Stop();
                 if(!Info._TasksPushStack.isEmpty()||!Info._TasksPopStack.isEmpty()) Info.HandleTasks();
             }
-            if(!_ServerStopped) SendSystemMessage(new Package(Command.EXIT,"",_Login));
+            if(!_ServerDisconnected) SendSystemMessage(new Package(Command.EXIT,"",_Login));
             else
             {
-                if (!Info._Disconnected)
-                    Log("ROOM CLOSED");
-                else
-                    Log("\nSERVER DISCONNECTED.");
+                if (Info._Disconnected) Log("\nSERVER DISCONNECTED.");
             }
         }
         else

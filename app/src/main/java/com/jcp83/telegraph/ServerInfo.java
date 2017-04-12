@@ -13,7 +13,8 @@ public class ServerInfo
         if(!_Listener._Stack.isEmpty())
         {
             PackageTransmitter _Transmitter = _Listener.Get();
-            if(_Transmitter._IsSystem) _Client.HandleSystemMessage(_Transmitter);
+            if(_Transmitter._IsSystem) { _Client.HandleSystemMessage(_Transmitter); return; }
+            if(_Transmitter._IsSystemTask) { _TasksPopStack.get(0).Add(_Transmitter); return; }
             boolean HasTask = false;
             for(int c=0;c<_TasksPopStack.size();c++)
             {
@@ -49,14 +50,14 @@ public class ServerInfo
         if(!_TasksPushStack.isEmpty())
         {
             PackageTask _Task = _TasksPushStack.get(_LastHandledPushTask);
-            Send(_Task.Handle());
+            if(!_Task._Stack.isEmpty()) Send(_Task.Get());
             if(_Task.IsCompleted()) _TasksPushStack.remove(_LastHandledPushTask);
             _LastHandledPushTask++;
         }
         if(!_TasksPopStack.isEmpty())
         {
             PackageTask _Task = _TasksPopStack.get(_LastHandledPopTask);
-            _Client.HandleTransmitter(_Task.Handle());
+            if(!_Task._Stack.isEmpty()) _Client.HandleSystemTaskTransmitter(_Task.Get());
             if(_Task.IsCompleted()) _TasksPopStack.remove(_LastHandledPushTask);
             _LastHandledPopTask++;
         }

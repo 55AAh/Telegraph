@@ -66,11 +66,22 @@ public class ServerRoomActivity extends AppCompatActivity
             }
         });
     }
-    private void Exit()
+    protected void Exit()
     {
         _Server.Stop();
         while(!_Server.Stopped());
-        startActivity(new Intent(ServerRoomActivity.this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        startActivity(new Intent(ServerRoomActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+    }
+    public void UploadFileButtonClick(View view) { F(); }
+    protected void UploadFile(String Path)
+    {
+        _Server.UploadFile(Path);
+    }
+    protected void F()
+    {
+        OpenFileDialog _OpenFileDialog = new OpenFileDialog(this);
+        _OpenFileDialog._ServerRoomActivity = this;
+        _OpenFileDialog.show();
     }
     protected void SetRoomNameToStatus()
     {
@@ -98,7 +109,7 @@ public class ServerRoomActivity extends AppCompatActivity
     public void ServerSendMessageButtonClick(View view)
     {
         if(!_Server.Started()) return;
-        _Server.SendMessage(_MessageBox.getText().toString());
+        _Server.SendText(_MessageBox.getText().toString());
         _MessageBox.setText("");
     }
     class ShowMessage implements Runnable

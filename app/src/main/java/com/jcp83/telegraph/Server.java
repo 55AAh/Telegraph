@@ -1,5 +1,7 @@
 package com.jcp83.telegraph;
 
+import android.content.Intent;
+
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -7,7 +9,7 @@ import java.util.UUID;
 
 class Server implements Runnable
 {
-    public static final int CLIENT_CHECK_TIME = 3000;
+    public static final int CLIENT_CHECK_TIME = 1000;
     private ServerConnector _ServerConnector = null;
     private Thread _ServerConnectorThread = null;
     private Timer _ClientsCheckTimer = null;
@@ -38,29 +40,54 @@ class Server implements Runnable
         _TasksUID++;
         return UID;
     }
+    private ArrayList<String> _UploadedFiles = new ArrayList<>();
+    private ArrayList<FileUploader> _FileUploaders = new ArrayList<>();
+    private int _LastFileUploader = 0;
     protected boolean HandleSystemMessage(PackageTransmitter _Transmitter, UUID _UUID)
     {
         Package PACKAGE = (Package)Package._GetObject(_Transmitter.GetData());
         Command _Command = PACKAGE.GetCommand();
         switch(_Command)
         {
+            case EXIT:
+                DisconnectClient(_UUID);
+                return true;
+            case DOWNLOAD_FILE:
+                Log("\nCLIENT "+PACKAGE.GetSender()+" ("+_UUID.toString()+") ASKING FOR DOWNLOAD FILE "+PACKAGE.GetData());
+                for(int c=0;c<_ClientInfos.size();c++)
+                {
+                    ClientInfo Info = _ClientInfos.get(c);
+                    if(Info.GetUUID()==_UUID)
+                    {
+                        int _UID = GetNewTaskUID();
+                        PackageTask Task = new PackageTask(_UID);
+                        Info._TasksPushStack.add(Task);
+                        SendSystemMessage(Info, new Package(Command.TASK_FILE, _UID, "SERVER"));
+                        int _Index = Integer.valueOf(PACKAGE.GetData().toString());
+                        FileUploader _Uploader = new FileUploader(Task, _UploadedFiles.get(_Index));
+                        _FileUploaders.add(_Uploader);
+                        break;
+                    }
+                }
+                break;
+            default: break;
+        }
+        return false;
+    }
+    protected void HandleSystemTaskTransmitter(PackageTransmitter _Transmitter, UUID _UUID)
+    {
+        Package PACKAGE = (Package)Package._GetObject(_Transmitter.GetData());
+        switch (PACKAGE.GetCommand())
+        {
             case MESSAGE:
-                String Msg = (String)PACKAGE.GetData();
+                String Msg = PACKAGE.GetData().toString();
                 Log("\n"+PACKAGE.GetSender()+" : "+Msg);
                 PackageTask _Task = new PackageTask(GetNewTaskUID());
                 _Task.Add(PACKAGE.GetTransmitter(GetNewTaskUID()));
                 BindTaskToAll(_Task);
                 break;
-            case EXIT:
-                DisconnectClient(_UUID);
-                return true;
             default: break;
         }
-        return false;
-    }
-    protected void HandleTransmitter(PackageTransmitter _Transmitter, UUID _UUID)
-    {
-        Log("\nTRANSMITTER FROM "+_UUID.toString());
     }
     protected void BindTask(PackageTask _Task, UUID _UUID)
     {
@@ -79,6 +106,16 @@ class Server implements Runnable
         for(int c=0;c<_ClientInfos.size();c++)
             _ClientInfos.get(c)._TasksPushStack.add(_Task);
     }
+    protected void BindToAllSystemTasks(Package PACKAGE)
+    {
+        for(int c=0;c<_ClientInfos.size();c++)
+        {
+            ClientInfo _Info = _ClientInfos.get(c);
+            PackageTransmitter _Transmitter = PACKAGE.GetTransmitter(0);
+            _Transmitter._IsSystemTask = true;
+            _Info._TasksPushStack.get(0).Add(_Transmitter);
+        }
+    }
     private void TT()
     {
         int UID = GetNewTaskUID();
@@ -91,6 +128,15 @@ class Server implements Runnable
         }
         BindTaskToAll(_Task);
     }
+    private void F()
+    {
+        _ServerRoomActivity.F();
+    }
+    private ArrayList<String> _FilesToUpload = new ArrayList<>();
+    protected void UploadFile(String Path)
+    {
+        _FilesToUpload.add(Path);
+    }
     private void ParseCommand(String Msg)
     {
         int SP=0;for(;SP<Msg.length();SP++) if(Msg.charAt(SP)==' ') break;
@@ -101,22 +147,18 @@ class Server implements Runnable
         {
             case "start": Start(); break;
             case "stop": Stop(); break;
+            case "f": F(); break;
             case "tt": TT(); break;
             default: Log("\nNo such command : '"+Cmd+"'"); break;
         }
     }
-    public void SendMessage(String Msg)
+    public void SendText(String Text)
     {
-        if(Msg.length()>0)
+        if(Text.length()>0)
         {
-            if(Msg.getBytes()[0]=='#') ParseCommand(Msg);
-            else
-            {
-                PackageTask _Task = new PackageTask(GetNewTaskUID());
-                _Task.Add(new Package(Command.MESSAGE, Msg, "SERVER").GetTransmitter(GetNewTaskUID()));
-                BindTaskToAll(_Task);
-            }
-            Log("\nSERVER : "+Msg);
+            if(Text.getBytes()[0]=='#') ParseCommand(Text);
+            else BindToAllSystemTasks(new Package(Command.MESSAGE, Text, "SERVER"));
+            Log("\nSERVER : "+Text);
         }
     }
     protected void SendSystemMessage(ClientInfo _Info, Package PACKAGE)
@@ -131,7 +173,9 @@ class Server implements Runnable
         {
             PackageTransmitter _Transmitter = PACKAGE.GetTransmitter(GetNewTaskUID());
             _Transmitter._IsSystem = true;
-            _ClientInfos.get(c).Send(_Transmitter);
+            ClientInfo _Info = _ClientInfos.get(c);
+            _Info.Send(_Transmitter);
+            if(_Info._Disconnected) DisconnectClient(_Info.GetUUID());
         }
     }
     private ArrayList<ClientInfo> _ClientInfos = new ArrayList<>();
@@ -143,13 +187,13 @@ class Server implements Runnable
             if(Info.GetUUID() == _UUID)
             {
                 Info._Listener.Stop();
-                while (!Info._Listener.IsStopped()) ;
-                Info._Listener._Thread = null;
-                Info._Sender._Thread = null;
+                while (!Info._Listener.IsStopped());
+                Info._TasksPopStack.clear();
+                Info._TasksPushStack.clear();
                 String Name = Info.GetName();
                 boolean _Disconnected = Info._Disconnected;
                 _ClientInfos.remove(c);
-                if (_Disconnected)
+                if (!_Disconnected)
                 {
                     Log("\n> " + Name + " LEAVED ROOM.");
                     SendSystemMessageToAll(new Package(Command.INFO_LOGOUT, Name, "SERVER"));
@@ -163,10 +207,22 @@ class Server implements Runnable
             }
         }
     }
+    private boolean _Checking = false;
     private void CheckClients()
     {
-        if(!_Started) return;
+        if(!_Started||_Checking) return;
+        _Checking = true;
         SendSystemMessageToAll(new Package(Command.CHECK, "", "SERVER"));
+        _Checking = false;
+    }
+    private void UploadFiles()
+    {
+        if(_FileUploaders.isEmpty()) return;
+        if(_LastFileUploader>_FileUploaders.size()-1) _LastFileUploader = 0;
+        FileUploader _Uploader = _FileUploaders.get(_LastFileUploader);
+        byte[] _Buf = _Uploader.Send();
+        if(_Buf==null) { _Uploader.End(); _FileUploaders.remove(_LastFileUploader); return; }
+        _LastFileUploader++;
     }
     private void Start()
     {
@@ -178,7 +234,7 @@ class Server implements Runnable
             @Override
             public void run()
             {
-                //CheckClients();
+                CheckClients();
             }
         };
         _ClientsCheckTimer = new Timer();
@@ -189,11 +245,26 @@ class Server implements Runnable
         while(!_Stop)
             for(int c=0;c<_ClientInfos.size()&&!_Stop;c++)
             {
-                ClientInfo _Info = _ClientInfos.get(c);
-                _Info.Receive();
-                _Info.HandleTasks();
-                if(_Info._Disconnected) c--;
+                if(!_Checking)
+                {
+                    ClientInfo _Info = _ClientInfos.get(c);
+                    _Info.Receive();
+                    _Info.HandleTasks();
+                    if(!_FilesToUpload.isEmpty()) StartFileUploading();
+                    if(!_FileUploaders.isEmpty()) UploadFiles();
+                    if (_Info._Disconnected) c--;
+                }
             }
+    }
+    private void StartFileUploading()
+    {
+        if(_FilesToUpload.isEmpty()) return;
+        String _Path = _FilesToUpload.get(0);
+        _UploadedFiles.add(_Path);
+        String _FileName = _Path.substring(_Path.lastIndexOf('/'));
+        _FilesToUpload.remove(0);
+        SendSystemMessageToAll(new Package(Command.INFO_FILE, _FileName, "SERVER"));
+        Log("\nFILE '"+_FileName+"' ADDED TO THE ROOM.");
     }
     public void run() { Start(); }
     void AddClient(String _Name, UUID _UUID, ServerSender _ServerSender, ServerListener _ServerListener, Thread _ServerSenderThread, Thread _ServerListenerThread)
@@ -206,7 +277,10 @@ class Server implements Runnable
         _ServerListener._Thread = _ServerListenerThread;
         _ServerSender._UUID = _UUID;
         _ServerSender._Thread = _ServerSenderThread;
-        _ClientInfos.add(new ClientInfo(this, _ServerListener, _ServerSender, _Name, _UUID));
+        ClientInfo _Info = new ClientInfo(this, _ServerListener, _ServerSender, _Name, _UUID);
+        _Info._TasksPushStack.add(new PackageTask(GetNewTaskUID()));
+        _Info._TasksPopStack.add(new PackageTask(GetNewTaskUID()));
+        _ClientInfos.add(_Info);
     }
     void StartConnector()
     {

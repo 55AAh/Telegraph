@@ -11,14 +11,14 @@
     tools:context="com.jcp83.telegraph.ClientRoomActivity">
 
     <Button
-        android:text="@string/ExitFromClientRoomButtonText"
+        android:id="@+id/ExitFromClientRoomButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ExitFromClientRoomButton"
-        android:onClick="ExitFromClientRoomButtonClick"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentTop="true"
+        android:onClick="ExitFromClientRoomButtonClick"
+        android:text="@string/ExitFromClientRoomButtonText" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -26,19 +26,19 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/ClientMessageBox"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignBaseline="@+id/ClientSendMessageButton"
+        android:layout_alignBottom="@+id/ClientSendMessageButton"
+        android:layout_toRightOf="@+id/ClientSendMessageButton"
+        android:layout_toEndOf="@+id/ClientSendMessageButton" />
 
     <Button
-        android:text="@string/ClientSendMessageButtonText"
+        android:id="@+id/ClientSendMessageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ClientSendMessageButton"
-        android:onClick="ClientSendMessageButtonClick"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_toRightOf="@+id/ClientStatusTextView"
+        android:onClick="ClientSendMessageButtonClick"
+        android:text="@string/ClientSendMessageButtonText" />
 
     <TextView
         android:layout_width="wrap_content"

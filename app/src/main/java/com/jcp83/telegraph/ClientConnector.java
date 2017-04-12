@@ -39,6 +39,8 @@ class ClientConnector extends Thread
             Thread _ClientSenderThread = new Thread(_ClientSender);
             _ClientSender._Thread = _ClientSenderThread;
             _Client.Info = new ServerInfo(_Client, _ClientListener, _ClientSender);
+            _Client.Info._TasksPushStack.add(new PackageTask(_Client.GetNewTaskUID()));
+            _Client.Info._TasksPopStack.add(new PackageTask(_Client.GetNewTaskUID()));
             _ClientListenerThread.start();
             _ClientSenderThread.start();
             while(!_ClientListener.Started()||!_ClientSender.Started());

@@ -53,9 +53,10 @@ public class FindRoomActivity extends AppCompatActivity
     private void Join(int ID)
     {
         if(_SenderAccepter==null) return;
+        _Joining = true;
+        String ServerIP = _SenderAccepter.Join(ID);
         Intent RoomJoinIntent = new Intent(FindRoomActivity.this,ClientRoomActivity.class);
         RoomJoinIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        String ServerIP = _SenderAccepter.Join(ID);
         if(ServerIP==null) return;
         RoomJoinIntent.putExtra(ServerIPIntentID, ServerIP);
         Settings _Settings = new Settings(getSharedPreferences(Settings.APP_SETTINGS, MODE_PRIVATE));
@@ -73,6 +74,19 @@ public class FindRoomActivity extends AppCompatActivity
             public void run()
             {
                 _RoomsAdapter.add(_Name);
+            }
+        });
+    }
+    private boolean _Joining = false;
+    protected void NotifyRoomsChanged()
+    {
+        if(_RoomsAdapter==null||_FoundedRoomsListView==null||_Joining) return;
+        _FoundedRoomsListView.post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                _RoomsAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -101,9 +115,9 @@ public class FindRoomActivity extends AppCompatActivity
     }
     private void StopBroadcastAccepter()
     {
-        if(_SenderAccepter==null) return;
-        if(_SenderAccepter.Stopped()) return;
+        if (_SenderAccepter == null) return;
+        if (_SenderAccepter.Stopped()) return;
         _SenderAccepter.Stop();
-        _SenderAccepter=null;
+        _SenderAccepter = null;
     }
 }
