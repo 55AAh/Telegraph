@@ -64,7 +64,9 @@ class Server implements Runnable
                         Info._TasksPushStack.add(Task);
                         SendSystemMessage(Info, new Package(Command.TASK_FILE, _UID, "SERVER"));
                         int _Index = Integer.valueOf(PACKAGE.GetData().toString());
-                        FileUploader _Uploader = new FileUploader(Task, _UploadedFiles.get(_Index));
+                        FileUploader _Uploader = new FileUploader(Task, _UploadedFiles.get(_Index), "SERVER");
+                        _Uploader._Thread = new Thread(_Uploader);
+                        _Uploader._Thread.start();
                         _FileUploaders.add(_Uploader);
                         break;
                     }
@@ -215,15 +217,6 @@ class Server implements Runnable
         SendSystemMessageToAll(new Package(Command.CHECK, "", "SERVER"));
         _Checking = false;
     }
-    private void UploadFiles()
-    {
-        if(_FileUploaders.isEmpty()) return;
-        if(_LastFileUploader>_FileUploaders.size()-1) _LastFileUploader = 0;
-        FileUploader _Uploader = _FileUploaders.get(_LastFileUploader);
-        byte[] _Buf = _Uploader.Send();
-        if(_Buf==null) { _Uploader.End(); _FileUploaders.remove(_LastFileUploader); return; }
-        _LastFileUploader++;
-    }
     private void Start()
     {
         if(_Started) return;
@@ -251,7 +244,6 @@ class Server implements Runnable
                     _Info.Receive();
                     _Info.HandleTasks();
                     if(!_FilesToUpload.isEmpty()) StartFileUploading();
-                    if(!_FileUploaders.isEmpty()) UploadFiles();
                     if (_Info._Disconnected) c--;
                 }
             }

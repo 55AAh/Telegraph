@@ -11,6 +11,8 @@ public enum Command
     INFO_FILE,
     DOWNLOAD_FILE,
     TASK_FILE,
+    FILE,
+    TASK_ENDED,
     INFO_LOGIN,
     INFO_LOGOUT,
     INFO_DISCONNECT,

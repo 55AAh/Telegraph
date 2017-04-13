@@ -69,6 +69,12 @@ class Client implements Runnable
         if(Info._Disconnected) _ServerDisconnected = true;
     }
     private int _LastUploadedFile = 0;
+    private ArrayList<FileDownloader> _FileDownloaders = new ArrayList<>();
+    private int _LastFilDownloader = 0;
+    protected void HandleTaskTransmitter(PackageTransmitter _Transmitter)
+    {
+
+    }
     protected boolean HandleSystemMessage(PackageTransmitter _Transmitter)
     {
         Package PACKAGE = (Package)Package._GetObject(_Transmitter.GetData());
@@ -81,6 +87,13 @@ class Client implements Runnable
             case INFO_FILE:
                 Log("\nNEW FILE ADDED : '"+PACKAGE.GetData()+"' ("+_LastUploadedFile+").");
                 _LastUploadedFile++;
+                break;
+            case TASK_FILE:
+                PackageTask _Task = new PackageTask(Integer.parseInt(PACKAGE.GetData().toString()));
+                FileDownloader _Downloader = new FileDownloader("storage/emulated/0/TEMPO/FILE"+Math.abs(new Random().nextInt()%1000000), _Task, _ClientRoomActivity);
+                _Downloader._Thread = new Thread(_Downloader);
+                _Downloader._Thread.start();
+                Info._TasksPopStack.add(_Task);
                 break;
             default: break;
         }
