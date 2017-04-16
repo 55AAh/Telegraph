@@ -21,15 +21,15 @@ class ClientConnector extends Thread
     boolean Success() { return _Success; }
     private void Log(String Msg)
     {
-        _ClientRoomActivity.ShowMessage(Msg);
+        _Client.Log(Msg);
     }
-    private void Fail() { Log("\n> CLIENTCONNECTOR FAILED."); _Success = false; }
+    private void Fail() { Log("CLIENTCONNECTOR FAILED."); _Success = false; }
     private void Connect()
     {
         try
         {
             String serverIP = _ClientRoomActivity.GetServerIP();
-            Log("\n> CONNECTING ...");
+            Log("CONNECTING ...");
             InetAddress IPAddress=InetAddress.getByName(serverIP);
             Socket _Socket = new Socket(IPAddress, PORT);
             ClientListener _ClientListener = new ClientListener(_Client, _Socket);

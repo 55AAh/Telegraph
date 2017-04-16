@@ -1,8 +1,12 @@
 package com.jcp83.telegraph;
 
 import android.content.Intent;
+import android.graphics.Color;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -24,9 +28,9 @@ class Server implements Runnable
         this._ServerRoomActivity = _ServerRoomActivity;
         this.PORT = PORT;
     }
-    void Log(String Msg)
+    void Log(Message Msg)
     {
-        _ServerRoomActivity.ShowMessage(Msg);
+        _ServerRoomActivity.ShowMessage(Msg, Color.RED);
     }
     private boolean _Started = false;
     public boolean Started() { return _Started; }
@@ -42,7 +46,18 @@ class Server implements Runnable
     }
     private ArrayList<String> _UploadedFiles = new ArrayList<>();
     private ArrayList<FileUploader> _FileUploaders = new ArrayList<>();
-    private int _LastFileUploader = 0;
+    private String GetTime()
+    {
+        return new SimpleDateFormat("HH:mm:ss").format(new Date());
+    }
+    private void ShowMessage(String _Sender, String _Text)
+    {
+        _ServerRoomActivity.ShowMessage(new Message(_Sender, _Text, GetTime()), Color.BLACK);
+    }
+    protected void Log(String _Text)
+    {
+        Log(new Message("", _Text, GetTime()));
+    }
     protected boolean HandleSystemMessage(PackageTransmitter _Transmitter, UUID _UUID)
     {
         Package PACKAGE = (Package)Package._GetObject(_Transmitter.GetData());
@@ -53,7 +68,7 @@ class Server implements Runnable
                 DisconnectClient(_UUID);
                 return true;
             case DOWNLOAD_FILE:
-                Log("\nCLIENT "+PACKAGE.GetSender()+" ("+_UUID.toString()+") ASKING FOR DOWNLOAD FILE "+PACKAGE.GetData());
+                Log("CLIENT "+PACKAGE.GetSender()+" ("+_UUID.toString()+") ASKING FOR DOWNLOAD FILE "+PACKAGE.GetData());
                 for(int c=0;c<_ClientInfos.size();c++)
                 {
                     ClientInfo Info = _ClientInfos.get(c);
@@ -83,10 +98,8 @@ class Server implements Runnable
         {
             case MESSAGE:
                 String Msg = PACKAGE.GetData().toString();
-                Log("\n"+PACKAGE.GetSender()+" : "+Msg);
-                PackageTask _Task = new PackageTask(GetNewTaskUID());
-                _Task.Add(PACKAGE.GetTransmitter(GetNewTaskUID()));
-                BindTaskToAll(_Task);
+                ShowMessage(PACKAGE.GetSender(), PACKAGE.GetData().toString());
+                BindToAllSystemTasks(PACKAGE);
                 break;
             default: break;
         }
@@ -134,11 +147,6 @@ class Server implements Runnable
     {
         _ServerRoomActivity.F();
     }
-    private ArrayList<String> _FilesToUpload = new ArrayList<>();
-    protected void UploadFile(String Path)
-    {
-        _FilesToUpload.add(Path);
-    }
     private void ParseCommand(String Msg)
     {
         int SP=0;for(;SP<Msg.length();SP++) if(Msg.charAt(SP)==' ') break;
@@ -151,7 +159,7 @@ class Server implements Runnable
             case "stop": Stop(); break;
             case "f": F(); break;
             case "tt": TT(); break;
-            default: Log("\nNo such command : '"+Cmd+"'"); break;
+            default: Log("ERROR: NO SUCH COMMAND : '"+Cmd+"'"); break;
         }
     }
     public void SendText(String Text)
@@ -160,7 +168,7 @@ class Server implements Runnable
         {
             if(Text.getBytes()[0]=='#') ParseCommand(Text);
             else BindToAllSystemTasks(new Package(Command.MESSAGE, Text, "SERVER"));
-            Log("\nSERVER : "+Text);
+            ShowMessage("SERVER", Text);
         }
     }
     protected void SendSystemMessage(ClientInfo _Info, Package PACKAGE)
@@ -197,12 +205,12 @@ class Server implements Runnable
                 _ClientInfos.remove(c);
                 if (!_Disconnected)
                 {
-                    Log("\n> " + Name + " LEAVED ROOM.");
+                    Log(Name + " LEAVED ROOM.");
                     SendSystemMessageToAll(new Package(Command.INFO_LOGOUT, Name, "SERVER"));
                 }
                 else
                 {
-                    Log("\n> " + Name + " DISCONNECTED.");
+                    Log(Name + " DISCONNECTED.");
                     SendSystemMessageToAll(new Package(Command.INFO_DISCONNECT, Name, "SERVER"));
                 }
                 break;
@@ -243,20 +251,16 @@ class Server implements Runnable
                     ClientInfo _Info = _ClientInfos.get(c);
                     _Info.Receive();
                     _Info.HandleTasks();
-                    if(!_FilesToUpload.isEmpty()) StartFileUploading();
                     if (_Info._Disconnected) c--;
                 }
             }
     }
-    private void StartFileUploading()
+    protected void UploadFile(String _Path)
     {
-        if(_FilesToUpload.isEmpty()) return;
-        String _Path = _FilesToUpload.get(0);
         _UploadedFiles.add(_Path);
         String _FileName = _Path.substring(_Path.lastIndexOf('/'));
-        _FilesToUpload.remove(0);
         SendSystemMessageToAll(new Package(Command.INFO_FILE, _FileName, "SERVER"));
-        Log("\nFILE '"+_FileName+"' ADDED TO THE ROOM.");
+        Log("FILE '"+_FileName+"' ADDED TO THE ROOM.");
     }
     public void run() { Start(); }
     void AddClient(String _Name, UUID _UUID, ServerSender _ServerSender, ServerListener _ServerListener, Thread _ServerSenderThread, Thread _ServerListenerThread)
@@ -264,7 +268,7 @@ class Server implements Runnable
         _ServerSender._UUID = _UUID;
         Package P_INFO_LOGIN = new Package(Command.INFO_LOGIN, _Name, "SERVER");
         SendSystemMessageToAll(P_INFO_LOGIN);
-        Log("\n> "+_Name+" JOINED ROOM.");
+        Log(_Name+" JOINED ROOM.");
         _ServerListener._UUID = _UUID;
         _ServerListener._Thread = _ServerListenerThread;
         _ServerSender._UUID = _UUID;

@@ -25,7 +25,7 @@ class ServerListener implements Runnable
     boolean Started() { return _Started; }
     private void Fail()
     {
-        _Server.Log("\n> SERVERLISTENER FAILED.");
+        _Server.Log("SERVERLISTENER FAILED.");
     }
     private boolean _Stop = false;
     private boolean _Stopped = false;

@@ -22,7 +22,7 @@ class ClientListener implements Runnable
     }
     private void Fail()
     {
-        _Client.Log("\n> CLIENTLISTENER FAILED.");
+        _Client.Log("CLIENTLISTENER FAILED.");
     }
     public boolean HasPackages() { return !_Stack.isEmpty(); }
     private boolean _Stop = false;

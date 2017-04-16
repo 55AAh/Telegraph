@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:orderInCategory="1"
+        android:title="@string/server_menu_settings_text" />
+
+    <item
+        android:id="@+id/action_files"
+        android:icon="@android:drawable/ic_menu_save"
+        android:orderInCategory="2"
+        android:title="@string/server_menu_files_text" />
+
+    <item
+        android:id="@+id/action_exit"
+        android:checkable="false"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:orderInCategory="3"
+        android:title="@string/server_menu_exit_text" />
+
+</menu>

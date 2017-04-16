@@ -17,10 +17,9 @@ local.properties
 
 #GITIGNORE
 
+
 /build/*
 /.gradle/*
-<<<<<<< HEAD
 /.idea/*
-=======
 .idea
->>>>>>> c77d4213c1d759ace9c84eb59dbc631d40dca333
+local.properties

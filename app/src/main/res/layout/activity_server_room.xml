@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_server_room"
     android:layout_width="match_parent"
@@ -29,32 +30,37 @@
         android:layout_alignParentEnd="true" />
 
     <ScrollView
+        android:id="@+id/ServerMessagesBoxScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/ServerMessagesBoxScrollView"
-        android:layout_below="@+id/ServerStatusTextView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ServerMessagesBox"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_above="@+id/UploadFileButton">
 
-        <TextView
-            android:text="@string/ServerMessagesBoxText"
-            android:layout_width="wrap_content"
+        <TableLayout
+            android:id="@+id/ServerMessagesBoxTableLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/ServerMessagesBox"/>
+            android:shrinkColumns="2, true">
 
+            <TableRow
+                android:id="@+id/ServerMessagesBoxTableInfoRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </TableRow>
+        </TableLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/ServerSendMessageButton"
+    <TextView
+        android:id="@+id/ServerMessagesBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/ServerMessageBox"
-        android:layout_alignBottom="@+id/ServerMessageBox"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="ServerSendMessageButtonClick"
-        android:text="@string/ServerSendMessageButtonText" />
+        android:text="@string/ServerMessagesBoxText"
+        android:gravity="center"
+        android:layout_below="@+id/ServerStatusTextView"
+        android:layout_centerHorizontal="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -63,8 +69,8 @@
         android:ems="10"
         android:id="@+id/ServerMessageBox"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/ServerSendMessageButton"
-        android:layout_toEndOf="@+id/ServerSendMessageButton" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <ToggleButton
         android:id="@+id/ServerVisibilityToggleButton"
@@ -83,10 +89,19 @@
         android:onClick="UploadFileButtonClick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Загрузить файл"
+        android:layout_above="@+id/ServerMessageBox"
+        android:layout_toRightOf="@+id/ServerStatusTextView"
+        android:layout_toEndOf="@+id/ServerStatusTextView" />
+
+    <ImageButton
+        android:id="@+id/ServerSendMessageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="ServerSendMessageButtonClick"
+        app:srcCompat="@android:drawable/ic_menu_send"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="28dp"
-        android:text="Загрузить файл" />
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

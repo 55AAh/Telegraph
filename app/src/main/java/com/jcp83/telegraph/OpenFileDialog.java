@@ -30,6 +30,7 @@ public class OpenFileDialog extends AlertDialog.Builder
     private String accessDeniedMessage;
     private boolean isOnlyFoldersFilter;
     public ServerRoomActivity _ServerRoomActivity;
+    public ClientRoomActivity _ClientRoomActivity;
     public interface OpenDialogListener {
         void OnSelectedFile(String fileName);
     }
@@ -85,13 +86,11 @@ public class OpenFileDialog extends AlertDialog.Builder
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (selectedIndex > -1 && listener != null) {
-                            listener.OnSelectedFile(listView.getItemAtPosition(selectedIndex).toString());
+                        if (selectedIndex > -1)
+                        {
+                            if(_ServerRoomActivity!=null) _ServerRoomActivity.UploadFile(listView.getItemAtPosition(selectedIndex).toString());
+                            if(_ClientRoomActivity!=null) _ClientRoomActivity.UploadFile(listView.getItemAtPosition(selectedIndex).toString());
                         }
-                        if (listener != null && isOnlyFoldersFilter) {
-                            listener.OnSelectedFile(currentPath);
-                        }
-                        _ServerRoomActivity.UploadFile(listView.getItemAtPosition(selectedIndex).toString());
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null);

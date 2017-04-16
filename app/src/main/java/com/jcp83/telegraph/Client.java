@@ -1,6 +1,10 @@
 package com.jcp83.telegraph;
 
+import android.graphics.Color;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,13 +28,25 @@ class Client implements Runnable
         this._Login = _Login;
         this._UUID = _UUID;
     }
-    void Log(String Msg)
+    private String GetTime()
     {
-        _ClientRoomActivity.ShowMessage(Msg);
+        return new SimpleDateFormat("HH:mm:ss").format(new Date());
+    }
+    void Log(String _Text)
+    {
+        Log(new Message("", _Text, GetTime()));
+    }
+    void Log(Message Msg)
+    {
+        _ClientRoomActivity.ShowMessage(Msg, Color.RED);
+    }
+    private void ShowMessage(String _Sender, String _Text)
+    {
+        _ClientRoomActivity.ShowMessage(new Message(_Sender, _Text, GetTime()), Color.BLACK);
     }
     private void Fail()
     {
-        Log("\n> CLIENT FAILED.");
+        Log("CLIENT FAILED.");
     }
     private boolean _Started = false;
     boolean Started() { return _Started; }
@@ -50,7 +66,7 @@ class Client implements Runnable
         if(Text.length()>0)
         {
             if(Text.getBytes()[0]=='#') ParseCommand(Text);
-            else BindToSystemTask(new Package(Command.MESSAGE, Text, "SERVER"));
+            else BindToSystemTask(new Package(Command.MESSAGE, Text, _Login));
         }
     }
     private int _TasksUID=0;
@@ -70,7 +86,6 @@ class Client implements Runnable
     }
     private int _LastUploadedFile = 0;
     private ArrayList<FileDownloader> _FileDownloaders = new ArrayList<>();
-    private int _LastFilDownloader = 0;
     protected void HandleTaskTransmitter(PackageTransmitter _Transmitter)
     {
 
@@ -81,11 +96,11 @@ class Client implements Runnable
         Command _Command = PACKAGE.GetCommand();
         switch(_Command)
         {
-            case EXIT: Log("\n> ROOM CLOSED."); Stop(); break;
-            case INFO_LOGIN: Log("\n> "+PACKAGE.GetData()+" JOINED ROOM."); break;
-            case INFO_LOGOUT: Log("\n> "+PACKAGE.GetData()+" LEAVED ROOM."); break;
+            case EXIT: Log("ROOM CLOSED."); Stop(); break;
+            case INFO_LOGIN: Log(PACKAGE.GetData()+" JOINED ROOM."); break;
+            case INFO_LOGOUT: Log(PACKAGE.GetData()+" LEAVED ROOM."); break;
             case INFO_FILE:
-                Log("\nNEW FILE ADDED : '"+PACKAGE.GetData()+"' ("+_LastUploadedFile+").");
+                Log("NEW FILE ADDED : '"+PACKAGE.GetData()+"' ("+_LastUploadedFile+").");
                 _LastUploadedFile++;
                 break;
             case TASK_FILE:
@@ -104,7 +119,7 @@ class Client implements Runnable
         Package PACKAGE = (Package)Package._GetObject(_Transmitter.GetData());
         switch (PACKAGE.GetCommand())
         {
-            case MESSAGE: Log("\n"+PACKAGE.GetSender()+" : "+PACKAGE.GetData().toString()); break;
+            case MESSAGE: ShowMessage(PACKAGE.GetSender(), PACKAGE.GetData().toString()); break;
             default: break;
         }
     }
@@ -142,16 +157,16 @@ class Client implements Runnable
             case "stop": Stop(); break;
             case "tt": TT(); break;
             case "d":
-                if(Param.isEmpty()) Log("\nERROR : Must be selected file index !");
+                if(Param.isEmpty()) Log("ERROR : Must be selected file index !");
                 else
                 {
                     int _Index = -1;
                     try { _Index = Integer.valueOf(Param); }
-                    catch (Exception e) { Log("\nERROR : Invalid index : '"+Param+"' !"); }
+                    catch (Exception e) { Log("ERROR : Invalid index : '"+Param+"' !"); }
                     if(_Index>=0)
                     {
                         if(_Index>=_LastUploadedFile)
-                            Log("\nERROR : File "+_Index+" not exist.");
+                            Log("ERROR : File "+_Index+" not exist.");
                         else
                         {
                             SendSystemMessage(new Package(Command.DOWNLOAD_FILE, Param, _Login));
@@ -159,7 +174,7 @@ class Client implements Runnable
                     }
                 }
                 break;
-            default: Log("\nERROR : No such command : '"+Cmd+"'"); break;
+            default: Log("ERROR : No such command : '"+Cmd+"'"); break;
         }
     }
     private void Start()
@@ -187,7 +202,7 @@ class Client implements Runnable
         _ClientRoomActivity.PopStatus();
         if(P_LOGIN_RESULT.GetCommand()==Command.LOGIN_SUCCESS)
         {
-            Log("\n> LOGIN SUCCESS.");
+            Log("LOGIN SUCCESS.");
             _ServerCheckTimer.schedule(_ServerCheckTimerTask, SERVER_CHECK_TIME, SERVER_CHECK_TIME);
             _Started = true;
             while(!_Stop)
@@ -199,12 +214,12 @@ class Client implements Runnable
             if(!_ServerDisconnected) SendSystemMessage(new Package(Command.EXIT,"",_Login));
             else
             {
-                if (Info._Disconnected) Log("\nSERVER DISCONNECTED.");
+                if (Info._Disconnected) Log("SERVER DISCONNECTED.");
             }
         }
         else
         {
-            Log("\n> LOGIN FAILED.");
+            Log("LOGIN FAILED.");
         }
     }
     public void run() { Start(); }

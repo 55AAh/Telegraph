@@ -24,7 +24,7 @@ class ServerConnector extends Thread
     boolean Stopped() { return _Stopped; }
     protected void Log(String Msg)
     {
-        _ServerRoomActivity.ShowMessage(Msg);
+        _Server.Log(Msg);
     }
     private boolean StopF = false;
     void Stop()

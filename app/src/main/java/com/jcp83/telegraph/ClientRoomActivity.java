@@ -1,16 +1,19 @@
 package com.jcp83.telegraph;
 
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
-
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -19,12 +22,14 @@ public class ClientRoomActivity extends AppCompatActivity
 {
     private Client _Client = null;
     private TextView _MessagesBox = null;
-    private ScrollView _ClientMessagesBoxScrollView = null;
     private EditText _MessageBox = null;
+    private ScrollView _ClientMessagesBoxScrollView = null;
+    private TableLayout _ClientMessagesBoxTableLayout = null;
     private TextView _StatusTextView;
     private String ServerIP;
     private String UserName;
     private UUID _UUID;
+    private AlertDialog _ExitDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -32,10 +37,22 @@ public class ClientRoomActivity extends AppCompatActivity
         setContentView(R.layout.activity_client_room);
         _MessagesBox = (TextView)findViewById(R.id.ClientMessagesBox);
         _ClientMessagesBoxScrollView = (ScrollView)findViewById(R.id.ClientMessagesBoxScrollView);
+        _ClientMessagesBoxTableLayout = (TableLayout)findViewById(R.id.ClientMessagesBoxTableLayout);
         _MessageBox = (EditText)findViewById(R.id.ClientMessageBox);
         _StatusTextView = (TextView)findViewById(R.id.ClientStatusTextView);
         _StatusesStack.add(Status.CLIENT_IDLE);
         _StatusTextView.setText(GetStringStatus(Status.CLIENT_IDLE));
+        AlertDialog.Builder _ExitDialogBuilder = new AlertDialog.Builder(this);
+        _ExitDialogBuilder.setTitle("Выход").setMessage("Вы действительно хотите выйти из комнаты ?");
+        _ExitDialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int id) { Exit(); }
+        });
+        _ExitDialogBuilder.setNegativeButton("Нет", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int id) { }
+        });
+        _ExitDialog = _ExitDialogBuilder.create();
     }
     @Override
     protected void onStart()
@@ -46,12 +63,45 @@ public class ClientRoomActivity extends AppCompatActivity
         UserName = getIntent().getStringExtra(FindRoomActivity.UserNameIntentID);
         String _UUIDString = getIntent().getStringExtra(FindRoomActivity.UserUUIDIntentID);
         _UUID = UUID.fromString(_UUIDString);
-        FileOutputStream outputStream = null;
-        String D = getFilesDir().getAbsolutePath();Start();
+        Start();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.client_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int ID = item.getItemId();
+        switch(ID)
+        {
+            case R.id.action_settings: OpenSettings(); break;
+            case R.id.action_files: OpenFilesMenu(); break;
+            case R.id.action_exit: OpenExitDialog(); break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    private void OpenSettings()
+    {
+
+    }
+    private void OpenFilesMenu()
+    {
+
+    }
+    private void OpenExitDialog()
+    {
+        _ExitDialog.show();
     }
     protected String GetServerIP()
     {
         return ServerIP;
+    }
+    protected void UploadFile(String Path)
+    {
+        /*_Client.UploadFile(Path);*/
     }
     private void ScrollMessagesBoxScrollView()
     {
@@ -87,13 +137,15 @@ public class ClientRoomActivity extends AppCompatActivity
         Exit();
     }
     public void ClientSendMessageButtonClick(View view) { SendMessage(_MessageBox.getText().toString()); }
-    public void ShowMessage(String Msg)
+    void ShowMessage(Message Msg, int Color)
     {
-        new Thread(new ShowMessage(Msg)).start();
+        new Thread(new ClientRoomActivity.ShowMessage(Msg, Color, this)).start();
     }
     class ShowMessage implements Runnable
     {
-        final String Msg;
+        final Message _Msg;
+        final int _Color;
+        final ClientRoomActivity _ClientRoomActivity;
         @Override
         public void run()
         {
@@ -102,13 +154,30 @@ public class ClientRoomActivity extends AppCompatActivity
                 @Override
                 public void run()
                 {
-                    _MessagesBox.append(Msg);
+                    TableRow _MessageRow = new TableRow(_ClientRoomActivity);
+                    TextView _MessageTimeTextView = new TextView(_ClientRoomActivity);
+                    _MessageTimeTextView.setText(_Msg._Time);
+                    TextView _MessageSenderTextView = new TextView(_ClientRoomActivity);
+                    _MessageSenderTextView.setText(" "+_Msg._Sender+" ");
+                    _MessageSenderTextView.setTextColor(Color.BLUE);
+                    TextView _MessageTextView = new TextView(_ClientRoomActivity);
+                    _MessageTextView.setText(_Msg._Text);
+                    _MessageTextView.setTextColor(_Color);
+                    _MessageRow.addView(_MessageTimeTextView);
+                    _MessageRow.addView(_MessageSenderTextView);
+                    _MessageRow.addView(_MessageTextView);
+                    _ClientMessagesBoxTableLayout.addView(_MessageRow);
                     try { Thread.sleep(100); } catch (InterruptedException e) {}
                     ScrollMessagesBoxScrollView();
                 }
             });
         }
-        public ShowMessage(String Msg) { this.Msg = Msg; }
+        public ShowMessage(Message _Msg, int _Color, ClientRoomActivity _ClientRoomActivity)
+        {
+            this._Msg = _Msg;
+            this._Color = _Color;
+            this._ClientRoomActivity = _ClientRoomActivity;
+        }
     }
     private String GetStringStatus(Status _Status)
     {
@@ -146,8 +215,6 @@ public class ClientRoomActivity extends AppCompatActivity
                 public void run()
                 {
                     _StatusTextView.setText(_Status);
-                    try { Thread.sleep(100); } catch (InterruptedException e) {}
-                    ScrollMessagesBoxScrollView();
                 }
             });
         }

@@ -24,4 +24,10 @@
     <string name="FoundedRoomsTextViewText">Найденные комнаты :</string>
     <string name="main_menu_settings_text">Настройки</string>
     <string name="Settings_SaveAndExitButtonText">Сохранить и выйти</string>
+    <string name="client_menu_settings_text">Настройки</string>
+    <string name="client_menu_exit_text">Выйти</string>
+    <string name="client_menu_files_text">Файлы</string>
+    <string name="server_menu_settings_text">Настройки</string>
+    <string name="server_menu_files_text">Файлы</string>
+    <string name="server_menu_exit_text">Выйти</string>
 </resources>
