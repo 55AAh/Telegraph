@@ -9,6 +9,7 @@ public class PackageTransmitter implements Serializable
     private byte[] _Data = null;
     protected boolean _IsSystem = false;
     protected boolean _IsSystemTask = false;
+    protected boolean _Last = false;
     public PackageTransmitter(int _UID, int _Offset)
     {
         this._UID = _UID;

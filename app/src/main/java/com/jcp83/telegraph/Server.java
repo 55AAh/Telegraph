@@ -76,8 +76,10 @@ class Server implements Runnable
                         int _UID = GetNewTaskUID();
                         PackageTask Task = new PackageTask(_UID);
                         Info._TasksPushStack.add(Task);
-                        SendSystemMessage(Info, new Package(Command.TASK_FILE, _UID, "SERVER"));
                         int _Index = Integer.valueOf(PACKAGE.GetData().toString());
+                        String _FileName = _UploadedFiles.get(_Index);
+                        _FileName = _FileName.substring(_FileName.lastIndexOf('/')+1);
+                        SendSystemMessage(Info, new Package(Command.TASK_FILE, _UID, _FileName));
                         FileUploader _Uploader = new FileUploader(Task, _UploadedFiles.get(_Index), "SERVER");
                         _Uploader._Thread = new Thread(_Uploader);
                         _Uploader._Thread.start();
@@ -85,6 +87,21 @@ class Server implements Runnable
                     }
                 }
                 break;
+            case TASK_FILE:
+                PackageTask _Task = new PackageTask(Integer.parseInt(PACKAGE.GetData().toString()));
+                String _Path = _ServerRoomActivity._Settings.GetDownloadDir()+"/"+PACKAGE.GetSender();
+                FileDownloader _Downloader = new FileDownloader(_Path, _Task, _ServerRoomActivity);
+                _Downloader._Thread = new Thread(_Downloader);
+                _Downloader._Thread.start();
+                for(int c=0;c<_ClientInfos.size();c++)
+                {
+                    ClientInfo Info = _ClientInfos.get(c);
+                    if (Info.GetUUID() == _UUID)
+                    {
+                        Info._TasksPopStack.add(_Task);
+                        break;
+                    }
+                }
             default: break;
         }
         return false;
@@ -250,6 +267,12 @@ class Server implements Runnable
                     _Info.Receive();
                     _Info.HandleTasks();
                     if (_Info._Disconnected) c--;
+                    if(!_ServerRoomActivity._DownloadedFilesNotifyList.isEmpty())
+                    {
+                        Log("FILE '"+_ServerRoomActivity._DownloadedFilesNotifyList.get(0)+"' DOWNLOADED");
+                        _UploadedFiles.add(_ServerRoomActivity._DownloadedFilesNotifyList.get(0));
+                        _ServerRoomActivity._DownloadedFilesNotifyList.remove(0);
+                    }
                 }
             }
     }

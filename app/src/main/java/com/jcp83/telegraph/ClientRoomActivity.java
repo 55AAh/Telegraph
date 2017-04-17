@@ -21,6 +21,7 @@ import java.util.UUID;
 public class ClientRoomActivity extends AppCompatActivity
 {
     private Client _Client = null;
+    protected Settings _Settings;
     private TextView _MessagesBox = null;
     private EditText _MessageBox = null;
     private ScrollView _ClientMessagesBoxScrollView = null;
@@ -30,6 +31,10 @@ public class ClientRoomActivity extends AppCompatActivity
     private String UserName;
     private UUID _UUID;
     private AlertDialog _ExitDialog;
+    private AlertDialog.Builder _FilesDialogBuilder;
+    private AlertDialog _FilesDialog;
+    private AlertDialog.OnClickListener _FilesListAdapterOnClickListener;
+    protected ArrayList<String> _DownloadedFilesNotifyList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -59,10 +64,11 @@ public class ClientRoomActivity extends AppCompatActivity
     {
         super.onStart();
         new LockOrientation(this);
+        _Settings = new Settings(getSharedPreferences(Settings.APP_SETTINGS, MODE_PRIVATE));
+        _Settings.Load();
         ServerIP = getIntent().getStringExtra(FindRoomActivity.ServerIPIntentID);
-        UserName = getIntent().getStringExtra(FindRoomActivity.UserNameIntentID);
-        String _UUIDString = getIntent().getStringExtra(FindRoomActivity.UserUUIDIntentID);
-        _UUID = UUID.fromString(_UUIDString);
+        UserName = _Settings.GetUserName();
+        _UUID = _Settings.GetUUID();
         Start();
     }
     @Override
@@ -89,7 +95,15 @@ public class ClientRoomActivity extends AppCompatActivity
     }
     private void OpenFilesMenu()
     {
-
+        CharSequence[] _FileNamesC = new CharSequence[_FileNames.size()];
+        for(int c=0;c<_FileNames.size(); c++) _FileNamesC[c]=_FileNames.get(c);
+        _FilesDialogBuilder.setItems(_FileNamesC, _FilesListAdapterOnClickListener)
+                .setNegativeButton("OK", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int id) { }
+                });
+        _FilesDialog = _FilesDialogBuilder.create();
+        _FilesDialog.show();
     }
     private void OpenExitDialog()
     {
@@ -99,9 +113,20 @@ public class ClientRoomActivity extends AppCompatActivity
     {
         return ServerIP;
     }
-    protected void UploadFile(String Path)
+    protected ArrayList<String> _FileNames = new ArrayList<>();
+    protected void UploadFile(String _Path)
     {
-        /*_Client.UploadFile(Path);*/
+        _Client.UploadFile(_Path);
+        _FileNames.add(_Path.substring(_Path.lastIndexOf('/')));
+    }
+    protected void F()
+    {
+        OpenFileDialog _OpenFileDialog = new OpenFileDialog(this);
+        _OpenFileDialog._ClientRoomActivity = this;
+        _Settings = new Settings(getSharedPreferences(Settings.APP_SETTINGS, MODE_PRIVATE));
+        _Settings.Load();
+        _OpenFileDialog._CurrentPath = _Settings.GetLastUploadDir();
+        _OpenFileDialog.show();
     }
     private void ScrollMessagesBoxScrollView()
     {

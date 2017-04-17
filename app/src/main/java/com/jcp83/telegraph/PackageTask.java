@@ -7,7 +7,6 @@ public class PackageTask
     protected ArrayList<PackageTransmitter> _Stack = new ArrayList<>();
     protected int _UID;
     protected boolean _Completed = false;
-    protected long _Elapsed = 0;
     public PackageTask(int _UID)
     {
         this._UID = _UID;
@@ -18,8 +17,7 @@ public class PackageTask
     {
         PackageTransmitter P = _Stack.get(0);
         _Stack.remove(0);
-        _Elapsed--;
-        if(_Elapsed==0) _Completed = true;
+        if(P._Last) _Completed = true;
         return P;
     }
 }

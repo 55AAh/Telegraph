@@ -56,8 +56,6 @@ public class ClientInfo
             {
                 if(_LastHandledPopTask==0)
                     _Server.HandleSystemTaskTransmitter(_Task.Get(), _UUID);
-                //else
-
             }
             if(_Task.IsCompleted()) _TasksPopStack.remove(_LastHandledPushTask);
             _LastHandledPopTask++;

@@ -1,31 +1,21 @@
 package com.jcp83.telegraph;
 
-import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
@@ -35,6 +25,7 @@ public class ServerRoomActivity extends AppCompatActivity
     private final int PORT = 7000;
     private Server _Server = null;
     private Thread _ServerThread = null;
+    protected Settings _Settings;
     private TextView _MessagesBox = null;
     private ScrollView _ServerMessagesBoxScrollView = null;
     private TableLayout _ServerMessagesBoxTableLayout = null;
@@ -46,6 +37,7 @@ public class ServerRoomActivity extends AppCompatActivity
     private AlertDialog _FilesDialog;
     private ListAdapter _FilesListAdapter;
     private AlertDialog.OnClickListener _FilesListAdapterOnClickListener;
+    protected ArrayList<String> _DownloadedFilesNotifyList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -69,7 +61,6 @@ public class ServerRoomActivity extends AppCompatActivity
         });
         CreateDialogs();
     }
-    protected ArrayList<String> _FileNames = new ArrayList<>();
     private void CreateDialogs()
     {
         AlertDialog.Builder _ExitDialogBuilder = new AlertDialog.Builder(this);
@@ -155,7 +146,7 @@ public class ServerRoomActivity extends AppCompatActivity
         startActivity(new Intent(ServerRoomActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
     public void UploadFileButtonClick(View view) { F(); }
-    protected ArrayList<String> _FilesToUpload = new ArrayList<>();
+    protected ArrayList<String> _FileNames = new ArrayList<>();
     protected void UploadFile(String _Path)
     {
         _Server.UploadFile(_Path);
@@ -165,9 +156,9 @@ public class ServerRoomActivity extends AppCompatActivity
     {
         OpenFileDialog _OpenFileDialog = new OpenFileDialog(this);
         _OpenFileDialog._ServerRoomActivity = this;
-        Settings _Settings = new Settings(getSharedPreferences(Settings.APP_SETTINGS, MODE_PRIVATE));
+        _Settings = new Settings(getSharedPreferences(Settings.APP_SETTINGS, MODE_PRIVATE));
         _Settings.Load();
-        _OpenFileDialog._CurrentPath = "/storage/emulated/0";//_Settings.GetLastUploadDir();
+        _OpenFileDialog._CurrentPath = _Settings.GetLastUploadDir();
         _OpenFileDialog.show();
     }
     protected void SetRoomNameToStatus()

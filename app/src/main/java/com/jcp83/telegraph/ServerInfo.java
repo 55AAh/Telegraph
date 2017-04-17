@@ -60,7 +60,6 @@ public class ServerInfo
             if(!_Task._Stack.isEmpty())
             {
                 if(_LastHandledPopTask==0) _Client.HandleSystemTaskTransmitter(_Task.Get());
-                else _Client.HandleTaskTransmitter(_Task.Get());
             }
             if(_Task.IsCompleted()) _TasksPopStack.remove(_LastHandledPushTask);
             _LastHandledPopTask++;

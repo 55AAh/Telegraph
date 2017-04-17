@@ -2,6 +2,7 @@ package com.jcp83.telegraph;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -30,7 +31,7 @@ public class SettingsActivity extends AppCompatActivity
     {
         _UserName = "USER"+Math.abs(new Random().nextInt(1000));
         _Settings_UserNameBox.post(new SetUserName(_UserName));
-        _Settings_DownloadDirBox.setText("/storage/emulated/0/Download");
+        _Settings_DownloadDirBox.setText(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString());
     }
     class SetUserName implements Runnable
     {
@@ -49,7 +50,7 @@ public class SettingsActivity extends AppCompatActivity
     {
         _Settings.Load();
         _Settings_UserNameBox.setText(_Settings.GetUserName());
-        _Settings_DownloadDirBox.setText(_Settings.GetDownloadDir());
+        _Settings_DownloadDirBox.setText(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString());
     }
     private void SaveSettings()
     {

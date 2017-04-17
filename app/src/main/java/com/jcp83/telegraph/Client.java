@@ -85,11 +85,8 @@ class Client implements Runnable
         if(Info._Disconnected) _ServerDisconnected = true;
     }
     private int _LastUploadedFile = 0;
+    private ArrayList<String> _Files = new ArrayList<>();
     private ArrayList<FileDownloader> _FileDownloaders = new ArrayList<>();
-    protected void HandleTaskTransmitter(PackageTransmitter _Transmitter)
-    {
-
-    }
     protected boolean HandleSystemMessage(PackageTransmitter _Transmitter)
     {
         Package PACKAGE = (Package)Package._GetObject(_Transmitter.GetData());
@@ -98,14 +95,16 @@ class Client implements Runnable
         {
             case EXIT: Log("ROOM CLOSED."); Stop(); break;
             case INFO_LOGIN: Log(PACKAGE.GetData()+" JOINED ROOM."); break;
-            case INFO_LOGOUT: Log(PACKAGE.GetData()+" LEAVED ROOM."); break;
+            case INFO_LOGOUT: Log(PACKAGE.GetData()+" LEFT ROOM."); break;
             case INFO_FILE:
                 Log("NEW FILE ADDED : '"+PACKAGE.GetData()+"' ("+_LastUploadedFile+").");
+                _Files.add(PACKAGE.GetData().toString());
                 _LastUploadedFile++;
                 break;
             case TASK_FILE:
                 PackageTask _Task = new PackageTask(Integer.parseInt(PACKAGE.GetData().toString()));
-                FileDownloader _Downloader = new FileDownloader("storage/emulated/0/TEMPO/FILE"+Math.abs(new Random().nextInt()%1000000), _Task, _ClientRoomActivity);
+                String _Path = _ClientRoomActivity._Settings.GetDownloadDir()+"/"+PACKAGE.GetSender();
+                FileDownloader _Downloader = new FileDownloader(_Path, _Task, _ClientRoomActivity);
                 _Downloader._Thread = new Thread(_Downloader);
                 _Downloader._Thread.start();
                 Info._TasksPopStack.add(_Task);
@@ -145,6 +144,21 @@ class Client implements Runnable
         }
         BindTask(_Task);
     }
+    private void F() { _ClientRoomActivity.F(); }
+    private ArrayList<String> _UploadedFiles = new ArrayList<>();
+    protected void UploadFile(String _Path)
+    {
+        _UploadedFiles.add(_Path);
+        String _FileName = _Path.substring(_Path.lastIndexOf('/')+1);
+        int _UID = GetNewTaskUID();
+        PackageTask Task = new PackageTask(_UID);
+        Info._TasksPushStack.add(Task);
+        SendSystemMessage(new Package(Command.TASK_FILE, _UID, _FileName));
+        FileUploader _Uploader = new FileUploader(Task, _Path, "SERVER");
+        _Uploader._Thread = new Thread(_Uploader);
+        _Uploader._Thread.start();
+        Log("UPLOADING FILE '"+_Path+"' ...");
+    }
     private void ParseCommand(String Msg)
     {
         int SP=0;for(;SP<Msg.length();SP++) if(Msg.charAt(SP)==' ') break;
@@ -156,6 +170,7 @@ class Client implements Runnable
             case "start": Start(); break;
             case "stop": Stop(); break;
             case "tt": TT(); break;
+            case "f": F(); break;
             case "d":
                 if(Param.isEmpty()) Log("ERROR : Must be selected file index !");
                 else
@@ -174,7 +189,7 @@ class Client implements Runnable
                     }
                 }
                 break;
-            default: Log("ERROR : No such command : '"+Cmd+"'"); break;
+            default: Log("ERROR: NO SUCH COMMAND : '"+Cmd+"'"); break;
         }
     }
     private void Start()
@@ -210,6 +225,11 @@ class Client implements Runnable
                 Info.Receive();
                 if(Info._Disconnected) Stop();
                 if(!Info._TasksPushStack.isEmpty()||!Info._TasksPopStack.isEmpty()) Info.HandleTasks();
+                if(!_ClientRoomActivity._DownloadedFilesNotifyList.isEmpty())
+                {
+                    Log("FILE '"+_ClientRoomActivity._DownloadedFilesNotifyList.get(0)+"' DOWNLOADED");
+                    _ClientRoomActivity._DownloadedFilesNotifyList.remove(0);
+                }
             }
             if(!_ServerDisconnected) SendSystemMessage(new Package(Command.EXIT,"",_Login));
             else

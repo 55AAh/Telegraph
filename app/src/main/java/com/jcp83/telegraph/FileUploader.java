@@ -1,5 +1,6 @@
 package com.jcp83.telegraph;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,7 +15,8 @@ public class FileUploader implements Runnable
     private int _Offset = 0;
     private long _Availaible;
     private File _File;
-    private InputStream _IS;
+    private InputStream _Stream;
+    private BufferedInputStream _BStream;
     protected Thread _Thread;
     public FileUploader(PackageTask _Task, String _Path, String _Sender)
     {
@@ -27,17 +29,21 @@ public class FileUploader implements Runnable
         try
         {
             _File = new File(_Path);
-            _IS = new FileInputStream(_File);
+            _Stream = new FileInputStream(_File);
+            _BStream = new BufferedInputStream(_Stream);
             _Availaible = _File.length();
-            _Task._Elapsed = _Availaible%BUFFER_SIZE+1;
         }
         catch (Exception e) { e.printStackTrace(); }
     }
     protected void End()
     {
+        PackageTransmitter _Transmitter = new Package(Command.TASK_ENDED, "", _Sender).GetTransmitter(_Task._UID);
+        _Transmitter._Last = true;
+        _Task.Add(_Transmitter);
         try
         {
-            _IS.close();
+            _BStream.close();
+            _Stream.close();
         }
         catch (Exception e) { }
     }
@@ -48,7 +54,7 @@ public class FileUploader implements Runnable
         if(_Availaible>=BUFFER_SIZE) _Buf = new byte[BUFFER_SIZE]; else _Buf=new byte[(int)_Availaible];
         try
         {
-            _IS.read(_Buf);
+            _BStream.read(_Buf);
         }
         catch (Exception e) { e.printStackTrace(); }
         _Task.Add(new Package(Command.FILE, _Buf, _Sender).GetTransmitter(_Task._UID));
@@ -58,7 +64,6 @@ public class FileUploader implements Runnable
     {
         Init();
         while(_Availaible>0) Send();
-        _Task.Add(new Package(Command.TASK_ENDED, "", _Sender).GetTransmitter(_Task._UID));
         End();
     }
 }

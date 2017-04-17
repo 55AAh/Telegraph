@@ -10,12 +10,18 @@ public class Package implements Serializable
 {
     static final long serialVersionUID=1;
     private final Command _Command;
-    private byte[] _Data = null;
+    protected byte[] _Data = null;
     private final String _Sender;
-    public Package(Command _Command,Object _Data,String _Sender)
+    public Package(Command _Command, Object _Data, String _Sender)
     {
         this._Command=_Command;
         this._Data = _GetBytes(_Data);
+        this._Sender = _Sender;
+    }
+    public Package(Command _Command, byte[] _Data, String _Sender)
+    {
+        this._Command = _Command;
+        this._Data = _Data;
         this._Sender = _Sender;
     }
     public Command GetCommand()
