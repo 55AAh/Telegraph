@@ -1,4 +1,5 @@
 package com.jcp83.telegraph;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,10 +17,11 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.*;
 
-public class OpenFileDialog extends AlertDialog.Builder
-{
-    private String currentPath = Environment.getExternalStorageDirectory().getPath();
-    private List<File> files = new ArrayList<>();
+public class OpenFileDialog extends AlertDialog.Builder {
+
+    public static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 138;
+    protected String _CurrentPath = Environment.getExternalStorageDirectory().getPath();
+    private List<File> files = new ArrayList<File>();
     private TextView title;
     private ListView listView;
     private FilenameFilter filenameFilter;
@@ -29,10 +31,11 @@ public class OpenFileDialog extends AlertDialog.Builder
     private Drawable fileIcon;
     private String accessDeniedMessage;
     private boolean isOnlyFoldersFilter;
-    public ServerRoomActivity _ServerRoomActivity;
-    public ClientRoomActivity _ClientRoomActivity;
+    protected ServerRoomActivity _ServerRoomActivity;
+    protected ClientRoomActivity _ClientRoomActivity;
+
     public interface OpenDialogListener {
-        void OnSelectedFile(String fileName);
+        public void OnSelectedFile(String fileName);
     }
 
     private class FileAdapter extends ArrayAdapter<File> {
@@ -86,10 +89,16 @@ public class OpenFileDialog extends AlertDialog.Builder
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (selectedIndex > -1)
+                        if(selectedIndex > -1)
                         {
                             if(_ServerRoomActivity!=null) _ServerRoomActivity.UploadFile(listView.getItemAtPosition(selectedIndex).toString());
                             if(_ClientRoomActivity!=null) _ClientRoomActivity.UploadFile(listView.getItemAtPosition(selectedIndex).toString());
+                            if (listener != null) {
+                                listener.OnSelectedFile(listView.getItemAtPosition(selectedIndex).toString());
+                            }
+                            if (listener != null && isOnlyFoldersFilter) {
+                                listener.OnSelectedFile(_CurrentPath);
+                            }
                         }
                     }
                 })
@@ -98,7 +107,7 @@ public class OpenFileDialog extends AlertDialog.Builder
 
     @Override
     public AlertDialog show() {
-        files.addAll(getFiles(currentPath));
+        files.addAll(getFiles(_CurrentPath));
         listView.setAdapter(new FileAdapter(getContext(), files));
         return super.show();
     }
@@ -205,10 +214,10 @@ public class OpenFileDialog extends AlertDialog.Builder
 
             @Override
             public void onClick(View view) {
-                File file = new File(currentPath);
+                File file = new File(_CurrentPath);
                 File parentDirectory = file.getParentFile();
                 if (parentDirectory != null) {
-                    currentPath = parentDirectory.getPath();
+                    _CurrentPath = parentDirectory.getPath();
                     RebuildFiles(((FileAdapter) listView.getAdapter()));
                 }
             }
@@ -223,7 +232,7 @@ public class OpenFileDialog extends AlertDialog.Builder
     }
 
     private void changeTitle() {
-        String titleText = currentPath;
+        String titleText = _CurrentPath;
         int screenWidth = getScreenSize(getContext()).x;
         int maxWidth = (int) (screenWidth * 0.99);
         if (getTextWidth(titleText, title.getPaint()) > maxWidth) {
@@ -242,6 +251,7 @@ public class OpenFileDialog extends AlertDialog.Builder
 
     private List<File> getFiles(String directoryPath) {
         File directory = new File(directoryPath);
+        String[] a = directory.list();
         File[] list = directory.listFiles(filenameFilter);
         if(list == null)
             list = new File[]{};
@@ -262,7 +272,7 @@ public class OpenFileDialog extends AlertDialog.Builder
 
     private void RebuildFiles(ArrayAdapter<File> adapter) {
         try {
-            List<File> fileList = getFiles(currentPath);
+            List<File> fileList = getFiles(_CurrentPath);
             files.clear();
             selectedIndex = -1;
             files.addAll(fileList);
@@ -285,7 +295,7 @@ public class OpenFileDialog extends AlertDialog.Builder
                 final ArrayAdapter<File> adapter = (FileAdapter) adapterView.getAdapter();
                 File file = adapter.getItem(index);
                 if (file.isDirectory()) {
-                    currentPath = file.getPath();
+                    _CurrentPath = file.getPath();
                     RebuildFiles(adapter);
                 } else {
                     if (index != selectedIndex)

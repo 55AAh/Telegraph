@@ -1,10 +1,14 @@
 package com.jcp83.telegraph;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -161,6 +165,9 @@ public class ServerRoomActivity extends AppCompatActivity
     {
         OpenFileDialog _OpenFileDialog = new OpenFileDialog(this);
         _OpenFileDialog._ServerRoomActivity = this;
+        Settings _Settings = new Settings(getSharedPreferences(Settings.APP_SETTINGS, MODE_PRIVATE));
+        _Settings.Load();
+        _OpenFileDialog._CurrentPath = "/storage/emulated/0";//_Settings.GetLastUploadDir();
         _OpenFileDialog.show();
     }
     protected void SetRoomNameToStatus()

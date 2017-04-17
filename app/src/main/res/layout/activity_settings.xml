@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -42,5 +43,54 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/Settings_DownloadDirTextBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/Settings_UserNameTextBox"
+        android:layout_alignStart="@+id/Settings_UserNameTextBox"
+        android:layout_below="@+id/Settings_UserNameBox"
+        android:layout_marginTop="11dp"
+        android:text="Сохранять в :" />
+
+    <TableLayout
+        android:id="@+id/Settings_DownloadDirTableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/Settings_DownloadDirTextBox"
+        android:layout_alignLeft="@+id/Settings_UserNameBox"
+        android:layout_alignStart="@+id/Settings_UserNameBox"
+        android:layout_above="@+id/Settings_SaveAndExitButton"
+        android:layout_toLeftOf="@+id/Settings_DownloadDirSelectButton"
+        android:layout_toStartOf="@+id/Settings_DownloadDirSelectButton">
+
+        <TableRow
+            android:id="@+id/Settings_DownloadDirTableRow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/Settings_DownloadDirBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/Settings_SaveAndExitButton"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="255dp"
+                android:layout_marginRight="255dp"
+                android:text="NULL" />
+        </TableRow>
+    </TableLayout>
+
+    <ImageButton
+        android:id="@+id/Settings_DownloadDirSelectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/Settings_UserNameBox"
+        android:layout_alignRight="@+id/Settings_UserNameBox"
+        android:layout_below="@+id/Settings_UserNameBox"
+        android:onClick="SelectDownloadDirButtonClick"
+        app:srcCompat="@android:drawable/ic_menu_search" />
 
 </RelativeLayout>

@@ -45,7 +45,6 @@ class Server implements Runnable
         return UID;
     }
     private ArrayList<String> _UploadedFiles = new ArrayList<>();
-    private ArrayList<FileUploader> _FileUploaders = new ArrayList<>();
     private String GetTime()
     {
         return new SimpleDateFormat("HH:mm:ss").format(new Date());
@@ -82,7 +81,6 @@ class Server implements Runnable
                         FileUploader _Uploader = new FileUploader(Task, _UploadedFiles.get(_Index), "SERVER");
                         _Uploader._Thread = new Thread(_Uploader);
                         _Uploader._Thread.start();
-                        _FileUploaders.add(_Uploader);
                         break;
                     }
                 }
@@ -258,9 +256,9 @@ class Server implements Runnable
     protected void UploadFile(String _Path)
     {
         _UploadedFiles.add(_Path);
-        String _FileName = _Path.substring(_Path.lastIndexOf('/'));
+        String _FileName = _Path.substring(_Path.lastIndexOf('/')+1);
         SendSystemMessageToAll(new Package(Command.INFO_FILE, _FileName, "SERVER"));
-        Log("FILE '"+_FileName+"' ADDED TO THE ROOM.");
+        Log("ADDED FILE '"+_Path+"'.");
     }
     public void run() { Start(); }
     void AddClient(String _Name, UUID _UUID, ServerSender _ServerSender, ServerListener _ServerListener, Thread _ServerSenderThread, Thread _ServerListenerThread)
