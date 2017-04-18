@@ -91,6 +91,13 @@ public class ServerRoomActivity extends AppCompatActivity
         boolean _Visibility = _Intent.getBooleanExtra(RoomPresetActivity.RoomStartVisibilityIntentID, true);
         if(_Visibility) StartConnector();
         _VisibilityToggleButton.setChecked(_Visibility);
+        _FilesListAdapterOnClickListener = new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        };
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -119,9 +126,21 @@ public class ServerRoomActivity extends AppCompatActivity
         CharSequence[] _FileNamesC = new CharSequence[_FileNames.size()];
         for(int c=0;c<_FileNames.size(); c++) _FileNamesC[c]=_FileNames.get(c);
         _FilesDialogBuilder.setItems(_FileNamesC, _FilesListAdapterOnClickListener)
-                .setNegativeButton("OK", new DialogInterface.OnClickListener()
+                .setNeutralButton("Добавить", new DialogInterface.OnClickListener()
                 {
-                    public void onClick(DialogInterface dialog, int id) { }
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        F();
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+
+                    }
                 });
         _FilesDialog = _FilesDialogBuilder.create();
         _FilesDialog.show();
@@ -145,12 +164,11 @@ public class ServerRoomActivity extends AppCompatActivity
         while(!_Server.Stopped());
         startActivity(new Intent(ServerRoomActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
-    public void UploadFileButtonClick(View view) { F(); }
     protected ArrayList<String> _FileNames = new ArrayList<>();
     protected void UploadFile(String _Path)
     {
         _Server.UploadFile(_Path);
-        _FileNames.add(_Path.substring(_Path.lastIndexOf('/')));
+        _FileNames.add(_Path.substring(_Path.lastIndexOf('/')+1));
     }
     protected void F()
     {

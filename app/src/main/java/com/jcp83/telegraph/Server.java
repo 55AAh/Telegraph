@@ -1,11 +1,8 @@
 package com.jcp83.telegraph;
 
-import android.content.Intent;
 import android.graphics.Color;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -77,6 +74,7 @@ class Server implements Runnable
                         PackageTask Task = new PackageTask(_UID);
                         Info._TasksPushStack.add(Task);
                         int _Index = Integer.valueOf(PACKAGE.GetData().toString());
+                        if(_UploadedFiles.size()<=_Index) break;
                         String _FileName = _UploadedFiles.get(_Index);
                         _FileName = _FileName.substring(_FileName.lastIndexOf('/')+1);
                         SendSystemMessage(Info, new Package(Command.TASK_FILE, _UID, _FileName));
@@ -102,6 +100,27 @@ class Server implements Runnable
                         break;
                     }
                 }
+                break;
+            case TASK_REQUEST:
+                int _RequestingUID = Integer.valueOf(PACKAGE.GetSender());
+                for(int c=0;c<_ClientInfos.size();c++)
+                {
+                    ClientInfo _Info = _ClientInfos.get(c);
+                    if(_Info.GetUUID() == _UUID)
+                    {
+                        for(int sc=0;sc<_Info._TasksPushStack.size();sc++)
+                        {
+                            PackageTask _RequestingTask = _Info._TasksPushStack.get(sc);
+                            if(_RequestingTask._UID == _RequestingUID)
+                            {
+                                _RequestingTask._Request += (int)PACKAGE.GetData();
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                break;
             default: break;
         }
         return false;

@@ -36,7 +36,7 @@
         android:layout_below="@+id/ServerMessagesBox"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_above="@+id/UploadFileButton">
+        android:layout_above="@+id/ServerMessageBox">
 
         <TableLayout
             android:id="@+id/ServerMessagesBoxTableLayout"
@@ -63,12 +63,13 @@
         android:layout_centerHorizontal="true" />
 
     <EditText
+        android:id="@+id/ServerMessageBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/ServerMessageBox"
+        android:inputType="textMultiLine"
+        android:lines="3"
         android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/ServerSendMessageButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -84,24 +85,15 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <Button
-        android:id="@+id/UploadFileButton"
-        android:onClick="UploadFileButtonClick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Загрузить файл"
-        android:layout_above="@+id/ServerMessageBox"
-        android:layout_toRightOf="@+id/ServerStatusTextView"
-        android:layout_toEndOf="@+id/ServerStatusTextView" />
-
     <ImageButton
         android:id="@+id/ServerSendMessageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="ServerSendMessageButtonClick"
         app:srcCompat="@android:drawable/ic_menu_send"
-        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/ServerMessageBox"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="11dp" />
 
 </RelativeLayout>

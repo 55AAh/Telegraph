@@ -13,6 +13,7 @@ public enum Command
     TASK_FILE,
     FILE,
     TASK_ENDED,
+    TASK_REQUEST,
     INFO_LOGIN,
     INFO_LOGOUT,
     INFO_DISCONNECT,

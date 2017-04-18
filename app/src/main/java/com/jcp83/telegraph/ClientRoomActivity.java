@@ -14,13 +14,14 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import java.io.FileOutputStream;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class ClientRoomActivity extends AppCompatActivity
 {
-    private Client _Client = null;
+    protected Client _Client = null;
     protected Settings _Settings;
     private TextView _MessagesBox = null;
     private EditText _MessageBox = null;
@@ -57,7 +58,25 @@ public class ClientRoomActivity extends AppCompatActivity
         {
             public void onClick(DialogInterface dialog, int id) { }
         });
+        CreateDialogs();
+    }
+    private void CreateDialogs()
+    {
+        AlertDialog.Builder _ExitDialogBuilder = new AlertDialog.Builder(this);
+        _ExitDialogBuilder.setTitle("Выход").setMessage("Вы действительно хотите удалить комнату ?");
+        _ExitDialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int id) { Exit(); }
+        });
+        _ExitDialogBuilder.setNegativeButton("Нет", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int id) { }
+        });
         _ExitDialog = _ExitDialogBuilder.create();
+
+        _FilesDialogBuilder = new AlertDialog.Builder(this);
+        _FilesDialogBuilder.setTitle("Файлы");
+        _FilesDialog = _FilesDialogBuilder.create();
     }
     @Override
     protected void onStart()
@@ -69,6 +88,14 @@ public class ClientRoomActivity extends AppCompatActivity
         ServerIP = getIntent().getStringExtra(FindRoomActivity.ServerIPIntentID);
         UserName = _Settings.GetUserName();
         _UUID = _Settings.GetUUID();
+        _FilesListAdapterOnClickListener = new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                _Client.SendSystemMessage(new Package(Command.DOWNLOAD_FILE, String.valueOf(which), _Client._Login));
+            }
+        };
         Start();
     }
     @Override
@@ -98,9 +125,12 @@ public class ClientRoomActivity extends AppCompatActivity
         CharSequence[] _FileNamesC = new CharSequence[_FileNames.size()];
         for(int c=0;c<_FileNames.size(); c++) _FileNamesC[c]=_FileNames.get(c);
         _FilesDialogBuilder.setItems(_FileNamesC, _FilesListAdapterOnClickListener)
-                .setNegativeButton("OK", new DialogInterface.OnClickListener()
+                .setPositiveButton("OK", new DialogInterface.OnClickListener()
                 {
-                    public void onClick(DialogInterface dialog, int id) { }
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+
+                    }
                 });
         _FilesDialog = _FilesDialogBuilder.create();
         _FilesDialog.show();

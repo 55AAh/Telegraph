@@ -22,12 +22,13 @@
         android:text="@string/ExitFromClientRoomButtonText" />
 
     <EditText
+        android:id="@+id/ClientMessageBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/ClientMessageBox"
+        android:inputType="textMultiLine"
+        android:lines="3"
         android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/ClientSendMessageButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -43,7 +44,6 @@
         android:id="@+id/ClientMessagesBoxScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toEndOf="@+id/ClientStatusTextView"
         android:layout_above="@+id/ClientMessageBox"
         android:layout_below="@+id/ExitFromClientRoomButton"
         android:layout_alignParentLeft="true"
@@ -76,12 +76,12 @@
         android:id="@+id/ClientSendMessageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/ClientMessageBox"
         android:onClick="ClientSendMessageButtonClick"
-        app:srcCompat="@android:drawable/ic_menu_send" />
+        app:srcCompat="@android:drawable/ic_menu_send"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="14dp" />
 
 
 </RelativeLayout>

@@ -18,7 +18,7 @@ public class FilePath
             _PathWFE = _PathWFE.substring(0, _PathWFE.lastIndexOf('.'));
         }
         String _Res = _PathWFN+_PathWFE+" ("+_Index+")";
-        if(_PathFE.isEmpty()) return _Res+_PathFE;
+        if(_PathFE.isEmpty()) return _Res;
         else return _Res+'.'+_PathFE;
     }
 }

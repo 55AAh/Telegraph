@@ -15,8 +15,8 @@ class Client implements Runnable
     public static final int SERVER_CHECK_TIME = 3000;
     private ClientConnector _ClientConnector = null;
     private final int PORT;
-    private String _Login;
-    private UUID _UUID;
+    protected String _Login;
+    protected UUID _UUID;
     private final ClientRoomActivity _ClientRoomActivity;
     private Timer _ServerCheckTimer = null;
     private TimerTask _ServerCheckTimerTask = null;
@@ -98,6 +98,7 @@ class Client implements Runnable
             case INFO_LOGOUT: Log(PACKAGE.GetData()+" LEFT ROOM."); break;
             case INFO_FILE:
                 Log("NEW FILE ADDED : '"+PACKAGE.GetData()+"' ("+_LastUploadedFile+").");
+                _ClientRoomActivity._FileNames.add(PACKAGE.GetData().toString());
                 _Files.add(PACKAGE.GetData().toString());
                 _LastUploadedFile++;
                 break;

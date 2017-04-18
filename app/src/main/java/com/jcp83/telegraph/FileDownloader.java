@@ -6,9 +6,11 @@ import java.io.FileOutputStream;
 
 public class FileDownloader implements Runnable
 {
+    public static final int REQUEST_QUEUE_SIZE = 10;
     private String _Path;
     protected PackageTask _Task;
     protected Thread _Thread;
+    private String _RPath;
     private FileOutputStream _Stream;
     private BufferedOutputStream _BStream;
     private ClientRoomActivity _ClientRoomActivity;
@@ -17,6 +19,7 @@ public class FileDownloader implements Runnable
     {
         this._Path = _Path;
         this._Task = _Task;
+        this._Task._UseOffset = true;
         this._ClientRoomActivity = _ClientRoomActivity;
     }
     public FileDownloader(String _Path, PackageTask _Task, ServerRoomActivity _ServerRoomActivity)
@@ -34,8 +37,8 @@ public class FileDownloader implements Runnable
             int _ResultIndex = 1;
             while(_FHandle.exists())
             {
-                _Path = FilePath.Get(_Path, _ResultIndex);
-                _FHandle = new File(_Path);
+                _RPath = FilePath.Get(_Path, _ResultIndex);
+                _FHandle = new File(_RPath);
                 _ResultIndex++;
             }
             _FHandle.createNewFile();
@@ -46,6 +49,9 @@ public class FileDownloader implements Runnable
     }
     private void Receive()
     {
+        int _RequestElapsed = REQUEST_QUEUE_SIZE;
+        Package REQUEST = new Package(Command.TASK_REQUEST, REQUEST_QUEUE_SIZE, String.valueOf(_Task._UID));
+        _ClientRoomActivity._Client.SendSystemMessage(REQUEST);
         boolean _Stop = false;
         while(!_Stop)
         {
@@ -60,9 +66,14 @@ public class FileDownloader implements Runnable
                     {
                         byte[] a = PACKAGE._Data;
                         _BStream.write(a);
-                        a[0] = a[0];
                     }
                     catch (Exception e) { e.printStackTrace(); }
+                    _RequestElapsed--;
+                    if(_RequestElapsed<=0)
+                    {
+                        _RequestElapsed = REQUEST_QUEUE_SIZE;
+                        _ClientRoomActivity._Client.SendSystemMessage(REQUEST);
+                    }
                     break;
                 case TASK_ENDED: _Stop = true; break;
                 default: break;
@@ -78,8 +89,8 @@ public class FileDownloader implements Runnable
             _Stream.close();
         }
         catch(Exception e) { e.printStackTrace(); }
-        if(_ClientRoomActivity!=null) _ClientRoomActivity._DownloadedFilesNotifyList.add(_Path);
-        if(_ServerRoomActivity!=null) _ServerRoomActivity._DownloadedFilesNotifyList.add(_Path);
+        if(_ClientRoomActivity!=null) _ClientRoomActivity._DownloadedFilesNotifyList.add(_RPath);
+        if(_ServerRoomActivity!=null) _ServerRoomActivity._DownloadedFilesNotifyList.add(_RPath);
     }
     public void run()
     {
