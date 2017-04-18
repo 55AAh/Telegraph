@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 public class FileUploader implements Runnable
 {
-    public static final int BUFFER_SIZE = 1024;
+    public static final int BUFFER_SIZE = 1024*100;
     protected PackageTask _Task;
     private String _Path;
     private String _Sender;
@@ -21,6 +21,7 @@ public class FileUploader implements Runnable
     public FileUploader(PackageTask _Task, String _Path, String _Sender)
     {
         this._Task = _Task;
+        this._Task._UseOffset = true;
         this._Path = _Path;
         this._Sender = _Sender;
     }
@@ -57,7 +58,10 @@ public class FileUploader implements Runnable
             _BStream.read(_Buf);
         }
         catch (Exception e) { e.printStackTrace(); }
-        _Task.Add(new Package(Command.FILE, _Buf, _Sender).GetTransmitter(_Task._UID));
+        PackageTransmitter _Transmitter = new Package(Command.FILE, _Buf, _Sender).GetTransmitter(_Task._UID);
+        _Transmitter._Offset = _Offset;
+        _Offset++;
+        _Task.Add(_Transmitter);
         _Availaible-=BUFFER_SIZE;
     }
     public void run()

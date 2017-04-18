@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class PackageTransmitter implements Serializable
 {
     protected int _UID;
-    private int _Offset;
+    protected int _Offset;
     private byte[] _Data = null;
     protected boolean _IsSystem = false;
     protected boolean _IsSystemTask = false;

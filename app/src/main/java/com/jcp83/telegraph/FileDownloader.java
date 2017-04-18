@@ -50,7 +50,9 @@ public class FileDownloader implements Runnable
         while(!_Stop)
         {
             if (_Task._Stack.isEmpty()) continue;
-            Package PACKAGE = (Package)Package._GetObject(_Task.Get().GetData());
+            PackageTransmitter _Transmitter = _Task.Get();
+            if(_Transmitter==null) continue;
+            Package PACKAGE = (Package)Package._GetObject(_Transmitter.GetData());
             switch(PACKAGE.GetCommand())
             {
                 case FILE:

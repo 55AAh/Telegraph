@@ -220,7 +220,7 @@ class Server implements Runnable
                 _ClientInfos.remove(c);
                 if (!_Disconnected)
                 {
-                    Log(Name + " LEAVED ROOM.");
+                    Log(Name + " LEFT ROOM.");
                     SendSystemMessageToAll(new Package(Command.INFO_LOGOUT, Name, "SERVER"));
                 }
                 else
