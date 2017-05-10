@@ -64,7 +64,9 @@ class Server implements Runnable
                 DisconnectClient(_UUID);
                 return true;
             case DOWNLOAD_FILE:
-                Log("CLIENT "+PACKAGE.GetSender()+" ("+_UUID.toString()+") ASKING FOR DOWNLOAD FILE "+PACKAGE.GetData());
+                String Data = PACKAGE.GetData().toString();
+                String ID = Data.substring(Data.indexOf(':')+1);
+                Log("CLIENT "+PACKAGE.GetSender()+" ("+_UUID.toString()+") ASKING FOR DOWNLOAD FILE "+ID);
                 for(int c=0;c<_ClientInfos.size();c++)
                 {
                     ClientInfo Info = _ClientInfos.get(c);
@@ -73,11 +75,12 @@ class Server implements Runnable
                         int _UID = GetNewTaskUID();
                         PackageTask Task = new PackageTask(_UID);
                         Info._TasksPushStack.add(Task);
-                        int _Index = Integer.valueOf(PACKAGE.GetData().toString());
+                        int _Index = Integer.valueOf(ID);
                         if(_UploadedFiles.size()<=_Index) break;
                         String _FileName = _UploadedFiles.get(_Index);
                         _FileName = _FileName.substring(_FileName.lastIndexOf('/')+1);
-                        SendSystemMessage(Info, new Package(Command.TASK_FILE, _UID, _FileName));
+                        int _MsgUID = Integer.valueOf(Data.substring(0, Data.lastIndexOf(':')));
+                        SendSystemMessage(Info, new Package(Command.TASK_FILE, _UID+":"+_MsgUID, _FileName));
                         FileUploader _Uploader = new FileUploader(Task, _UploadedFiles.get(_Index), "SERVER");
                         _Uploader._Thread = new Thread(_Uploader);
                         _Uploader._Thread.start();
@@ -113,7 +116,7 @@ class Server implements Runnable
                             PackageTask _RequestingTask = _Info._TasksPushStack.get(sc);
                             if(_RequestingTask._UID == _RequestingUID)
                             {
-                                _RequestingTask._Request += (int)PACKAGE.GetData();
+                                _RequestingTask._RequestOffset = Integer.valueOf(PACKAGE.GetData().toString());
                                 break;
                             }
                         }

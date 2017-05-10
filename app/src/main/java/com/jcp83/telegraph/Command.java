@@ -12,6 +12,7 @@ public enum Command
     DOWNLOAD_FILE,
     TASK_FILE,
     FILE,
+    FILE_SIZE,
     TASK_ENDED,
     TASK_REQUEST,
     INFO_LOGIN,

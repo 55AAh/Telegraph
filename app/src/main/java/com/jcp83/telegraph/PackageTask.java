@@ -9,7 +9,7 @@ public class PackageTask
     protected boolean _Completed = false;
     private int _LastOffset = 0;
     protected boolean _UseOffset = false;
-    protected int _Request = 0;
+    protected int _RequestOffset = -1;
     public PackageTask(int _UID)
     {
         this._UID = _UID;

@@ -28,7 +28,7 @@ class Client implements Runnable
         this._Login = _Login;
         this._UUID = _UUID;
     }
-    private String GetTime()
+    protected String GetTime()
     {
         return new SimpleDateFormat("HH:mm:ss").format(new Date());
     }
@@ -97,15 +97,19 @@ class Client implements Runnable
             case INFO_LOGIN: Log(PACKAGE.GetData()+" JOINED ROOM."); break;
             case INFO_LOGOUT: Log(PACKAGE.GetData()+" LEFT ROOM."); break;
             case INFO_FILE:
-                Log("NEW FILE ADDED : '"+PACKAGE.GetData()+"' ("+_LastUploadedFile+").");
+                _ClientRoomActivity.NotifyFileUploaded(PACKAGE.GetData().toString(), _LastUploadedFile);
                 _ClientRoomActivity._FileNames.add(PACKAGE.GetData().toString());
                 _Files.add(PACKAGE.GetData().toString());
                 _LastUploadedFile++;
                 break;
             case TASK_FILE:
-                PackageTask _Task = new PackageTask(Integer.parseInt(PACKAGE.GetData().toString()));
+                String Data = PACKAGE.GetData().toString();
+                String _TaskUID = Data.substring(0, Data.indexOf(':'));
+                String _MsgID = Data.substring(Data.indexOf(':')+1);
+                PackageTask _Task = new PackageTask(Integer.parseInt(_TaskUID));
                 String _Path = _ClientRoomActivity._Settings.GetDownloadDir()+"/"+PACKAGE.GetSender();
                 FileDownloader _Downloader = new FileDownloader(_Path, _Task, _ClientRoomActivity);
+                _Downloader._MsgID = Integer.valueOf(_MsgID);
                 _Downloader._Thread = new Thread(_Downloader);
                 _Downloader._Thread.start();
                 Info._TasksPopStack.add(_Task);
@@ -172,24 +176,6 @@ class Client implements Runnable
             case "stop": Stop(); break;
             case "tt": TT(); break;
             case "f": F(); break;
-            case "d":
-                if(Param.isEmpty()) Log("ERROR : Must be selected file index !");
-                else
-                {
-                    int _Index = -1;
-                    try { _Index = Integer.valueOf(Param); }
-                    catch (Exception e) { Log("ERROR : Invalid index : '"+Param+"' !"); }
-                    if(_Index>=0)
-                    {
-                        if(_Index>=_LastUploadedFile)
-                            Log("ERROR : File "+_Index+" not exist.");
-                        else
-                        {
-                            SendSystemMessage(new Package(Command.DOWNLOAD_FILE, Param, _Login));
-                        }
-                    }
-                }
-                break;
             default: Log("ERROR: NO SUCH COMMAND : '"+Cmd+"'"); break;
         }
     }
@@ -226,11 +212,6 @@ class Client implements Runnable
                 Info.Receive();
                 if(Info._Disconnected) Stop();
                 if(!Info._TasksPushStack.isEmpty()||!Info._TasksPopStack.isEmpty()) Info.HandleTasks();
-                if(!_ClientRoomActivity._DownloadedFilesNotifyList.isEmpty())
-                {
-                    Log("FILE '"+_ClientRoomActivity._DownloadedFilesNotifyList.get(0)+"' DOWNLOADED");
-                    _ClientRoomActivity._DownloadedFilesNotifyList.remove(0);
-                }
             }
             if(!_ServerDisconnected) SendSystemMessage(new Package(Command.EXIT,"",_Login));
             else

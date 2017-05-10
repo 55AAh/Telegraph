@@ -33,9 +33,10 @@ public class ClientRoomActivity extends AppCompatActivity
     private UUID _UUID;
     private AlertDialog _ExitDialog;
     private AlertDialog.Builder _FilesDialogBuilder;
+    private AlertDialog.Builder _FilesMessageDialogBuilder;
     private AlertDialog _FilesDialog;
+    private AlertDialog _FilesMessageDialog;
     private AlertDialog.OnClickListener _FilesListAdapterOnClickListener;
-    protected ArrayList<String> _DownloadedFilesNotifyList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -60,6 +61,14 @@ public class ClientRoomActivity extends AppCompatActivity
         });
         CreateDialogs();
     }
+    protected void DownloadFile(int ID)
+    {
+        Message _Msg = new Message(_Client._Login, "DOWNLOADING FILE '"+_FileNames.get(ID)+"' ...", _Client.GetTime());
+        _Msg._FileTaskUID = _Client.GetNewTaskUID();
+        ShowMessage(_Msg, Color.BLUE);
+        _Client.SendSystemMessage(new Package(Command.DOWNLOAD_FILE, _Msg._FileTaskUID+":"+ID, _Client._Login));
+    }
+    private int _FileMessageDialogFileID;
     private void CreateDialogs()
     {
         AlertDialog.Builder _ExitDialogBuilder = new AlertDialog.Builder(this);
@@ -77,6 +86,21 @@ public class ClientRoomActivity extends AppCompatActivity
         _FilesDialogBuilder = new AlertDialog.Builder(this);
         _FilesDialogBuilder.setTitle("Файлы");
         _FilesDialog = _FilesDialogBuilder.create();
+        _FilesMessageDialogBuilder = new AlertDialog.Builder(this);
+        _FilesMessageDialogBuilder.setTitle("Подтверждение");
+        _FilesMessageDialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                DownloadFile(_FileMessageDialogFileID);
+            }
+        });
+        _FilesMessageDialogBuilder.setNegativeButton("Нет", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which) { }
+        });
     }
     @Override
     protected void onStart()
@@ -93,7 +117,7 @@ public class ClientRoomActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                _Client.SendSystemMessage(new Package(Command.DOWNLOAD_FILE, String.valueOf(which), _Client._Login));
+                DownloadFile(which);
             }
         };
         Start();
@@ -144,6 +168,12 @@ public class ClientRoomActivity extends AppCompatActivity
         return ServerIP;
     }
     protected ArrayList<String> _FileNames = new ArrayList<>();
+    protected void NotifyFileUploaded(String Name, int ID)
+    {
+        Message _Msg = new Message("SERVER", "NEW FILE ADDED : '"+Name+"' ("+ID+").", _Client.GetTime());
+        _Msg._FileID = ID;
+        ShowMessage(_Msg, Color.BLUE);
+    }
     protected void UploadFile(String _Path)
     {
         _Client.UploadFile(_Path);
@@ -187,13 +217,23 @@ public class ClientRoomActivity extends AppCompatActivity
         _Client.SendText(Msg);
         _MessageBox.setText("");
     }
+    private void DownloadFileMessageClick(int ID)
+    {
+        String FileName = _FileNames.get(ID);
+        _FilesMessageDialogBuilder.setMessage("Скачать файл '"+FileName+"' ?");
+        _FilesMessageDialog = _FilesMessageDialogBuilder.create();
+        _FileMessageDialogFileID = ID;
+        _FilesMessageDialog.show();
+    }
     public void ExitFromClientRoomButtonClick(View view)
     {
         Exit();
     }
     public void ClientSendMessageButtonClick(View view) { SendMessage(_MessageBox.getText().toString()); }
+    protected ArrayList<Message> _Messages = new ArrayList<>();
     void ShowMessage(Message Msg, int Color)
     {
+        _Messages.add(Msg);
         new Thread(new ClientRoomActivity.ShowMessage(Msg, Color, this)).start();
     }
     class ShowMessage implements Runnable
@@ -218,9 +258,19 @@ public class ClientRoomActivity extends AppCompatActivity
                     TextView _MessageTextView = new TextView(_ClientRoomActivity);
                     _MessageTextView.setText(_Msg._Text);
                     _MessageTextView.setTextColor(_Color);
+                    _Msg._SenderTextView = _MessageSenderTextView;
+                    _Msg._TextView = _MessageTextView;
                     _MessageRow.addView(_MessageTimeTextView);
                     _MessageRow.addView(_MessageSenderTextView);
                     _MessageRow.addView(_MessageTextView);
+                    _MessageTextView.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            DownloadFileMessageClick(_Msg._FileID);
+                        }
+                    });
                     _ClientMessagesBoxTableLayout.addView(_MessageRow);
                     try { Thread.sleep(100); } catch (InterruptedException e) {}
                     ScrollMessagesBoxScrollView();

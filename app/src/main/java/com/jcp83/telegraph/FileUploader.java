@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 public class FileUploader implements Runnable
 {
-    public static final int BUFFER_SIZE = 1024;
+    public static final int BUFFER_SIZE = 1024*1000;
     protected PackageTask _Task;
     private String _Path;
     private String _Sender;
@@ -34,6 +34,13 @@ public class FileUploader implements Runnable
             _Availaible = _File.length();
         }
         catch (Exception e) { e.printStackTrace(); }
+        PackageTransmitter _Transmitter = new Package(Command.FILE_SIZE, String.valueOf(_Availaible), _Sender).GetTransmitter(_Task._UID);
+        _Task.Add(_Transmitter);
+        try
+        {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e) {}
     }
     protected void End()
     {
@@ -48,23 +55,30 @@ public class FileUploader implements Runnable
         }
         catch (Exception e) { }
     }
+    private byte[] _Buf;
     protected void Send()
     {
         if(_Availaible<=0) return;
-        if(_Task._Request<=0) return;
-        byte[] _Buf;
-        if(_Availaible>=BUFFER_SIZE) _Buf = new byte[BUFFER_SIZE]; else _Buf=new byte[(int)_Availaible];
-        try
+        if(_Task._RequestOffset<0) return;
+        if(_Task._RequestOffset==_Offset)
         {
-            _BStream.read(_Buf);
+            if (_Availaible >= BUFFER_SIZE) _Buf = new byte[BUFFER_SIZE];
+            else _Buf = new byte[(int) _Availaible];
+            try
+            {
+                _BStream.read(_Buf);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            _Offset++;
         }
-        catch (Exception e) { e.printStackTrace(); }
         PackageTransmitter _Transmitter = new Package(Command.FILE, _Buf, _Sender).GetTransmitter(_Task._UID);
-        _Transmitter._Offset = _Offset;
-        _Offset++;
+        _Transmitter._Offset = _Task._RequestOffset;
+        _Task._RequestOffset = -1;
         _Task.Add(_Transmitter);
         _Availaible-=BUFFER_SIZE;
-        _Task._Request--;
     }
     public void run()
     {

@@ -6,11 +6,15 @@ import java.io.FileOutputStream;
 
 public class FileDownloader implements Runnable
 {
-    public static final int REQUEST_QUEUE_SIZE = 10;
+    public static final int MAX_WAIT_CYCLES = 30;
     private String _Path;
     protected PackageTask _Task;
     protected Thread _Thread;
     private String _RPath;
+    protected int _MsgID;
+    private Message _Msg = null;
+    private int _FileSize = 0;
+    private int _FileReadySize = 0;
     private FileOutputStream _Stream;
     private BufferedOutputStream _BStream;
     private ClientRoomActivity _ClientRoomActivity;
@@ -44,39 +48,81 @@ public class FileDownloader implements Runnable
             _FHandle.createNewFile();
             _Stream = new FileOutputStream(_FHandle);
             _BStream = new BufferedOutputStream(_Stream);
+            boolean _FSFound = false;
+            while(!_FSFound)
+            {
+                for (int c = 0; c<_Task._Stack.size();c++)
+                {
+                    PackageTransmitter _Transmitter = _Task._Stack.get(c);
+                    Package PACKAGE = (Package)Package._GetObject(_Transmitter.GetData());
+                    if(PACKAGE.GetCommand()==Command.FILE_SIZE)
+                    {
+                        _FileSize = Integer.valueOf(PACKAGE.GetData().toString());
+                        _FSFound = true;
+                        break;
+                    }
+                }
+            }
         }
         catch (Exception e) { e.printStackTrace(); }
     }
     private void Receive()
     {
-        int _RequestElapsed = REQUEST_QUEUE_SIZE;
-        Package REQUEST = new Package(Command.TASK_REQUEST, REQUEST_QUEUE_SIZE, String.valueOf(_Task._UID));
-        _ClientRoomActivity._Client.SendSystemMessage(REQUEST);
+        int _Offset = 0;
+        int _WaitCycles = 0;
         boolean _Stop = false;
+        Package REQUEST = new Package(Command.TASK_REQUEST, 0, String.valueOf(_Task._UID));
+        _ClientRoomActivity._Client.SendSystemMessage(REQUEST);
         while(!_Stop)
         {
-            if (_Task._Stack.isEmpty()) continue;
-            PackageTransmitter _Transmitter = _Task.Get();
-            if(_Transmitter==null) continue;
-            Package PACKAGE = (Package)Package._GetObject(_Transmitter.GetData());
-            switch(PACKAGE.GetCommand())
+            boolean _NoPackages = false;
+            PackageTransmitter _Transmitter = null;
+            if (_Task._Stack.isEmpty()) _NoPackages = true;
+            else
+            {
+                _Transmitter = _Task.Get();
+                if (_Transmitter == null) _NoPackages = true;
+            }
+            if(_NoPackages)
+            {
+                try
+                {
+                    Thread.sleep(100);
+                }
+                catch (InterruptedException e) {}
+                _WaitCycles++;
+                if(_WaitCycles>=MAX_WAIT_CYCLES)
+                {
+                    _WaitCycles = 0;
+                    REQUEST = new Package(Command.TASK_REQUEST, _Offset, String.valueOf(_Task._UID));
+                    _ClientRoomActivity._Client.SendSystemMessage(REQUEST);
+                }
+                continue;
+            }
+            Package PACKAGE = (Package) Package._GetObject(_Transmitter.GetData());
+            switch (PACKAGE.GetCommand())
             {
                 case FILE:
                     try
                     {
-                        byte[] a = PACKAGE._Data;
-                        _BStream.write(a);
+                        byte[] BUF = PACKAGE._Data;
+                        _FileReadySize += BUF.length;
+                        _Msg.SetSender((" " + Math.round((_FileReadySize * 100f) / _FileSize)) + "%");
+                        _BStream.write(BUF);
                     }
-                    catch (Exception e) { e.printStackTrace(); }
-                    _RequestElapsed--;
-                    if(_RequestElapsed<=0)
+                    catch (Exception e)
                     {
-                        _RequestElapsed = REQUEST_QUEUE_SIZE;
-                        _ClientRoomActivity._Client.SendSystemMessage(REQUEST);
+                        e.printStackTrace();
                     }
+                    _Offset++;
+                    REQUEST = new Package(Command.TASK_REQUEST, _Offset, String.valueOf(_Task._UID));
+                    _ClientRoomActivity._Client.SendSystemMessage(REQUEST);
                     break;
-                case TASK_ENDED: _Stop = true; break;
-                default: break;
+                case TASK_ENDED:
+                    _Stop = true;
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -89,12 +135,23 @@ public class FileDownloader implements Runnable
             _Stream.close();
         }
         catch(Exception e) { e.printStackTrace(); }
-        if(_ClientRoomActivity!=null) _ClientRoomActivity._DownloadedFilesNotifyList.add(_RPath);
-        if(_ServerRoomActivity!=null) _ServerRoomActivity._DownloadedFilesNotifyList.add(_RPath);
+        _Msg.SetText("FILE '"+_RPath+"' DOWNLOADED.");
     }
     public void run()
     {
         Init();
+        while(_Msg==null)
+        {
+            if (_ClientRoomActivity != null)
+                for (int c = 0; c < _ClientRoomActivity._Messages.size(); c++)
+                {
+                    _Msg = _ClientRoomActivity._Messages.get(c);
+                    if (_Msg._FileTaskUID == _MsgID) break;
+                }
+            //if(_ServerRoomActivity!=null)
+            //_Msg = _ServerRoomActivity._Messages.get(_MsgID);
+        }
+        _Msg.SetSender(" 0%");
         Receive();
         End();
         _Task._Completed = true;
