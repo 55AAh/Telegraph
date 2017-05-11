@@ -158,6 +158,7 @@ class Server implements Runnable
         for(int c=0;c<_ClientInfos.size();c++)
             _ClientInfos.get(c)._TasksPushStack.add(_Task);
     }
+    private ArrayList<Package> _History = new ArrayList<>();
     protected void BindToAllSystemTasks(Package PACKAGE)
     {
         for(int c=0;c<_ClientInfos.size();c++)
@@ -167,6 +168,7 @@ class Server implements Runnable
             _Transmitter._IsSystemTask = true;
             _Info._TasksPushStack.get(0).Add(_Transmitter);
         }
+        _History.add(PACKAGE);
     }
     private void TT()
     {
@@ -224,6 +226,7 @@ class Server implements Runnable
             _Info.Send(_Transmitter);
             if(_Info._Disconnected) DisconnectClient(_Info.GetUUID());
         }
+        _History.add(PACKAGE);
     }
     private ArrayList<ClientInfo> _ClientInfos = new ArrayList<>();
     protected void DisconnectClient(UUID _UUID)
@@ -309,9 +312,6 @@ class Server implements Runnable
     void AddClient(String _Name, UUID _UUID, ServerSender _ServerSender, ServerListener _ServerListener, Thread _ServerSenderThread, Thread _ServerListenerThread)
     {
         _ServerSender._UUID = _UUID;
-        Package P_INFO_LOGIN = new Package(Command.INFO_LOGIN, _Name, "SERVER");
-        SendSystemMessageToAll(P_INFO_LOGIN);
-        Log(_Name+" JOINED ROOM.");
         _ServerListener._UUID = _UUID;
         _ServerListener._Thread = _ServerListenerThread;
         _ServerSender._UUID = _UUID;
@@ -319,7 +319,12 @@ class Server implements Runnable
         ClientInfo _Info = new ClientInfo(this, _ServerListener, _ServerSender, _Name, _UUID);
         _Info._TasksPushStack.add(new PackageTask(GetNewTaskUID()));
         _Info._TasksPopStack.add(new PackageTask(GetNewTaskUID()));
+        for(int sc=0;sc<_History.size();sc++)
+            SendSystemMessage(_Info, _History.get(sc));
+        Package P_INFO_LOGIN = new Package(Command.INFO_LOGIN, _Name, "SERVER");
+        SendSystemMessageToAll(P_INFO_LOGIN);
         _ClientInfos.add(_Info);
+        Log(_Name+" JOINED ROOM.");
     }
     void StartConnector()
     {

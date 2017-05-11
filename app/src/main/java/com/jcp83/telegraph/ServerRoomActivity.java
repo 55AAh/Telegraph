@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class ServerRoomActivity extends AppCompatActivity
 {
     private final int PORT = 7000;
-    private Server _Server = null;
+    protected Server _Server = null;
     private Thread _ServerThread = null;
     protected Settings _Settings;
     private TextView _MessagesBox = null;

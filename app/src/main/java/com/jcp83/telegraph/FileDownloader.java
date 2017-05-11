@@ -72,58 +72,77 @@ public class FileDownloader implements Runnable
         int _WaitCycles = 0;
         boolean _Stop = false;
         Package REQUEST = new Package(Command.TASK_REQUEST, 0, String.valueOf(_Task._UID));
-        _ClientRoomActivity._Client.SendSystemMessage(REQUEST);
+        if(_ClientRoomActivity!=null)
+            _ClientRoomActivity._Client.SendSystemMessage(REQUEST);
+        //if(_ServerRoomActivity!=null)
+        //    _ServerRoomActivity._Server.SendSystemMessage(REQUEST);
         while(!_Stop)
         {
-            boolean _NoPackages = false;
-            PackageTransmitter _Transmitter = null;
-            if (_Task._Stack.isEmpty()) _NoPackages = true;
-            else
+            try
             {
-                _Transmitter = _Task.Get();
-                if (_Transmitter == null) _NoPackages = true;
-            }
-            if(_NoPackages)
-            {
-                try
+                boolean _NoPackages = false;
+                PackageTransmitter _Transmitter = null;
+                if (_Task._Stack.isEmpty()) _NoPackages = true;
+                else
                 {
-                    Thread.sleep(100);
+                    _Transmitter = _Task.Get();
+                    if (_Transmitter == null) _NoPackages = true;
                 }
-                catch (InterruptedException e) {}
-                _WaitCycles++;
-                if(_WaitCycles>=MAX_WAIT_CYCLES)
+                if (_NoPackages)
                 {
-                    _WaitCycles = 0;
-                    REQUEST = new Package(Command.TASK_REQUEST, _Offset, String.valueOf(_Task._UID));
-                    _ClientRoomActivity._Client.SendSystemMessage(REQUEST);
-                }
-                continue;
-            }
-            Package PACKAGE = (Package) Package._GetObject(_Transmitter.GetData());
-            switch (PACKAGE.GetCommand())
-            {
-                case FILE:
                     try
                     {
-                        byte[] BUF = PACKAGE._Data;
-                        _FileReadySize += BUF.length;
-                        _Msg.SetSender((" " + Math.round((_FileReadySize * 100f) / _FileSize)) + "%");
-                        _BStream.write(BUF);
+                        Thread.sleep(100);
                     }
-                    catch (Exception e)
+                    catch (InterruptedException e)
                     {
-                        e.printStackTrace();
                     }
-                    _Offset++;
-                    REQUEST = new Package(Command.TASK_REQUEST, _Offset, String.valueOf(_Task._UID));
-                    _ClientRoomActivity._Client.SendSystemMessage(REQUEST);
-                    break;
-                case TASK_ENDED:
-                    _Stop = true;
-                    break;
-                default:
-                    break;
+                    _WaitCycles++;
+                    if (_WaitCycles >= MAX_WAIT_CYCLES)
+                    {
+                        _WaitCycles = 0;
+                        REQUEST = new Package(Command.TASK_REQUEST, _Offset, String.valueOf(_Task._UID));
+                        _ClientRoomActivity._Client.SendSystemMessage(REQUEST);
+                        //if(_ServerRoomActivity!=null)
+                        //    _ServerRoomActivity._Server.SendSystemMessage(REQUEST);
+                    }
+                    continue;
+                }
+                Package PACKAGE = (Package) Package._GetObject(_Transmitter.GetData());
+                switch (PACKAGE.GetCommand())
+                {
+                    case FILE:
+                        try
+                        {
+                            byte[] BUF = PACKAGE._Data;
+                            _FileReadySize += BUF.length;
+                            float _Completed = Math.round((_FileReadySize * 10000f) / _FileSize) / 100f;
+                            if(_Completed == 100f)
+                            {
+                                _Completed = 0;
+                            }
+
+                            _Msg.SetSender((" " + _Completed) + "%");
+                            _BStream.write(BUF);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                        _Offset++;
+                        REQUEST = new Package(Command.TASK_REQUEST, _Offset, String.valueOf(_Task._UID));
+                        _ClientRoomActivity._Client.SendSystemMessage(REQUEST);
+                        //if(_ServerRoomActivity!=null)
+                        //    _ServerRoomActivity._Server.SendSystemMessage(REQUEST);
+                        break;
+                    case TASK_ENDED:
+                        _Stop = true;
+                        break;
+                    default:
+                        break;
+                }
             }
+            catch (Exception e) {}
         }
     }
     private void End()
@@ -136,6 +155,7 @@ public class FileDownloader implements Runnable
         }
         catch(Exception e) { e.printStackTrace(); }
         _Msg.SetText("FILE '"+_RPath+"' DOWNLOADED.");
+        _Msg.SetSender("100 %");
     }
     public void run()
     {

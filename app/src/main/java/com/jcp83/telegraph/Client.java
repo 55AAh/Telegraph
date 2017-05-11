@@ -114,6 +114,9 @@ class Client implements Runnable
                 _Downloader._Thread.start();
                 Info._TasksPopStack.add(_Task);
                 break;
+            case MESSAGE:
+                ShowMessage(PACKAGE.GetSender(), PACKAGE.GetData().toString());
+                break;
             default: break;
         }
         return false;

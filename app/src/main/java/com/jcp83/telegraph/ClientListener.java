@@ -49,17 +49,13 @@ class ClientListener implements Runnable
                         byte[] B = new byte[S];
                         _Stream.read(B);
                         PackageTransmitter PT = (PackageTransmitter) Package._GetObject(B);
-                        if(PT==null) { Fail(); return; }
+                        if(PT==null) continue;
                         _Stack.add(PT);
                     }
                 }
                 if(_Stop) return;
             }
-            catch (Exception e)
-            {
-                Fail();
-                return;
-            }
+            catch (Exception e) {}
         }
     }
     private void Init()

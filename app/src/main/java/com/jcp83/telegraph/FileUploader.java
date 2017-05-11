@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 public class FileUploader implements Runnable
 {
-    public static final int BUFFER_SIZE = 1024*1000;
+    public static final int BUFFER_SIZE = 1024*500;
     protected PackageTask _Task;
     private String _Path;
     private String _Sender;

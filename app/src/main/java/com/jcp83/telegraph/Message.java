@@ -16,16 +16,32 @@ public class Message
         try
         {
             this._Sender = _Sender;
-            _SenderTextView.setText(_Sender);
+            final String _NewSender = _Sender;
+            _SenderTextView.post(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    _SenderTextView.setText(_NewSender);
+                }
+            });
         }
         catch(Exception e) {}
     }
-    protected void SetText(String _Text)
+    protected void SetText(final String _Text)
     {
         try
         {
             this._Text = _Text;
-            _TextView.setText(_Text);
+            final String _NewText = _Text;
+            _TextView.post(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    _TextView.setText(_NewText);
+                }
+            });
         }
         catch(Exception e) {}
     }
